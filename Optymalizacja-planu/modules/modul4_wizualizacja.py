@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
@@ -49,8 +48,20 @@ def uruchom_silnik_i_pobierz_plan(sciezka_danych):
     with open(sciezka_danych, 'r', encoding='utf-8') as plik:
         surowe_dane = json.load(plik)
         
-    # Przetwarzanie LLM na żywo z tryb_offline=False
-    dane_po_llm = modul3_llm.przeanalizuj_preferencje(surowe_dane, tryb_offline=False)
+    # --- ZASTĘPSTWO ZA BRAKUJĄCĄ FUNKCJĘ W MODULE LLM ---
+    dane_po_llm = surowe_dane.copy()
+    for instructor in dane_po_llm.get('instructors', []):
+        text = instructor.get('preferences_text', '')
+        if text:
+            # Wywołanie bezpośrednio dostępnej funkcji w modul3_llm
+            matryca = modul3_llm.call_bielik_matrix_api(text)
+            if matryca is None:
+                matryca = modul3_llm.get_default_matrix()
+            instructor['availability_matrix'] = matryca
+            time.sleep(1) # Zabezpieczenie przed limitem API
+        else:
+            instructor['availability_matrix'] = modul3_llm.get_default_matrix()
+    # ---------------------------------------------------
         
     # Parser wczytuje dane wzbogacone przez model AI
     prowadzacy_db, sale_db, przedmioty_db = modul1_parser.zbuduj_baze_obiektow(dane_po_llm)
