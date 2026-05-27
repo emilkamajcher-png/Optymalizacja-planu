@@ -54,16 +54,15 @@ def uruchom_silnik_i_pobierz_plan(sciezka_danych):
     with open(sciezka_danych, 'r', encoding='utf-8') as plik:
         surowe_dane = json.load(plik)
         
-    # Wywołujemy zbiorcze zapytanie do AI
     dane_po_llm = modul3_llm.przeanalizuj_preferencje(surowe_dane, tryb_offline=False)
     
-    # --- ADAPTER: Tłumaczymy format AI na Matrycę (Księgowy tego potrzebuje) ---
+    # --- ADAPTER: Tłumaczymy format AI na Matrycę ---
     for inst in dane_po_llm.get('instructors', []):
         prefs = inst.get('parsed_preferences', {})
-        matryca = {d: [2]*12 for d in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']} # Domyślnie 2 (chętnie)
+        matryca = {d: [2]*12 for d in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']}
         
-        # Nakładamy blokady (0 = nie mogę)
         for blokada in prefs.get('forbidden_slots', []):
+            if not blokada: continue
             d = blokada.get('day')
             if d in matryca:
                 for h in range(blokada.get('from', 8), blokada.get('to', 20)):
@@ -71,7 +70,6 @@ def uruchom_silnik_i_pobierz_plan(sciezka_danych):
                     if 0 <= idx < 12: 
                         matryca[d][idx] = 0
                         
-        # Oznaczamy mniej preferowane dni jako 1
         pref_days = prefs.get('preferred_days', [])
         if pref_days:
             for d in matryca.keys():
@@ -81,9 +79,7 @@ def uruchom_silnik_i_pobierz_plan(sciezka_danych):
                             matryca[d][idx] = 1
                             
         inst['availability_matrix'] = matryca
-    # -----------------------------------------------------------------------------
         
-    # Parser wczytuje dane wzbogacone
     prowadzacy_db, sale_db, przedmioty_db = modul1_parser.zbuduj_baze_obiektow(dane_po_llm)
     
     stan = modul2_optymalizacja.StanPlanu()
@@ -120,7 +116,7 @@ with st.sidebar:
     
     if perspektywa_typ == "Grupa":
         opcje_grup = sorted(list(set([z.grupa_id for z in LISTA_ZAJEC])))
-        context_name = st.selectbox("Wybierz grupę:", opcje_grup, key="sel_grup_main")
+        context_name = st.selectbox("Wybierz grupę:", opcje_grup if opcje_grup else ["Brak danych"], key="sel_grup_main")
         context_title = f"Grupy {context_name}"
         wybrany_id = context_name
     elif perspektywa_typ == "Prowadzący":
@@ -129,9 +125,14 @@ with st.sidebar:
         context_title = PROWADZACY_DB[wybrany_id].imie_nazwisko if wybrany_id else ""
     else:
         opcje_sale = sorted(list(SALE_DB.keys()))
-        wybrany_id = st.selectbox("Wybierz salę:", opcje_sale, key="sel_sala_main")
+        wybrany_id = st.selectbox("Wybierz salę:", opcje_sale if opcje_sale else ["Brak danych"], key="sel_sala_main")
         context_title = f"Sali {wybrany_id}"
         
+    st.divider()
+    
+    st.subheader("WYBÓR TYGODNIA")
+    widok_tygodnia = st.radio("Pokaż plan dla:", ["Semestr (Oba)", "Tydzień A (Nieparzysty)", "Tydzień B (Parzysty)"])
+    
     st.divider()
     
     st.subheader("DODATKOWE FILTRY")
@@ -152,6 +153,7 @@ with st.sidebar:
 
 def render_plan(typ_widoku, wybrany_identyfikator, tytul_naglowka):
     st.header(f"Plan zajęć - Widok: {tytul_naglowka}")
+    st.caption(f"Aktualnie wyświetlany kalendarz: {widok_tygodnia}")
     
     macierz_planu = {dzien: ["—"] * len(HOURS_RANGE) for d_eng, dzien in DAY_MAP_ENG_TO_PL.items()}
     df_plan = pd.DataFrame(macierz_planu, index=HOURS_LABELS)
@@ -161,6 +163,10 @@ def render_plan(typ_widoku, wybrany_identyfikator, tytul_naglowka):
         if typ_widoku == "Grupa" and zajecia.grupa_id != wybrany_identyfikator: continue
         if typ_widoku == "Prowadzący" and zajecia.prowadzacy_id != wybrany_identyfikator: continue
         if typ_widoku == "Sala" and zajecia.przypisana_sala_id != wybrany_identyfikator: continue
+        
+        tydzien_zajec = getattr(zajecia, 'przypisany_tydzien', 'AB')
+        if widok_tygodnia == "Tydzień A (Nieparzysty)" and tydzien_zajec == 'B': continue
+        if widok_tygodnia == "Tydzień B (Parzysty)" and tydzien_zajec == 'A': continue
         
         prof_obj = PROWADZACY_DB.get(zajecia.prowadzacy_id)
         if filtr_prow != "Wszyscy" and (prof_obj and prof_obj.imie_nazwisko != filtr_prow): continue
@@ -177,8 +183,19 @@ def render_plan(typ_widoku, wybrany_identyfikator, tytul_naglowka):
         for offset in range(zajecia.wymagane_godziny):
             if idx_start is not None and (idx_start + offset) < len(HOURS_LABELS):
                 prof_nazwisko = prof_obj.imie_nazwisko if prof_obj else zajecia.prowadzacy_id
-                info_text = f"{zajecia.przedmiot_id}, \nProwadzący: {prof_nazwisko}, \nSala: {zajecia.przypisana_sala_id}"
-                df_plan.loc[HOURS_LABELS[idx_start + offset], pl_dzien] = info_text
+                
+                ozn_tyg = ""
+                if widok_tygodnia == "Semestr (Oba)":
+                    if tydzien_zajec == 'A': ozn_tyg = " [Tydz. A]"
+                    elif tydzien_zajec == 'B': ozn_tyg = " [Tydz. B]"
+                
+                info_text = f"{zajecia.przedmiot_id}{ozn_tyg} | {prof_nazwisko} | {zajecia.przypisana_sala_id}"
+                
+                aktualna_zawartosc = df_plan.loc[HOURS_LABELS[idx_start + offset], pl_dzien]
+                if aktualna_zawartosc == "—":
+                    df_plan.loc[HOURS_LABELS[idx_start + offset], pl_dzien] = info_text
+                else:
+                    df_plan.loc[HOURS_LABELS[idx_start + offset], pl_dzien] = aktualna_zawartosc + "  | ORAZ |  " + info_text
                 
     st.table(df_plan)
 
@@ -214,36 +231,68 @@ def render_optimization():
     col3, col4 = st.columns(2)
     
     with col3:
-        st.subheader("Wykorzystanie sal (Heatmapa)")
-        nazwy_sal = list(SALE_DB.keys())
-        macierz_heat = np.zeros((len(nazwy_sal), len(DAYS_PL)))
+        st.subheader("Struktura i zajętość sal (Treemap)")
+        dane_sal = []
+        for s_id, s in SALE_DB.items():
+            godz_A = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.przypisana_sala_id == s_id and getattr(z, 'przypisany_tydzien', 'AB') in ['AB', 'A']])
+            godz_B = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.przypisana_sala_id == s_id and getattr(z, 'przypisany_tydzien', 'AB') in ['AB', 'B']])
+            srednie_zajecie = (godz_A + godz_B) / 2.0
+            
+            dane_sal.append({
+                "Sala": s_id, 
+                "Typ": s.typ, 
+                "Pojemność": s.pojemnosc, 
+                "Obciążenie (godz)": srednie_zajecie
+            })
+            
+        df_sale = pd.DataFrame(dane_sal)
         
-        for zajecia in LISTA_ZAJEC:
-            if zajecia.przypisana_sala_id in nazwy_sal:
-                s_idx = nazwy_sal.index(zajecia.przypisana_sala_id)
-                d_pl = DAY_MAP_ENG_TO_PL.get(zajecia.przypisany_dzien)
-                if d_pl in DAYS_PL:
-                    d_idx = DAYS_PL.index(d_pl)
-                    macierz_heat[s_idx, d_idx] += zajecia.wymagane_godziny
-                    
-        fig_heat = px.imshow(macierz_heat, x=DAYS_PL, y=nazwy_sal, color_continuous_scale='Blues', labels=dict(x="Dzień", y="Sala", color="Godziny"))
-        fig_heat.update_layout(height=300, margin=dict(l=20, r=20, t=20, b=20))
-        st.plotly_chart(fig_heat, use_container_width=True)
+        # Wykres Treemap: Wielkość kafelka = pojemność sali, Kolor = obciążenie
+        fig_tree = px.treemap(
+            df_sale, 
+            path=[px.Constant("Wszystkie Sale"), 'Typ', 'Sala'], 
+            values='Pojemność',
+            color='Obciążenie (godz)', 
+            color_continuous_scale='Blues',
+            labels={'Obciążenie (godz)': 'Śr. godz/tydz'}
+        )
+        fig_tree.update_traces(root_color="lightgrey")
+        fig_tree.update_layout(height=450, margin=dict(t=20, l=10, r=10, b=10))
+        st.plotly_chart(fig_tree, use_container_width=True)
         
     with col4:
-        st.subheader("Obciążenie prowadzących")
+        st.subheader("Obciążenie prowadzących (godz/tydz)")
+        
         imiona_prof = [p.imie_nazwisko for p in PROWADZACY_DB.values()]
-        godziny_przydzielone = [0] * len(imiona_prof)
+        godziny_przydzielone = [0.0] * len(imiona_prof)
         
         for zajecia in LISTA_ZAJEC:
             prof_obj = PROWADZACY_DB.get(zajecia.prowadzacy_id)
             if prof_obj:
                 idx = list(PROWADZACY_DB.keys()).index(zajecia.prowadzacy_id)
-                godziny_przydzielone[idx] += zajecia.wymagane_godziny
+                dodatek_godzin = zajecia.wymagane_godziny if getattr(zajecia, 'przypisany_tydzien', 'AB') == 'AB' else (zajecia.wymagane_godziny / 2.0)
+                godziny_przydzielone[idx] += dodatek_godzin
                 
-        fig_bar = px.bar(x=godziny_przydzielone, y=imiona_prof, orientation='h', labels={'x':'Suma godzin w tygodniu', 'y':''}, color_discrete_sequence=['#007bff'])
-        fig_bar.update_layout(height=300, margin=dict(l=20, r=20, t=20, b=20))
-        st.plotly_chart(fig_bar, use_container_width=True)
+        df_prof = pd.DataFrame({'Profesor': imiona_prof, 'Godziny': godziny_przydzielone})
+        df_prof = df_prof.sort_values(by='Godziny', ascending=True)
+        
+        # Zamykamy wykres słupkowy w scrollboxie o stałej wysokości
+        with st.container(height=450, border=True):
+            # Dynamiczna wysokość wnętrza wykresu: 35px na każdego profesora
+            wewn_wysokosc = max(400, len(imiona_prof) * 35)
+            
+            fig_bar = px.bar(
+                df_prof, x='Godziny', y='Profesor', orientation='h', 
+                text='Godziny',
+                color='Godziny',
+                color_continuous_scale='teal',
+                labels={'Godziny':'Średnio godzin', 'Profesor':''}
+            )
+            fig_bar.update_traces(texttemplate='%{text:.1f}h', textposition='outside')
+            fig_bar.add_vline(x=12, line_dash="dash", line_color="red", annotation_text="Max 12h")
+            fig_bar.add_vline(x=8, line_dash="dash", line_color="orange", annotation_text="Min 8h", annotation_position="bottom left")
+            fig_bar.update_layout(height=wewn_wysokosc, margin=dict(l=10, r=30, t=10, b=10), coloraxis_showscale=False)
+            st.plotly_chart(fig_bar, use_container_width=True)
 
 def render_statistics():
     st.header("Raport statystyczny")
@@ -265,15 +314,18 @@ def render_statistics():
     col1, col2 = st.columns(2)
     
     with col1:
-        st.subheader("Wykaz Prowadzących")
+        st.subheader("Wykaz Prowadzących (Średnie obciążenie)")
         dane_prow = []
         for p_id, p in PROWADZACY_DB.items():
-            godz_przydzielone = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.prowadzacy_id == p_id])
+            godz_A = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.prowadzacy_id == p_id and getattr(z, 'przypisany_tydzien', 'AB') in ['AB', 'A']])
+            godz_B = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.prowadzacy_id == p_id and getattr(z, 'przypisany_tydzien', 'AB') in ['AB', 'B']])
+            srednio_na_tydzien = (godz_A + godz_B) / 2.0
+            
             dane_prow.append({
                 "Imię i nazwisko": p.imie_nazwisko,
-                "Liczba godzin (tyg)": godz_przydzielone,
-                "Pensum": p.limit_slotow_tydzien,
-                "Status": "Ok" if godz_przydzielone <= p.limit_slotow_tydzien else "Przekroczone"
+                "Liczba godzin (śr/tyg)": f"{srednio_na_tydzien:.1f}",
+                "Maks. limit (tyg)": 12,
+                "Status": "Ok" if 8 <= srednio_na_tydzien <= 12 else "Poza normą"
             })
         st.dataframe(pd.DataFrame(dane_prow), use_container_width=True, hide_index=True)
         
@@ -281,12 +333,15 @@ def render_statistics():
         st.subheader("Wykaz Sal")
         dane_sal = []
         for s_id, s in SALE_DB.items():
-            godz_sala = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.przypisana_sala_id == s_id])
+            godz_A = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.przypisana_sala_id == s_id and getattr(z, 'przypisany_tydzien', 'AB') in ['AB', 'A']])
+            godz_B = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.przypisana_sala_id == s_id and getattr(z, 'przypisany_tydzien', 'AB') in ['AB', 'B']])
+            srednie_zajecie_sali = (godz_A + godz_B) / 2.0
+            
             dane_sal.append({
                 "Sala": s_id,
                 "Typ": s.typ,
                 "Pojemność": s.pojemnosc,
-                "Zajętość (godz)": godz_sala
+                "Zajętość (śr. godz)": f"{srednie_zajecie_sali:.1f}"
             })
         st.dataframe(pd.DataFrame(dane_sal), use_container_width=True, hide_index=True)
 
