@@ -1,106 +1,149 @@
+# modules/modul3_llm.py
 import json
 import requests
 import time
+import copy
 
-
-API_URL = "http://149.156.194.192:8088/v1/chat/completions"
+# --- KONFIGURACJA API ---
+API_URL = "http://149.156.194.192:8088/v1/chat/completions" # IP z UPEL
 TOKEN = "bsk-00a229f80354793ad87e93fea4691b31521e4fb43a2cf8cd3d916fe02b64a010"
-INPUT_FILE = "C:\\Users\\kapaw\\Downloads\\py\\dane_nowe.json"
-OUTPUT_FILE = "dane_z_siatka.json"
 
-def call_bielik_matrix_api(text):
-    """Wysyła zapytanie do modelu Bielik i oczekuje struktury siatki tygodniowej."""
+def _call_bielik_api_batch(lista_danych):
+    """Wysyła JEDNO ZBIORCZE zapytanie do modelu Bielik dla wszystkich prowadzących na raz."""
     
+    # Nasz potężny prompt dostosowany do przetwarzania tablicy (Batch Processing)
     system_prompt = (
-        "Jesteś asystentem do analizy danych. Twoim zadaniem jest przetworzenie tekstu preferencji "
-        "prowadzącego na ustrukturyzowany JSON reprezentujący siatkę godzinową dla dni: "
-        "Mon, Tue, Wed, Thu, Fri. "
-        "Dla każdego dnia stwórz listę wartości dla godzin od 8 do 19 (czyli 12 pozycji: indeks 0 to godzina 8, indeks 11 to godzina 19). "
-        "Przypisz wartości liczbowe według zasad:\n"
-        "0 - NIE MOGĘ (brak dostępności, zakaz, zebrania, badania),\n"
-        "1 - MOGĘ W RAZIE POTRZEBY (warunkowo, wolę unikać, w ostateczności),\n"
-        "2 - MOGĘ (na pewno, preferowane godziny, idealne rano/popołudniu).\n\n"
-        "Format wyjściowy musi wyglądać dokładnie tak:\n"
+        "Jesteś zaawansowanym systemem ekstrakcji danych uczelnianych (Information Extraction AI). "
+        "Otrzymasz tablicę obiektów z ID wykładowcy i jego tekstem preferencji. "
+        "Twoim zadaniem jest przetworzenie wszystkich na raz i zwrócenie JEDNEGO połączonego obiektu JSON, "
+        "w którym kluczem jest 'id' wykładowcy. Zwracasz TYLKO kod bez wyjaśnień.\n\n"
+        
+        "### ZASADY MAPOWANIA (HEURYSTYKI):\n"
+        "1. Dni tygodnia ZAWSZE mapuj na angielskie skróty: Poniedziałek='Mon', Wtorek='Tue', Środa='Wed', Czwartek='Thu', Piątek='Fri'.\n"
+        "2. Jeśli wykładowca używa określeń potocznych: 'rano' = 08:00-12:00, 'popołudnie' = 12:00-16:00, 'wieczór' = 16:00-20:00.\n"
+        "3. Jeśli wykładowca mówi, że NIE MOŻE uczyć w dany dzień, dodaj ten dzień do 'forbidden_slots' od 8 do 20.\n"
+        "4. Używaj wyłącznie formatu 24-godzinnego dla godzin (np. 8, 14, 20).\n\n"
+        
+        "### WYMAGANY SCHEMAT WYJŚCIA:\n"
         "{\n"
-        "  \"Mon\": [2, 2, 2, 2, 0, 0, 0, 1, 1, 1, 1, 1],\n"
-        "  \"Tue\": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],\n"
-        "  ...\n"
-        "}\n"
-        "Zwróć wyłącznie czysty, poprawny JSON, bez żadnego dodatkowego tekstu czy komentarzy."
+        "  \"ID_WYKLADOWCY_1\": {\n"
+        "    \"preferred_days\": [\"Skrót\"],\n"
+        "    \"preferred_hours_start\": 8,\n"
+        "    \"preferred_hours_end\": 20,\n"
+        "    \"forbidden_slots\": [{\"day\": \"Skrót\", \"from\": 8, \"to\": 12}]\n"
+        "  },\n"
+        "  \"ID_WYKLADOWCY_2\": { ... }\n"
+        "}\n\n"
+        
+        "### PRZYKŁAD (FEW-SHOT DLA PACZKI DANYCH):\n"
+        "WEJŚCIE:\n"
+        "[\n"
+        "  {\"id\": \"prof_1\", \"text\": \"Mogę uczyć we wtorki. Rano w poniedziałki nie dam rady.\"},\n"
+        "  {\"id\": \"prof_2\", \"text\": \"Nie pracuję w piątki.\"}\n"
+        "]\n"
+        "WYJŚCIE:\n"
+        "{\n"
+        "  \"prof_1\": {\"preferred_days\": [\"Tue\"], \"preferred_hours_start\": 8, \"preferred_hours_end\": 20, \"forbidden_slots\": [{\"day\": \"Mon\", \"from\": 8, \"to\": 12}]},\n"
+        "  \"prof_2\": {\"preferred_days\": [], \"preferred_hours_start\": 8, \"preferred_hours_end\": 20, \"forbidden_slots\": [{\"day\": \"Fri\", \"from\": 8, \"to\": 20}]}\n"
+        "}\n\n"
+        
+        "### REGUŁA KRYTYCZNA:\n"
+        "Zwróć WYŁĄCZNIE poprawny składniowo JSON. Nie dodawaj znaczników ```json, powitania ani tekstu pobocznego. Odpowiedź musi zaczynać się od { i kończyć na }."
     )
     
     payload = {
         "model": "SpeakLeash/bielik-11b-v3.0-instruct:Q4_K_M",
         "messages": [
             {"role": "system", "content": system_prompt},
-            {"role": "user", "content": text}
+            # Wysyłamy całą tablicę paczką jako jeden tekst JSON
+            {"role": "user", "content": json.dumps(lista_danych, ensure_ascii=False)}
         ],
-        "temperature": 0.0
+        "temperature": 0.1 # Niska temperatura = twarda logika
     }
     
     headers = {"Authorization": f"Bearer {TOKEN}"}
     
     try:
-        response = requests.post(API_URL, headers=headers, json=payload, timeout=40)
+        # UWAGA: Ponieważ to paczka, dajemy modelowi do 60 sekund na odpowiedź
+        response = requests.post(API_URL, headers=headers, json=payload, timeout=60)
         if response.status_code == 200:
             content = response.json()["choices"][0]["message"]["content"]
-            # Czyszczenie kodu ze znaczników markdown, które LLM czasem dodaje
+            
+            # Pancerne czyszczenie odpowiedzi modelu
             content = content.replace("```json", "").replace("```", "").strip()
+            start_idx = content.find('{')
+            end_idx = content.rfind('}')
+            if start_idx != -1 and end_idx != -1:
+                content = content[start_idx:end_idx+1]
+                
             return json.loads(content)
         elif response.status_code == 429:
-            print("Przekroczono limit zapytań (429). Czekam na reset...")
-            time.sleep(15)
+            print("   [UWAGA] Limit API! Czekam 10s...")
+            time.sleep(10)
             return None
         else:
-            print(f"Błąd serwera Bielik: {response.status_code}")
+            print(f"   [BŁĄD] Odpowiedź API: {response.status_code}")
             return None
     except Exception as e:
-        print(f"Błąd połączenia z API: {e}")
+        print(f"   [BŁĄD] Problem z połączeniem/parsowaniem: {e}")
         return None
 
-def get_default_matrix():
-    """Generuje domyślną bezpieczną siatkę (same jedynki) w razie awarii LLM."""
-    days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
-    return {day: [1] * 12 for day in days}
-
-def main():
-    # 1. Wczytanie pliku źródłowego (Moduł 1)
-    try:
-        with open(INPUT_FILE, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-    except FileNotFoundError:
-        print(f"Błąd: Nie znaleziono pliku {INPUT_FILE} w bieżącym katalogu.")
-        return
-
-    print(f"Rozpoczynam generowanie macierzy dostępności dla {len(data['instructors'])} prowadzących...")
-
-    # 2. Przetwarzanie każdego profesora (Moduł 3)
-    for i, instructor in enumerate(data['instructors']):
-        name = instructor['name']
-        text = instructor['preferences_text']
-        
-        print(f"[{i+1}/{len(data['instructors'])}] Przetwarzam: {name}")
-        
-        # Wywołanie modelu Bielik
-        availability_matrix = call_bielik_matrix_api(text)
-        
-        # 3. Tryb awaryjny / Fallback offline w razie błędu serwera
-        if availability_matrix is None:
-            print(f" ! Problem z LLM dla {name}. Generuję siatkę domyślną (tryb offline).")
-            availability_matrix = get_default_matrix()
-            availability_matrix["offline_fallback"] = True
-            
-        # Zapisujemy nową siatkę bezpośrednio do danych tego prowadzącego
-        instructor['availability_matrix'] = availability_matrix
-        
-        # Bezpieczny odstęp czasowy, aby nie przekroczyć limitu 60 zapytań na godzinę
-        time.sleep(2)
-
-    # 4. Zapisanie nowego pliku JSON dla Inżynierów Algorytmów
-    with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+def przeanalizuj_preferencje(surowe_dane_json, tryb_offline=True):
+    print("\n-> MODUŁ 3 (LLM): Rozpoczęto analizę preferencji (tryb BATCH)...")
     
-    print(f"\nSukces! Nowy plik z siatkami godzinowymi zapisany jako: {OUTPUT_FILE}")
+    if tryb_offline:
+        print("   [INFO] Tryb offline. Pomijam API i używam domyślnych danych.")
+        return surowe_dane_json
+        
+    wzbogacone_dane = copy.deepcopy(surowe_dane_json)
+    instructors = wzbogacone_dane.get('instructors', [])
+    
+    # 1. Zbieramy wszystkich profesorów, którzy mają wpisany tekst do JEDNEJ paczki
+    paczka_do_analizy = []
+    for inst in instructors:
+        if inst.get('preferences_text'):
+            paczka_do_analizy.append({
+                "id": inst['id'],
+                "text": inst['preferences_text']
+            })
+            
+    if not paczka_do_analizy:
+        print("   [INFO] Brak preferencji do analizy. Przechodzę dalej.")
+        return wzbogacone_dane
+        
+    print(f"   [INFO] Wysyłam 1 ZBIORCZE zapytanie dla {len(paczka_do_analizy)} prowadzących...")
+    
+    # 2. Wysyłamy paczkę do AI - JEDEN RAZ!
+    wyniki_llm = _call_bielik_api_batch(paczka_do_analizy)
+    
+    if wyniki_llm is None:
+        print("   [UWAGA] Zapytanie awaryjne nie powiodło się. Używam pustych preferencji.")
+        wyniki_llm = {}
+        
+    # 3. Rozpakowujemy paczkę i przypisujemy wyniki profesorom
+    for inst in instructors:
+        inst_id = inst['id']
+        domyslne_puste = {
+            "preferred_days": [], "preferred_hours_start": 8, 
+            "preferred_hours_end": 20, "forbidden_slots": []
+        }
+        
+        if inst_id in wyniki_llm:
+            inst['parsed_preferences'] = wyniki_llm[inst_id]
+            print(f"   [OK] Przeanalizowano: {inst.get('name')}")
+        elif inst.get('preferences_text'):
+            print(f"   [UWAGA] Brak poprawnego zwrotu dla {inst.get('name')}. Ustawiam puste.")
+            inst['parsed_preferences'] = domyslne_puste
+        else:
+            inst['parsed_preferences'] = domyslne_puste
 
-if __name__ == "__main__":
-    main()
+    # 4. Nadpisywanie Cache
+    cache_path = "data/dane_z_preferencjami_cache.json"
+    try:
+        with open(cache_path, 'w', encoding='utf-8') as f:
+            json.dump(wzbogacone_dane, f, indent=2, ensure_ascii=False)
+    except Exception:
+        pass
+
+    print("-> MODUŁ 3 (LLM): Zakończono z sukcesem.")
+    return wzbogacone_dane

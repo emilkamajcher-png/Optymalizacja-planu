@@ -1,3 +1,9 @@
+import sys
+import os
+
+# --- GPS DLA CHMURY STREAMLIT ---
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
@@ -48,22 +54,36 @@ def uruchom_silnik_i_pobierz_plan(sciezka_danych):
     with open(sciezka_danych, 'r', encoding='utf-8') as plik:
         surowe_dane = json.load(plik)
         
-    # --- ZASTĘPSTWO ZA BRAKUJĄCĄ FUNKCJĘ W MODULE LLM ---
-    dane_po_llm = surowe_dane.copy()
-    for instructor in dane_po_llm.get('instructors', []):
-        text = instructor.get('preferences_text', '')
-        if text:
-            # Wywołanie bezpośrednio dostępnej funkcji w modul3_llm
-            matryca = modul3_llm.call_bielik_matrix_api(text)
-            if matryca is None:
-                matryca = modul3_llm.get_default_matrix()
-            instructor['availability_matrix'] = matryca
-            time.sleep(1) # Zabezpieczenie przed limitem API
-        else:
-            instructor['availability_matrix'] = modul3_llm.get_default_matrix()
-    # ---------------------------------------------------
+    # Wywołujemy zbiorcze zapytanie do AI
+    dane_po_llm = modul3_llm.przeanalizuj_preferencje(surowe_dane, tryb_offline=False)
+    
+    # --- ADAPTER: Tłumaczymy format AI na Matrycę (Księgowy tego potrzebuje) ---
+    for inst in dane_po_llm.get('instructors', []):
+        prefs = inst.get('parsed_preferences', {})
+        matryca = {d: [2]*12 for d in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']} # Domyślnie 2 (chętnie)
         
-    # Parser wczytuje dane wzbogacone przez model AI
+        # Nakładamy blokady (0 = nie mogę)
+        for blokada in prefs.get('forbidden_slots', []):
+            d = blokada.get('day')
+            if d in matryca:
+                for h in range(blokada.get('from', 8), blokada.get('to', 20)):
+                    idx = h - 8
+                    if 0 <= idx < 12: 
+                        matryca[d][idx] = 0
+                        
+        # Oznaczamy mniej preferowane dni jako 1
+        pref_days = prefs.get('preferred_days', [])
+        if pref_days:
+            for d in matryca.keys():
+                if d not in pref_days:
+                    for idx in range(12):
+                        if matryca[d][idx] != 0: 
+                            matryca[d][idx] = 1
+                            
+        inst['availability_matrix'] = matryca
+    # -----------------------------------------------------------------------------
+        
+    # Parser wczytuje dane wzbogacone
     prowadzacy_db, sale_db, przedmioty_db = modul1_parser.zbuduj_baze_obiektow(dane_po_llm)
     
     stan = modul2_optymalizacja.StanPlanu()
@@ -78,9 +98,12 @@ def uruchom_silnik_i_pobierz_plan(sciezka_danych):
     execution_time = time.time() - start
     return sukces, algorytm.lista_zajec, prowadzacy_db, sale_db, przedmioty_db, execution_time, historia
 
-# --- ŁADOWANIE Z KOMUNIKATEM DLA PROWADZĄCEGO ---
-with st.spinner("Sztuczna Inteligencja (Bielik) analizuje dane tekstowe i układa zoptymalizowany plan. To potrwa chwilę..."):
-    SUKCES, LISTA_ZAJEC, PROWADZACY_DB, SALE_DB, PRZEDMIOTY_DB, CZAS_WYKONANIA, HISTORIA_KOSZTOW = uruchom_silnik_i_pobierz_plan("data/dane_testowe.json")
+# --- ŁADOWANIE DANYCH Z BEZPIECZNĄ ŚCIEŻKĄ ---
+sciezka_bazy = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sciezka_do_danych = os.path.join(sciezka_bazy, "data", "dane_testowe.json")
+
+with st.spinner("Sztuczna Inteligencja (Bielik) analizuje paczkę preferencji. To potrwa chwilę..."):
+    SUKCES, LISTA_ZAJEC, PROWADZACY_DB, SALE_DB, PRZEDMIOTY_DB, CZAS_WYKONANIA, HISTORIA_KOSZTOW = uruchom_silnik_i_pobierz_plan(sciezka_do_danych)
 
 # --- SIDEBAR (Filtry i wybór perspektywy) ---
 with st.sidebar:
@@ -159,7 +182,6 @@ def render_plan(typ_widoku, wybrany_identyfikator, tytul_naglowka):
                 
     st.table(df_plan)
 
-
 def render_optimization():
     st.header("Postęp optymalizacji - Widok ogólny")
     
@@ -223,7 +245,6 @@ def render_optimization():
         fig_bar.update_layout(height=300, margin=dict(l=20, r=20, t=20, b=20))
         st.plotly_chart(fig_bar, use_container_width=True)
 
-
 def render_statistics():
     st.header("Raport statystyczny")
     st.markdown("Szczegółowe dane liczbowe i wykazy w formie tabelarycznej.")
@@ -268,7 +289,6 @@ def render_statistics():
                 "Zajętość (godz)": godz_sala
             })
         st.dataframe(pd.DataFrame(dane_sal), use_container_width=True, hide_index=True)
-
 
 # --- GŁÓWNE ZAKŁADKI APLIKACJI ---
 tab_plan, tab_opt, tab_stat = st.tabs(["Plan zajęć", "Optymalizacja", "Raport statystyczny"])
