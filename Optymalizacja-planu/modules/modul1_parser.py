@@ -1,6 +1,4 @@
-
 class Prowadzacy:
-    # NAPRAWA 1: Dodano 'availability_matrix', aby algorytm optymalizacji mógł dołączyć matrycę z LLM
     __slots__ = ['id', 'imie_nazwisko', 'kompetencje', 'preferowane_dni', 'zakazane_sloty', 'limit_slotow_tydzien', 'availability_matrix']
     
     def __init__(self, dane_json):
@@ -18,17 +16,22 @@ class Prowadzacy:
         self.preferowane_dni = set(prefs.get('preferred_days', []))
         self.zakazane_sloty = set()
         
-        # NAPRAWA 2: Przywrócone bezpieczne przetwarzanie zakazów (Ochrona przed błędem NoneType)
+        # Zabezpieczone wyciąganie zakazów (Ochrona przed AI zwracającym liczby jako tekst)
         for zakaz in prefs.get('forbidden_slots', []):
             if zakaz is None: continue
             dzien = zakaz.get('day')
             start = zakaz.get('from')
             koniec = zakaz.get('to')
             
-            # Sprawdzamy, czy dane z AI są na pewno liczbami
-            if dzien and isinstance(start, int) and isinstance(koniec, int):
-                for godzina in range(start, koniec):
-                    self.zakazane_sloty.add((dzien, godzina))
+            if dzien and start is not None and koniec is not None:
+                try:
+                    # Rzutujemy na int na wypadek formatu "8" zamiast 8
+                    start_val = int(start)
+                    koniec_val = int(koniec)
+                    for godzina in range(start_val, koniec_val):
+                        self.zakazane_sloty.add((dzien, godzina))
+                except (ValueError, TypeError):
+                    continue # Jeśli AI wpisało tekst np. "rano", ignorujemy ten wpis
                     
         self.availability_matrix = None
 
@@ -55,7 +58,6 @@ class Sala:
 
 
 class Przedmiot:
-    # NAPRAWA 3: Dodano 'czestotliwosc' do zadeklarowanej pamięci
     __slots__ = ['id', 'subject_id', 'group_id', 'nazwa', 'typ', 'liczba_studentow', 'wymagane_godziny', 'wymagany_typ_sali', 'czestotliwosc']
     
     def __init__(self, dane_json):
@@ -76,12 +78,11 @@ class Przedmiot:
             
         self.wymagany_typ_sali = dane_json['required_room_type']
         
-        # Jeśli JSON ma 'frequency', używamy tego, a jak nie - domyślnie 'co_tydzien'
+        # Obsługa częstotliwości z domyślnym układem 'co_tydzien'
         self.czestotliwosc = dane_json.get('frequency', 'co_tydzien')
 
 
 class Zajecia:
-    # NAPRAWA 4: Dodano 'czestotliwosc' oraz 'przypisany_tydzien' dla kalendarza 3D
     __slots__ = ['id', 'przedmiot_id', 'baza_przedmiotu', 'grupa_id', 'liczba_studentow', 
                  'wymagany_typ_sali', 'wymagane_godziny', 'prowadzacy_id', 
                  'przypisany_dzien', 'przypisany_start_slot', 'przypisana_sala_id',

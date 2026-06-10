@@ -1,3 +1,4 @@
+
 import sys
 import os
 
@@ -31,14 +32,14 @@ st.markdown("""
         width: 100%; border-collapse: collapse; font-family: 'Segoe UI', sans-serif; table-layout: fixed;
     }
     table.custom-plan-table th {
-        background-color: #eaeef2; color: #334155; font-weight: 600; padding: 14px; border: 1px solid #cbd5e1; text-align: center; width: 18%;
+        background-color: #eaeef2; color: #1e293b; font-weight: 700; padding: 16px; border: 1px solid #cbd5e1; text-align: center; width: 18%; font-size: 16px;
     }
     table.custom-plan-table th:first-child { width: 10%; }
     table.custom-plan-table td {
-        border: 1px solid #cbd5e1; height: 80px; padding: 4px; vertical-align: top; background-color: #ffffff;
+        border: 1px solid #cbd5e1; height: 85px; padding: 6px; vertical-align: top; background-color: #ffffff;
     }
     .time-cell {
-        background-color: #f8fafc; font-weight: bold; color: #64748b; text-align: center !important; vertical-align: middle !important; font-size: 13px;
+        background-color: #f8fafc; font-weight: 700; color: #475569; text-align: center !important; vertical-align: middle !important; font-size: 15px;
     }
     .stTable { border: none !important; }
     </style>
@@ -56,8 +57,6 @@ def uruchom_silnik_i_pobierz_plan(sciezka_danych):
     with open(sciezka_danych, 'r', encoding='utf-8') as plik:
         surowe_dane = json.load(plik)
         
-    # Uruchamiamy moduł 3 (AI). Adapter został USUNIĘTY, 
-    # bo modul3 sam wkleja gotową macierz do 'availability_matrix'!
     dane_po_llm = modul3_llm.przeanalizuj_preferencje(surowe_dane, tryb_offline=False)
         
     prowadzacy_db, sale_db, przedmioty_db = modul1_parser.zbuduj_baze_obiektow(dane_po_llm)
@@ -181,6 +180,56 @@ with st.sidebar:
         use_container_width=True
     )
 
+    st.divider()
+    st.subheader("EKSPORT WYNIKÓW (DO ODDANIA)")
+
+    def wygeneruj_json_planu(lista_zajec):
+        plan_wyjsciowy = []
+        for z in lista_zajec:
+            plan_wyjsciowy.append({
+                "id_zajec": z.id,
+                "przedmiot_id": z.przedmiot_id,
+                "grupa_id": z.grupa_id,
+                "prowadzacy_id": z.prowadzacy_id,
+                "sala_id": z.przypisana_sala_id,
+                "tydzien": getattr(z, 'przypisany_tydzien', 'AB'),
+                "dzien": z.przypisany_dzien,
+                "start_slot": z.przypisany_start_slot,
+                "czas_trwania_godz": z.wymagane_godziny
+            })
+        return json.dumps(plan_wyjsciowy, indent=4, ensure_ascii=False)
+
+    def wygeneruj_log_kosztow(historia, czas_wykonania):
+        log_lines = [
+            "RAPORT OPTYMALIZACJI - OPTIPLAN",
+            f"Czas wykonywania silnika (LLM + HC + SC): {czas_wykonania:.2f} s",
+            "--------------------------------------------------"
+        ]
+        if historia:
+            for i, koszt in enumerate(historia):
+                log_lines.append(f"Iteracja chlodzenia {i}: Punkty karne = {koszt}")
+            log_lines.append("--------------------------------------------------")
+            log_lines.append(f"Ostateczny, zoptymalizowany koszt planu: {historia[-1]} pkt.")
+        else:
+            log_lines.append("Brak historii optymalizacji.")
+        return "\n".join(log_lines)
+
+    st.download_button(
+        label="Pobierz wygenerowany plan (JSON)",
+        data=wygeneruj_json_planu(LISTA_ZAJEC),
+        file_name="zoptymalizowany_plan.json",
+        mime="application/json",
+        use_container_width=True
+    )
+
+    st.download_button(
+        label="Pobierz log z funkcji celu (TXT)",
+        data=wygeneruj_log_kosztow(HISTORIA_KOSZTOW, CZAS_WYKONANIA),
+        file_name="log_optymalizacji.txt",
+        mime="text/plain",
+        use_container_width=True
+    )
+
 def render_plan(typ_widoku, wybrany_identyfikator, tytul_naglowka):
     st.header(f"Plan zajęć - Widok: {tytul_naglowka}")
     st.caption(f"Aktualny filtr okresu: {widok_tygodnia}")
@@ -230,11 +279,12 @@ def render_plan(typ_widoku, wybrany_identyfikator, tytul_naglowka):
                     skip_slots.add((h + offset, d_pl))
                 
                 typ_lower = getattr(zajecia, 'wymagany_typ_sali', '').lower()
-                if "wykł" in typ_lower or "wyklad" in typ_lower or "zs" in typ_lower: kolor_boxa, skrot_typu = "#0e7373", "WYK"
-                elif "ćwi" in typ_lower or "cwi" in typ_lower or "cwl" in typ_lower: kolor_boxa, skrot_typu = "#5b3b70", "ĆW"
-                elif "lab" in typ_lower: kolor_boxa, skrot_typu = "#2b5c8f", "LAB"
-                elif "proj" in typ_lower: kolor_boxa, skrot_typu = "#b25e1d", "PRO"
-                else: kolor_boxa, skrot_typu = "#1e293b", "ZAJ"
+                # Żywsza i nowocześniejsza paleta kolorów
+                if "wykł" in typ_lower or "wyklad" in typ_lower or "zs" in typ_lower: kolor_boxa, skrot_typu = "#0284c7", "WYK" # Jasnoniebieski
+                elif "ćwi" in typ_lower or "cwi" in typ_lower or "cwl" in typ_lower: kolor_boxa, skrot_typu = "#8b5cf6", "ĆW" # Fioletowy
+                elif "lab" in typ_lower: kolor_boxa, skrot_typu = "#10b981", "LAB" # Szmaragdowy
+                elif "proj" in typ_lower: kolor_boxa, skrot_typu = "#f59e0b", "PRO" # Bursztynowy
+                else: kolor_boxa, skrot_typu = "#f43f5e", "ZAJ" # Różany/Czerwony
                 
                 h_start = zajecia.przypisany_start_slot
                 h_koniec = h_start + duration
@@ -244,17 +294,19 @@ def render_plan(typ_widoku, wybrany_identyfikator, tytul_naglowka):
                 prof_nazwisko = prof_obj.imie_nazwisko if prof_obj else zajecia.prowadzacy_id
                 
                 html += f'<td rowspan="{duration}" style="padding: 4px; vertical-align: top;">'
-                html += f'<div style="border: 1px solid #cbd5e1; border-radius: 6px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.08); height: 100%; display: flex; flex-direction: column;">'
-                html += f'<div style="background-color: {kolor_boxa}; color: white; padding: 6px 10px;">'
-                html += f'<div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 10px; opacity: 0.9;">'
+                html += f'<div style="border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; box-shadow: 0 3px 6px rgba(0,0,0,0.1); height: 100%; display: flex; flex-direction: column;">'
+                html += f'<div style="background-color: {kolor_boxa}; color: white; padding: 8px 10px;">'
+                html += f'<div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 14px; text-shadow: 1px 1px 2px rgba(0,0,0,0.2);">'
                 html += f'<span>{czas_kafelka}</span><span>{skrot_typu}</span>'
                 html += f'</div></div>'
-                html += f'<div style="background-color: #ffffff; color: #334155; padding: 6px 10px; flex-grow: 1; border-top: 1px solid #e2e8f0; font-size: 11px;">'
-                html += f'<div style="color: #475569; font-size: 13px; font-weight: 500;">{prof_nazwisko}</div>'
-                html += f'<div style="font-weight: 600; color: #1e293b; margin-top: 2px;">{sala_info}</div>'
+                html += f'<div style="background-color: #f8fafc; color: #334155; padding: 8px 10px; flex-grow: 1; border-top: 1px solid #e2e8f0;">'
+                # Zwiększone czcionki i lepsze formatowanie wewnątrz bloku
+                html += f'<div style="font-weight: 700; color: #0f172a; font-size: 14px; margin-bottom: 4px;">{zajecia.przedmiot_id}</div>'
+                html += f'<div style="color: #1e293b; font-size: 13px; font-weight: 600;">{prof_nazwisko}</div>'
+                html += f'<div style="font-weight: 700; color: {kolor_boxa}; margin-top: 4px; font-size: 13px;">{sala_info}</div>'
                 html += f'</div></div></td>'
             else:
-                html += '<td style="color: #cbd5e1; text-align: center; vertical-align: middle; font-size: 14px;">—</td>'
+                html += '<td style="color: #cbd5e1; text-align: center; vertical-align: middle; font-size: 16px;">—</td>'
                 
         html += '</tr>'
     html += '</tbody></table>'
@@ -270,8 +322,9 @@ def render_optimization():
         if HISTORIA_KOSZTOW:
             iters = list(range(len(HISTORIA_KOSZTOW)))
             fig_opt = go.Figure()
-            fig_opt.add_trace(go.Scatter(x=iters, y=HISTORIA_KOSZTOW, name="Punkty karne (SC)", line=dict(color='#1f77b4', width=3)))
-            fig_opt.update_layout(height=300, margin=dict(l=20, r=20, t=20, b=20), xaxis_title="Iteracje chłodzenia", yaxis_title="Koszt planu (im niżej, tym lepiej)")
+            fig_opt.add_trace(go.Scatter(x=iters, y=HISTORIA_KOSZTOW, name="Punkty karne (SC)", line=dict(color='#0284c7', width=3)))
+            # Skala logarytmiczna i powiększona czcionka
+            fig_opt.update_layout(height=300, margin=dict(l=20, r=20, t=20, b=20), xaxis_title="Iteracje chłodzenia", yaxis_title="Koszt (Logarytmiczny)", yaxis_type="log", font=dict(size=14))
             st.plotly_chart(fig_opt, use_container_width=True)
         else:
             st.info("Brak historii optymalizacji.")
@@ -279,9 +332,9 @@ def render_optimization():
     with col2:
         st.subheader("Zaspokojenie ograniczeń (HC)")
         fig_gauge = go.Figure(go.Indicator(
-            mode = "gauge+number", value = 100 if SUKCES else 0, title = {'text': "Sukces (%)"}, gauge = {'axis': {'range': [0, 100]}, 'bar': {'color': "#007bff"}}
+            mode = "gauge+number", value = 100 if SUKCES else 0, title = {'text': "Sukces (%)"}, gauge = {'axis': {'range': [0, 100]}, 'bar': {'color': "#10b981"}}
         ))
-        fig_gauge.update_layout(height=300, margin=dict(l=20, r=20, t=20, b=20))
+        fig_gauge.update_layout(height=300, margin=dict(l=20, r=20, t=20, b=20), font=dict(size=14))
         st.plotly_chart(fig_gauge, use_container_width=True)
         
     st.divider()
@@ -300,10 +353,10 @@ def render_optimization():
         df_sale = pd.DataFrame(dane_sal)
         fig_tree = px.treemap(
             df_sale, path=[px.Constant("Wszystkie Sale"), 'Typ', 'Sala'], values='Pojemność',
-            color='Obciążenie (godz)', color_continuous_scale='Blues', labels={'Obciążenie (godz)': 'Śr. godz/tydz'}
+            color='Obciążenie (godz)', color_continuous_scale='Spectral', labels={'Obciążenie (godz)': 'Śr. godz/tydz'} # Zmieniona skala barw na bardziej żywą
         )
         fig_tree.update_traces(root_color="lightgrey")
-        fig_tree.update_layout(height=450, margin=dict(t=20, l=10, r=10, b=10))
+        fig_tree.update_layout(height=450, margin=dict(t=20, l=10, r=10, b=10), font=dict(size=15))
         st.plotly_chart(fig_tree, use_container_width=True)
         
     with col4:
@@ -324,12 +377,12 @@ def render_optimization():
             wewn_wysokosc = max(400, len(imiona_prof) * 35)
             fig_bar = px.bar(
                 df_prof, x='Godziny', y='Profesor', orientation='h', text='Godziny', color='Godziny',
-                color_continuous_scale='teal', labels={'Godziny':'Średnio godzin', 'Profesor':''}
+                color_continuous_scale='Portland', labels={'Godziny':'Średnio godzin', 'Profesor':''} # Zmieniona skala barw
             )
             fig_bar.update_traces(texttemplate='%{text:.1f}h', textposition='outside')
             fig_bar.add_vline(x=12, line_dash="dash", line_color="red", annotation_text="Max 12h")
             fig_bar.add_vline(x=8, line_dash="dash", line_color="orange", annotation_text="Min 8h", annotation_position="bottom left")
-            fig_bar.update_layout(height=wewn_wysokosc, margin=dict(l=10, r=30, t=10, b=10), coloraxis_showscale=False)
+            fig_bar.update_layout(height=wewn_wysokosc, margin=dict(l=10, r=30, t=10, b=10), coloraxis_showscale=False, font=dict(size=14))
             st.plotly_chart(fig_bar, use_container_width=True)
 
 def render_statistics():
