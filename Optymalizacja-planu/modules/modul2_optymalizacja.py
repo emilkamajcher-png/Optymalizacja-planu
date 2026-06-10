@@ -133,7 +133,7 @@ class AlgorytmKonstruktywny:
                             
         print(f"\n[BŁĄD W DANYCH] Brak miejsca dla: '{zajecia.przedmiot_id}'!")
         return False
- class AlgorytmWyzarzania:
+class AlgorytmWyzarzania:
     def __init__(self, stan_planu, lista_zajec, prowadzacy_db, sale_db):
         self.stan = stan_planu
         self.lista_zajec = lista_zajec
