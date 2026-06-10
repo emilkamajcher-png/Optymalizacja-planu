@@ -1,7 +1,6 @@
 import sys
 import os
 
-# --- GPS DLA CHMURY STREAMLIT ---
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import streamlit as st
@@ -12,21 +11,15 @@ import numpy as np
 import time
 import json
 
-# Importujemy nasze moduły
 from modules import modul1_parser
 from modules import modul2_optymalizacja
 from modules import modul3_llm
 
-# Konfiguracja strony
 st.set_page_config(layout="wide", page_title="OptiPlan - Optymalizacja Planu")
 
-# --- STYLE CSS (Połączony mUSOS + ukrywanie ramek z widoku analitycznego) ---
 st.markdown("""
     <style>
-    /* Tło całej aplikacji */
     .stApp { background-color: #f4f7f9; }
-    
-    /* Stylizacja 'kart' dla sekcji Streamlit */
     div[data-testid="stVerticalBlock"] > div:has(div.element-container) {
         background-color: white;
         padding: 20px;
@@ -34,54 +27,28 @@ st.markdown("""
         box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         margin-bottom: 20px;
     }
-    
-    /* Czysta, profesjonalna tabela planu lekcji (Widok 1) */
     table.custom-plan-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        table-layout: fixed;
+        width: 100%; border-collapse: collapse; font-family: 'Segoe UI', sans-serif; table-layout: fixed;
     }
     table.custom-plan-table th {
-        background-color: #eaeef2;
-        color: #334155;
-        font-weight: 600;
-        padding: 14px;
-        border: 1px solid #cbd5e1;
-        text-align: center;
-        width: 18%;
+        background-color: #eaeef2; color: #334155; font-weight: 600; padding: 14px; border: 1px solid #cbd5e1; text-align: center; width: 18%;
     }
-    table.custom-plan-table th:first-child {
-        width: 10%;
-    }
+    table.custom-plan-table th:first-child { width: 10%; }
     table.custom-plan-table td {
-        border: 1px solid #cbd5e1;
-        height: 80px;
-        padding: 4px;
-        vertical-align: top;
-        background-color: #ffffff;
+        border: 1px solid #cbd5e1; height: 80px; padding: 4px; vertical-align: top; background-color: #ffffff;
     }
     .time-cell {
-        background-color: #f8fafc;
-        font-weight: bold;
-        color: #64748b;
-        text-align: center !important;
-        vertical-align: middle !important;
-        font-size: 13px;
+        background-color: #f8fafc; font-weight: bold; color: #64748b; text-align: center !important; vertical-align: middle !important; font-size: 13px;
     }
-    
-    /* Ukrycie obramowania standardowych tabel Streamlit (Widok statystyk) */
     .stTable { border: none !important; }
     </style>
     """, unsafe_allow_html=True)
 
-# --- MAPOWANIE CZASU ---
 HOURS_RANGE = range(8, 20)
 HOURS_LABELS = [f"{h:02d}:00" for h in HOURS_RANGE]
 DAY_MAP_ENG_TO_PL = {"Mon": "Pon", "Tue": "Wt", "Wed": "Śr", "Thu": "Czw", "Fri": "Pt"}
 DAYS_PL = ["Pon", "Wt", "Śr", "Czw", "Pt"]
 
-# --- URUCHOMIENIE SILNIKA ---
 @st.cache_data
 def uruchom_silnik_i_pobierz_plan(sciezka_danych):
     start = time.time()
@@ -89,31 +56,9 @@ def uruchom_silnik_i_pobierz_plan(sciezka_danych):
     with open(sciezka_danych, 'r', encoding='utf-8') as plik:
         surowe_dane = json.load(plik)
         
+    # Uruchamiamy moduł 3 (AI). Adapter został USUNIĘTY, 
+    # bo modul3 sam wkleja gotową macierz do 'availability_matrix'!
     dane_po_llm = modul3_llm.przeanalizuj_preferencje(surowe_dane, tryb_offline=False)
-    
-    # --- ADAPTER: Tłumaczymy format AI na Matrycę ---
-    for inst in dane_po_llm.get('instructors', []):
-        prefs = inst.get('parsed_preferences', {})
-        matryca = {d: [2]*12 for d in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']}
-        
-        for blokada in prefs.get('forbidden_slots', []):
-            if not blokada: continue
-            d = blokada.get('day')
-            if d in matryca:
-                for h in range(blokada.get('from', 8), blokada.get('to', 20)):
-                    idx = h - 8
-                    if 0 <= idx < 12: 
-                        matryca[d][idx] = 0
-                        
-        pref_days = prefs.get('preferred_days', [])
-        if pref_days:
-            for d in matryca.keys():
-                if d not in pref_days:
-                    for idx in range(12):
-                        if matryca[d][idx] != 0: 
-                            matryca[d][idx] = 1
-                            
-        inst['availability_matrix'] = matryca
         
     prowadzacy_db, sale_db, przedmioty_db = modul1_parser.zbuduj_baze_obiektow(dane_po_llm)
     
@@ -129,14 +74,12 @@ def uruchom_silnik_i_pobierz_plan(sciezka_danych):
     execution_time = time.time() - start
     return sukces, algorytm.lista_zajec, prowadzacy_db, sale_db, przedmioty_db, execution_time, historia
 
-# --- ŁADOWANIE DANYCH ---
 sciezka_bazy = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sciezka_do_danych = os.path.join(sciezka_bazy, "data", "dane_testowe.json")
 
 with st.spinner("Sztuczna Inteligencja (Bielik) analizuje paczkę preferencji i układa plan..."):
     SUKCES, LISTA_ZAJEC, PROWADZACY_DB, SALE_DB, PRZEDMIOTY_DB, CZAS_WYKONANIA, HISTORIA_KOSZTOW = uruchom_silnik_i_pobierz_plan(sciezka_do_danych)
 
-# --- SIDEBAR (Filtry) ---
 with st.sidebar:
     st.title("OptiPlan")
     st.caption("Optymalizacja planu zajęć")
@@ -180,12 +123,10 @@ with st.sidebar:
     filtr_grupa = st.selectbox("Grupa", lista_grup, key="filter_grupa")
     filtr_typ = st.selectbox("Typ zajęć", ["Wszystkie", "Wykład", "Ćwiczenia", "Lab", "Projekt"], key="filter_typ")
 
-# --- INTELIGENTNE RENDEROWANIE SIATKI HTML (ROWSPAN M-USOS) z pierwszego pliku ---
 def render_plan(typ_widoku, wybrany_identyfikator, tytul_naglowka):
     st.header(f"Plan zajęć - Widok: {tytul_naglowka}")
     st.caption(f"Aktualny filtr okresu: {widok_tygodnia}")
     
-    # 1. Filtrowanie i czyszczenie danych wejściowych
     wybrane_zajecia = []
     for zajecia in LISTA_ZAJEC:
         if typ_widoku == "Grupa" and zajecia.grupa_id != wybrany_identyfikator: continue
@@ -204,14 +145,12 @@ def render_plan(typ_widoku, wybrany_identyfikator, tytul_naglowka):
             
         wybrane_zajecia.append(zajecia)
 
-    # 2. Mapowanie obiektów na punkty startowe w siatce
     zajecia_map = {}
     for z in wybrane_zajecia:
         pl_dzien = DAY_MAP_ENG_TO_PL.get(z.przypisany_dzien)
         if pl_dzien:
             zajecia_map[(z.przypisany_start_slot, pl_dzien)] = z
 
-    # 3. Tworzenie czystego HTML z automatycznym scalaniem w pionie (rowspan)
     skip_slots = set()
     
     html = '<table class="custom-plan-table">'
@@ -229,26 +168,15 @@ def render_plan(typ_widoku, wybrany_identyfikator, tytul_naglowka):
             
             if zajecia:
                 duration = zajecia.wymagane_godziny
-                
                 for offset in range(1, duration):
                     skip_slots.add((h + offset, d_pl))
                 
                 typ_lower = getattr(zajecia, 'wymagany_typ_sali', '').lower()
-                if "wykł" in typ_lower or "wyklad" in typ_lower or "zs" in typ_lower:
-                    kolor_boxa = "#0e7373"
-                    skrot_typu = "WYK"
-                elif "ćwi" in typ_lower or "cwi" in typ_lower or "cwl" in typ_lower:
-                    kolor_boxa = "#5b3b70"
-                    skrot_typu = "ĆW"
-                elif "lab" in typ_lower:
-                    kolor_boxa = "#2b5c8f"
-                    skrot_typu = "LAB"
-                elif "proj" in typ_lower:
-                    kolor_boxa = "#b25e1d"
-                    skrot_typu = "PRO"
-                else:
-                    kolor_boxa = "#1e293b"
-                    skrot_typu = "ZAJ"
+                if "wykł" in typ_lower or "wyklad" in typ_lower or "zs" in typ_lower: kolor_boxa, skrot_typu = "#0e7373", "WYK"
+                elif "ćwi" in typ_lower or "cwi" in typ_lower or "cwl" in typ_lower: kolor_boxa, skrot_typu = "#5b3b70", "ĆW"
+                elif "lab" in typ_lower: kolor_boxa, skrot_typu = "#2b5c8f", "LAB"
+                elif "proj" in typ_lower: kolor_boxa, skrot_typu = "#b25e1d", "PRO"
+                else: kolor_boxa, skrot_typu = "#1e293b", "ZAJ"
                 
                 h_start = zajecia.przypisany_start_slot
                 h_koniec = h_start + duration
@@ -256,46 +184,24 @@ def render_plan(typ_widoku, wybrany_identyfikator, tytul_naglowka):
                 sala_info = zajecia.przypisana_sala_id
                 prof_obj = PROWADZACY_DB.get(zajecia.prowadzacy_id)
                 prof_nazwisko = prof_obj.imie_nazwisko if prof_obj else zajecia.prowadzacy_id
-                wyswietlana_nazwa = str(zajecia.przedmiot_id)
                 
-                
-                przedmiot_obj = PRZEDMIOTY_DB.get(zajecia.przedmiot_id) or PRZEDMIOTY_DB.get(getattr(zajecia, 'baza_przedmiotu', None))
-                
-                if przedmiot_obj:
-                    if hasattr(przedmiot_obj, 'nazwa') and getattr(przedmiot_obj, 'nazwa'):
-                        wyswietlana_nazwa = getattr(przedmiot_obj, 'nazwa')
-                    elif isinstance(przedmiot_obj, dict) and 'nazwa' in przedmiot_obj:
-                        wyswietlana_nazwa = przedmiot_obj['nazwa']
-                        
-                tydzien_zajec = getattr(zajecia, 'przypisany_tydzien', 'AB')
-                ozn_tyg = ""
-                if widok_tygodnia == "Semestr (Oba)":
-                    if tydzien_zajec == 'A': ozn_tyg = " [Tydz. A]"
-                    elif tydzien_zajec == 'B': ozn_tyg = " [Tydz. B]"
-                
-                # Renderowanie kafelka mUSOS
                 html += f'<td rowspan="{duration}" style="padding: 4px; vertical-align: top;">'
                 html += f'<div style="border: 1px solid #cbd5e1; border-radius: 6px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.08); height: 100%; display: flex; flex-direction: column;">'
                 html += f'<div style="background-color: {kolor_boxa}; color: white; padding: 6px 10px;">'
                 html += f'<div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 10px; opacity: 0.9;">'
                 html += f'<span>{czas_kafelka}</span><span>{skrot_typu}</span>'
-                html += f'</div>'
-                html += f'<div style="background-color: #ffffff; color: #334155; padding: 6px 10px; flex-grow: 1; border-top: 1px solid #e2e8f0; font-size: 11px;">'
-                html += f'</div>'
+                html += f'</div></div>'
                 html += f'<div style="background-color: #ffffff; color: #334155; padding: 6px 10px; flex-grow: 1; border-top: 1px solid #e2e8f0; font-size: 11px;">'
                 html += f'<div style="color: #475569; font-size: 13px; font-weight: 500;">{prof_nazwisko}</div>'
                 html += f'<div style="font-weight: 600; color: #1e293b; margin-top: 2px;">{sala_info}</div>'
-                html += f'</div>'
-                html += f'</div></td>'
+                html += f'</div></div></td>'
             else:
                 html += '<td style="color: #cbd5e1; text-align: center; vertical-align: middle; font-size: 14px;">—</td>'
                 
         html += '</tr>'
-        
     html += '</tbody></table>'
     st.markdown(html, unsafe_allow_html=True)
 
-# --- WIDOK OPTYMALIZACJI (z drugiego pliku) ---
 def render_optimization():
     st.header("Postęp optymalizacji - Widok ogólny")
     
@@ -315,10 +221,7 @@ def render_optimization():
     with col2:
         st.subheader("Zaspokojenie ograniczeń (HC)")
         fig_gauge = go.Figure(go.Indicator(
-            mode = "gauge+number",
-            value = 100 if SUKCES else 0,
-            title = {'text': "Sukces (%)"},
-            gauge = {'axis': {'range': [0, 100]}, 'bar': {'color': "#007bff"}}
+            mode = "gauge+number", value = 100 if SUKCES else 0, title = {'text': "Sukces (%)"}, gauge = {'axis': {'range': [0, 100]}, 'bar': {'color': "#007bff"}}
         ))
         fig_gauge.update_layout(height=300, margin=dict(l=20, r=20, t=20, b=20))
         st.plotly_chart(fig_gauge, use_container_width=True)
@@ -334,24 +237,12 @@ def render_optimization():
             godz_A = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.przypisana_sala_id == s_id and getattr(z, 'przypisany_tydzien', 'AB') in ['AB', 'A']])
             godz_B = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.przypisana_sala_id == s_id and getattr(z, 'przypisany_tydzien', 'AB') in ['AB', 'B']])
             srednie_zajecie = (godz_A + godz_B) / 2.0
-            
-            dane_sal.append({
-                "Sala": s_id, 
-                "Typ": s.typ, 
-                "Pojemność": s.pojemnosc, 
-                "Obciążenie (godz)": srednie_zajecie
-            })
+            dane_sal.append({"Sala": s_id, "Typ": s.typ, "Pojemność": s.pojemnosc, "Obciążenie (godz)": srednie_zajecie})
             
         df_sale = pd.DataFrame(dane_sal)
-        
-        # Wykres Treemap: Wielkość kafelka = pojemność sali, Kolor = obciążenie
         fig_tree = px.treemap(
-            df_sale, 
-            path=[px.Constant("Wszystkie Sale"), 'Typ', 'Sala'], 
-            values='Pojemność',
-            color='Obciążenie (godz)', 
-            color_continuous_scale='Blues',
-            labels={'Obciążenie (godz)': 'Śr. godz/tydz'}
+            df_sale, path=[px.Constant("Wszystkie Sale"), 'Typ', 'Sala'], values='Pojemność',
+            color='Obciążenie (godz)', color_continuous_scale='Blues', labels={'Obciążenie (godz)': 'Śr. godz/tydz'}
         )
         fig_tree.update_traces(root_color="lightgrey")
         fig_tree.update_layout(height=450, margin=dict(t=20, l=10, r=10, b=10))
@@ -359,10 +250,8 @@ def render_optimization():
         
     with col4:
         st.subheader("Obciążenie prowadzących (godz/tydz)")
-        
         imiona_prof = [p.imie_nazwisko for p in PROWADZACY_DB.values()]
         godziny_przydzielone = [0.0] * len(imiona_prof)
-        
         for zajecia in LISTA_ZAJEC:
             prof_obj = PROWADZACY_DB.get(zajecia.prowadzacy_id)
             if prof_obj:
@@ -373,16 +262,11 @@ def render_optimization():
         df_prof = pd.DataFrame({'Profesor': imiona_prof, 'Godziny': godziny_przydzielone})
         df_prof = df_prof.sort_values(by='Godziny', ascending=True)
         
-        # Zamykamy wykres słupkowy w scrollboxie o stałej wysokości
         with st.container(height=450, border=True):
             wewn_wysokosc = max(400, len(imiona_prof) * 35)
-            
             fig_bar = px.bar(
-                df_prof, x='Godziny', y='Profesor', orientation='h', 
-                text='Godziny',
-                color='Godziny',
-                color_continuous_scale='teal',
-                labels={'Godziny':'Średnio godzin', 'Profesor':''}
+                df_prof, x='Godziny', y='Profesor', orientation='h', text='Godziny', color='Godziny',
+                color_continuous_scale='teal', labels={'Godziny':'Średnio godzin', 'Profesor':''}
             )
             fig_bar.update_traces(texttemplate='%{text:.1f}h', textposition='outside')
             fig_bar.add_vline(x=12, line_dash="dash", line_color="red", annotation_text="Max 12h")
@@ -390,7 +274,6 @@ def render_optimization():
             fig_bar.update_layout(height=wewn_wysokosc, margin=dict(l=10, r=30, t=10, b=10), coloraxis_showscale=False)
             st.plotly_chart(fig_bar, use_container_width=True)
 
-# --- WIDOK STATYSTYK (z drugiego pliku) ---
 def render_statistics():
     st.header("Raport statystyczny")
     st.markdown("Szczegółowe dane liczbowe i wykazy w formie tabelarycznej.")
@@ -407,7 +290,6 @@ def render_statistics():
     c4.metric("Czas ostatniej optymalizacji", f"{CZAS_WYKONANIA:.2f} s")
     
     st.divider()
-    
     col1, col2 = st.columns(2)
     
     with col1:
@@ -417,13 +299,7 @@ def render_statistics():
             godz_A = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.prowadzacy_id == p_id and getattr(z, 'przypisany_tydzien', 'AB') in ['AB', 'A']])
             godz_B = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.prowadzacy_id == p_id and getattr(z, 'przypisany_tydzien', 'AB') in ['AB', 'B']])
             srednio_na_tydzien = (godz_A + godz_B) / 2.0
-            
-            dane_prow.append({
-                "Imię i nazwisko": p.imie_nazwisko,
-                "Liczba godzin (śr/tyg)": f"{srednio_na_tydzien:.1f}",
-                "Maks. limit (tyg)": 12,
-                "Status": "Ok" if 8 <= srednio_na_tydzien <= 12 else "Poza normą"
-            })
+            dane_prow.append({"Imię i nazwisko": p.imie_nazwisko, "Liczba godzin (śr/tyg)": f"{srednio_na_tydzien:.1f}", "Maks. limit (tyg)": 12, "Status": "Ok" if 8 <= srednio_na_tydzien <= 12 else "Poza normą"})
         st.dataframe(pd.DataFrame(dane_prow), use_container_width=True, hide_index=True)
         
     with col2:
@@ -433,23 +309,10 @@ def render_statistics():
             godz_A = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.przypisana_sala_id == s_id and getattr(z, 'przypisany_tydzien', 'AB') in ['AB', 'A']])
             godz_B = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.przypisana_sala_id == s_id and getattr(z, 'przypisany_tydzien', 'AB') in ['AB', 'B']])
             srednie_zajecie_sali = (godz_A + godz_B) / 2.0
-            
-            dane_sal.append({
-                "Sala": s_id,
-                "Typ": s.typ,
-                "Pojemność": s.pojemnosc,
-                "Zajętość (śr. godz)": f"{srednie_zajecie_sali:.1f}"
-            })
+            dane_sal.append({"Sala": s_id, "Typ": s.typ, "Pojemność": s.pojemnosc, "Zajętość (śr. godz)": f"{srednie_zajecie_sali:.1f}"})
         st.dataframe(pd.DataFrame(dane_sal), use_container_width=True, hide_index=True)
 
-# --- GŁÓWNE ZAKŁADKI APLIKACJI ---
 tab_plan, tab_opt, tab_stat = st.tabs(["Plan zajęć", "Optymalizacja", "Raport statystyczny"])
-
-with tab_plan:
-    render_plan(perspektywa_typ, wybrany_id, context_title)
-
-with tab_opt:
-    render_optimization()
-
-with tab_stat:
-    render_statistics()
+with tab_plan: render_plan(perspektywa_typ, wybrany_id, context_title)
+with tab_opt: render_optimization()
+with tab_stat: render_statistics()
