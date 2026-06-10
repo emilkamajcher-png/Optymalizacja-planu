@@ -133,9 +133,7 @@ class AlgorytmKonstruktywny:
                             
         print(f"\n[BŁĄD W DANYCH] Brak miejsca dla: '{zajecia.przedmiot_id}'!")
         return False
-        
-
-class AlgorytmWyzarzania:
+ class AlgorytmWyzarzania:
     def __init__(self, stan_planu, lista_zajec, prowadzacy_db, sale_db):
         self.stan = stan_planu
         self.lista_zajec = lista_zajec
@@ -143,33 +141,52 @@ class AlgorytmWyzarzania:
         self.sale_db = list(sale_db.values())
         self.dni_tygodnia = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
         
-        self.WAGA_OKIENKO = 50
-        self.WAGA_NIECHETNIE = 80
-        self.WAGA_BALANSU_GODZIN = 30 
+        # Wagi Funkcji Celu wg wytycznych konkursowych
+        self.WAGA_NIECHETNIE = 80       # SC-1 (Wysoka)
+        self.WAGA_OKIENKO = 50          # SC-2 (Średnia)
+        self.WAGA_SC3_PRZEDMIOT = 50    # SC-3 (Średnia)
+        self.WAGA_SC4_ROWNOMIERNE = 15  # SC-4 (Niska)
+        self.WAGA_SC5_LOKALIZACJA = 15  # SC-5 (Niska)
+        self.WAGA_BALANSU_GODZIN = 30   # SC-6 Soft
+        self.KARA_KRYTYCZNA_PENSUM = 2000 # SC-6 Hard Penalty
 
     def oblicz_koszt(self):
         koszt = 0
-        # harmonogram_prow: p_id -> tydzien -> dzien -> lista godzin
+        
         harmonogram_prow = {p.id: {'A': {}, 'B': {}} for p in self.prowadzacy_db.values()}
+        
+        # Inicjalizacja harmonogramu grup (potrzebne do SC-3, SC-4, SC-5)
+        grupy_id_set = set(z.grupa_id for z in self.lista_zajec)
+        harmonogram_grup = {g_id: {'A': {}, 'B': {}} for g_id in grupy_id_set}
         
         for zajecia in self.lista_zajec:
             prowadzacy = self.prowadzacy_db[zajecia.prowadzacy_id]
             godziny = range(zajecia.przypisany_start_slot, zajecia.przypisany_start_slot + zajecia.wymagane_godziny)
-            
             tygodnie = ['A', 'B'] if zajecia.przypisany_tydzien == 'AB' else [zajecia.przypisany_tydzien]
-            for t in tygodnie:
-                harmonogram_prow[zajecia.prowadzacy_id][t].setdefault(zajecia.przypisany_dzien, []).extend(godziny)
             
-            # Kary od LLM
+            for t in tygodnie:
+                # Rejestr dla prowadzących
+                harmonogram_prow[zajecia.prowadzacy_id][t].setdefault(zajecia.przypisany_dzien, []).extend(godziny)
+                
+                # Rejestr dla grup studenckich
+                if zajecia.przypisany_dzien not in harmonogram_grup[zajecia.grupa_id][t]:
+                    harmonogram_grup[zajecia.grupa_id][t][zajecia.przypisany_dzien] = []
+                
+                # Zapisujemy format: (start, koniec, przedm_id, sala_id, id_zajecia)
+                harmonogram_grup[zajecia.grupa_id][t][zajecia.przypisany_dzien].append(
+                    (zajecia.przypisany_start_slot, zajecia.przypisany_start_slot + zajecia.wymagane_godziny, zajecia.baza_przedmiotu, zajecia.przypisana_sala_id, zajecia.id)
+                )
+            
+            # SC-1: Preferencje prowadzących (LLM)
             if hasattr(prowadzacy, 'availability_matrix') and prowadzacy.availability_matrix:
                 matryca = prowadzacy.availability_matrix
                 if zajecia.przypisany_dzien in matryca:
                     for godzina in godziny:
                         if 0 <= (godzina - 8) < 12 and matryca[zajecia.przypisany_dzien][godzina - 8] == 1:
-                            # Kara jest mniejsza dla zajęć co 2 tygodnie (bo występują rzadziej)
                             mnoznik = 1 if zajecia.przypisany_tydzien == 'AB' else 0.5
                             koszt += self.WAGA_NIECHETNIE * mnoznik
-       # --- NOWY MECHANIZM: POTĘŻNE KARY ZA ŁAMANIE MIN/MAX PENSUM ---
+
+        # Analiza ograniczeń Prowadzących (SC-2, SC-6)
         for p_id, tyg_dict in harmonogram_prow.items():
             godziny_A = 0
             godziny_B = 0
@@ -178,25 +195,57 @@ class AlgorytmWyzarzania:
                     if tydz == 'A': godziny_A += len(sloty)
                     if tydz == 'B': godziny_B += len(sloty)
                     
-                    # Liczenie okienek
+                    # SC-2: Minimalizacja okienek dla prowadzących
                     if len(sloty) > 1:
                         rozpietosc = max(sloty) - min(sloty) + 1
                         okienka = rozpietosc - len(sloty)
-                        if okienka > 0: koszt += okienka * self.WAGA_OKIENKO
+                        if okienka > 0: 
+                            koszt += okienka * self.WAGA_OKIENKO
             
-            # Średnie obciążenie tygodniowe dla danego profesora
+            # SC-6: Maksymalne obciążenie tygodniowe
             srednia_godzin = (godziny_A + godziny_B) / 2.0
-            
-            # Wymóg krytyczny: MINIMUM 8h (120h w semestrze) i MAKSIMUM 12h (180h w semestrze)
             if srednia_godzin < 8.0:
-                # Gigantyczna kara za każdą godzinę poniżej 8! Zmusza algorytm do szukania im zajęć.
-                koszt += (8.0 - srednia_godzin) * 2000  
+                koszt += (8.0 - srednia_godzin) * self.KARA_KRYTYCZNA_PENSUM  
             elif srednia_godzin > 12.0:
-                # Gigantyczna kara za przekroczenie 12h
-                koszt += (srednia_godzin - 12.0) * 2000
+                koszt += (srednia_godzin - 12.0) * self.KARA_KRYTYCZNA_PENSUM
             else:
-                # Jeśli mieści się w 8-12, delikatnie zachęcamy go do idealnego środka (10h)
                 koszt += abs(10.0 - srednia_godzin) * self.WAGA_BALANSU_GODZIN
+
+        # Analiza ograniczeń Grup Studenckich (SC-3, SC-4, SC-5)
+        for g_id, tyg_dict in harmonogram_grup.items():
+            for tydz, dni in tyg_dict.items():
+                godziny_w_dniach = []
+                for dzien in self.dni_tygodnia:
+                    zajecia_w_dniu = dni.get(dzien, [])
+                    suma_godzin_dnia = sum(koniec - start for start, koniec, _, _, _ in zajecia_w_dniu)
+                    godziny_w_dniach.append(suma_godzin_dnia)
+                    
+                    if not zajecia_w_dniu: continue
+                    
+                    zajecia_w_dniu.sort(key=lambda x: x[0])
+                    przedmioty_w_dniu = set()
+                    
+                    for i, zaj in enumerate(zajecia_w_dniu):
+                        start, koniec, baza_przedm, sala_id, id_zajecia = zaj
+                        
+                        # SC-3: Grupowanie zajęć tego samego przedmiotu
+                        if baza_przedm in przedmioty_w_dniu:
+                            koszt += self.WAGA_SC3_PRZEDMIOT
+                        przedmioty_w_dniu.add(baza_przedm)
+                        
+                        # SC-5: Minimalizacja przemieszczania się (określane po pierwszych 2 znakach nazwy sali)
+                        if i < len(zajecia_w_dniu) - 1:
+                            nast_start, _, _, nast_sala_id, _ = zajecia_w_dniu[i+1]
+                            if koniec == nast_start: # Brak okienka dla studentów (zmiana budynku w 0 minut)
+                                budynek_obecny = str(sala_id)[:2]
+                                budynek_nastepny = str(nast_sala_id)[:2]
+                                if budynek_obecny != budynek_nastepny:
+                                    koszt += self.WAGA_SC5_LOKALIZACJA
+
+                # SC-4: Równomierne rozłożenie obciążenia dni (karanie wariancji z 5 dni roboczych)
+                srednia_dla_grupy = sum(godziny_w_dniach) / 5.0
+                wariancja = sum((g - srednia_dla_grupy)**2 for g in godziny_w_dniach) / 5.0
+                koszt += int(wariancja * self.WAGA_SC4_ROWNOMIERNE)
                         
         return koszt
    
@@ -254,4 +303,5 @@ class AlgorytmWyzarzania:
             historia_kosztow.append(aktualny_koszt)
             temp *= alfa 
             
-        return historia_kosztow
+        return historia_kosztow       
+
