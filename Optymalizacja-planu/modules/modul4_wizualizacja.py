@@ -256,7 +256,17 @@ def render_plan(typ_widoku, wybrany_identyfikator, tytul_naglowka):
                 sala_info = zajecia.przypisana_sala_id
                 prof_obj = PROWADZACY_DB.get(zajecia.prowadzacy_id)
                 prof_nazwisko = prof_obj.imie_nazwisko if prof_obj else zajecia.prowadzacy_id
+                wyswietlana_nazwa = str(zajecia.przedmiot_id)
                 
+                
+                przedmiot_obj = PRZEDMIOTY_DB.get(zajecia.przedmiot_id) or PRZEDMIOTY_DB.get(getattr(zajecia, 'baza_przedmiotu', None))
+                
+                if przedmiot_obj:
+                    if hasattr(przedmiot_obj, 'nazwa') and getattr(przedmiot_obj, 'nazwa'):
+                        wyswietlana_nazwa = getattr(przedmiot_obj, 'nazwa')
+                    elif isinstance(przedmiot_obj, dict) and 'nazwa' in przedmiot_obj:
+                        wyswietlana_nazwa = przedmiot_obj['nazwa']
+                        
                 tydzien_zajec = getattr(zajecia, 'przypisany_tydzien', 'AB')
                 ozn_tyg = ""
                 if widok_tygodnia == "Semestr (Oba)":
@@ -270,7 +280,7 @@ def render_plan(typ_widoku, wybrany_identyfikator, tytul_naglowka):
                 html += f'<div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 10px; opacity: 0.9;">'
                 html += f'<span>{czas_kafelka}</span><span>{skrot_typu}</span>'
                 html += f'</div>'
-                html += f'<div style="font-weight: bold; font-size: 12px; margin-top: 3px;">{zajecia.przedmiot_id}{ozn_tyg}</div>'
+                html += f'<div style="font-weight: bold; font-size: 12px; margin-top: 3px;">{wyswietlana_nazwa}{ozn_tyg}</div>'
                 html += f'</div>'
                 html += f'<div style="background-color: #ffffff; color: #334155; padding: 6px 10px; flex-grow: 1; border-top: 1px solid #e2e8f0; font-size: 11px;">'
                 html += f'<div style="color: #64748b;">{prof_nazwisko}</div>'
