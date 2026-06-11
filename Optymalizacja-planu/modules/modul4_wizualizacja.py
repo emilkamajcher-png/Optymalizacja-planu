@@ -73,7 +73,7 @@ def uruchom_silnik_i_pobierz_plan(sciezka_danych):
     return sukces, algorytm.lista_zajec, prowadzacy_db, sale_db, przedmioty_db, execution_time, historia
 
 sciezka_bazy = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sciezka_do_danych = os.path.join(sciezka_bazy, "data", "dane_testowe.json")
+sciezka_do_danych = os.path.join(sciezka_bazy, "data", "dataset_11_06_2026.json")
 
 with st.spinner("Sztuczna Inteligencja (Bielik) analizuje paczkę preferencji i układa plan..."):
     SUKCES, LISTA_ZAJEC, PROWADZACY_DB, SALE_DB, PRZEDMIOTY_DB, CZAS_WYKONANIA, HISTORIA_KOSZTOW = uruchom_silnik_i_pobierz_plan(sciezka_do_danych)
