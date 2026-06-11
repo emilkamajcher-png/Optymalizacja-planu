@@ -122,6 +122,64 @@ with st.sidebar:
     filtr_sala = st.selectbox("Sala", lista_sal, key="filter_sala")
     filtr_grupa = st.selectbox("Grupa", lista_grup, key="filter_grupa")
     filtr_typ = st.selectbox("Typ zajęć", ["Wszystkie", "Wykład", "Ćwiczenia", "Lab", "Projekt"], key="filter_typ")
+    # ... (tutaj jest st.button("Wyczyść filtry") z Twojego obecnego kodu) ...
+
+    st.divider()
+    st.subheader("EKSPORT WYNIKÓW (DO ODDANIA)")
+
+    
+    def wygeneruj_json_planu(lista_zajec):
+        plan_wyjsciowy = []
+        for z in lista_zajec:
+            plan_wyjsciowy.append({
+                "id_zajec": z.id,
+                "przedmiot_id": z.przedmiot_id,
+                "grupa_id": z.grupa_id,
+                "prowadzacy_id": z.prowadzacy_id,
+                "sala_id": z.przypisana_sala_id,
+                "tydzien": getattr(z, 'przypisany_tydzien', 'AB'),
+                "dzien": z.przypisany_dzien,
+                "start_slot": z.przypisany_start_slot,
+                "czas_trwania_godz": z.wymagane_godziny
+            })
+        
+        return json.dumps(plan_wyjsciowy, indent=4, ensure_ascii=False)
+
+   
+    def wygeneruj_log_kosztow(historia, czas_wykonania):
+        log_lines = [
+            "RAPORT OPTYMALIZACJI - OPTIPLAN",
+            f"Czas wykonywania silnika (LLM + HC + SC): {czas_wykonania:.2f} s",
+            "--------------------------------------------------"
+        ]
+        if historia:
+            for i, koszt in enumerate(historia):
+                log_lines.append(f"Iteracja chlodzenia {i}: Punkty karne = {koszt}")
+            log_lines.append("--------------------------------------------------")
+            log_lines.append(f"Ostateczny, zoptymalizowany koszt planu: {historia[-1]} pkt.")
+        else:
+            log_lines.append("Brak historii optymalizacji.")
+        return "\n".join(log_lines)
+
+    # 3. Wywołanie funkcji i stworzenie przycisków do pobierania w Streamlicie
+    json_dane = wygeneruj_json_planu(LISTA_ZAJEC)
+    log_dane = wygeneruj_log_kosztow(HISTORIA_KOSZTOW, CZAS_WYKONANIA)
+
+    st.download_button(
+        label="Pobierz wygenerowany plan (JSON)",
+        data=json_dane,
+        file_name="zoptymalizowany_plan.json",
+        mime="application/json",
+        use_container_width=True
+    )
+
+    st.download_button(
+        label="Pobierz log z funkcji celu (TXT)",
+        data=log_dane,
+        file_name="log_optymalizacji.txt",
+        mime="text/plain",
+        use_container_width=True
+    )
 
 def render_plan(typ_widoku, wybrany_identyfikator, tytul_naglowka):
     st.header(f"Plan zajęć - Widok: {tytul_naglowka}")
