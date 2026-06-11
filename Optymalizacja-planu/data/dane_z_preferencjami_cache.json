@@ -5,14 +5,14 @@
     "program": "Informatyka Stosowana",
     "academic_year": "2025/2026",
     "semester": "zimowy",
-    "description": "Syntetyczny zbiór danych do optymalizacji planu zajęć. 30 prowadzących (1–4 przedmioty, 120–190h/sem), 50 sal, 60 kursów (więcej projektów). Dostępność prowadzących wyłącznie z preferences_text (LLM-parsowalne). Dane fikcyjne.",
-    "disclaimer": "Dane wygenerowane przez AI (GitHub Copilot / Claude). Wszelka zbieżność nazwisk prowadzących, nazw uczelni, wydziałów i przedmiotów z rzeczywistymi osobami, instytucjami i programami nauczania jest całkowicie przypadkowa."
+    "description": "Syntetyczny zbiór danych 3× (według zadań i tygodni). Docelowe obciążenie prowadzącego: 9–15 godzin tygodniowo. Zbiór obejmuje 60 prowadzących, 100 sal, 40 grup (5 lat × 8 grup A–H) oraz 240 kursów. Dostępność prowadzących określono w polu preferences_text. Dane są fikcyjne.",
+    "disclaimer": "Dane syntetyczne. Nazwy osób, sal, grup i kursów są fikcyjne; ewentualna zbieżność z rzeczywistymi osobami lub instytucjami jest przypadkowa."
   },
   "instructors": [
     {
       "id": "I01",
-      "name": "prof. dr hab. Andrzej Majewski",
-      "preferences_text": "MOGĘ: poniedziałek i czwartek w godz. 8–14, wtorek 8–12. NIE MOGĘ: piątek — zajęcia badawcze przez cały dzień; środa przed 10. MOGĘ W RAZIE POTRZEBY: środa 10–13, wtorek 12–14. Uwaga: wykłady zdecydowanie wolę prowadzić rano (do 12), laboratorium mogę popołudniami.",
+      "name": "prof. dr hab. Andrzej Majerwicki",
+      "preferences_text": "MOGĘ: poniedziałek i czwartek w godz. 8–14, wtorek 8–12. NIE MOGĘ: piątek — zajęcia badawcze przez cały dzień; środa przed 10. DOSTĘPNOŚĆ AWARYJNA: środa 10–13, wtorek 12–14. Wykłady zdecydowanie wolę prowadzić rano (do 12), laboratorium mogę popołudniami.",
       "subjects": [
         "ARCH-KOMP",
         "PROG-OB",
@@ -21,32 +21,115 @@
       ],
       "hours_per_semester": 149,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 14
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 10,
+            "to": 13
+          },
+          {
+            "day": "Tue",
+            "from": 12,
+            "to": 14
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 10
+          }
+        ],
+        "lecture_preferences": "rano",
+        "lab_preferences": "popołudniami"
       }
     },
     {
       "id": "I02",
-      "name": "dr inż. Beata Nowakowska",
-      "preferences_text": "MOGĘ: każdy dzień tygodnia w godz. 8–16 — jestem osobą elastyczną. NIE MOGĘ: piątek po 15 oraz środa 8–10 (zebranie katedry). MOGĘ W RAZIE POTRZEBY: piątek 8–15 (rzadko, ale da się). Szczególnie lubię bloki dwugodzinne na laboratoria; poniedziałek rano jest dla mnie idealna.",
+      "name": "dr inż. Beata Norwicka",
+      "preferences_text": "MOGĘ: każdy dzień tygodnia w godz. 8–16 — mam elastyczną dostępność. NIE MOGĘ: piątek po 15 oraz środa 8–10 (zebranie katedry). DOSTĘPNOŚĆ AWARYJNA: piątek 8–15 (rzadko, ale da się). Preferuję bloki dwugodzinne na laboratoria; poniedziałek rano jest dla mnie idealny.",
       "subjects": [
         "ARCH-KOMP",
         "GRAF-KOMP"
       ],
       "hours_per_semester": 131,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 15
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 15
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Fri",
+            "from": 15,
+            "to": 20
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 10
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "bloki dwugodzinne"
       }
     },
     {
       "id": "I03",
-      "name": "dr Cezary Wróblewski",
-      "preferences_text": "MOGĘ: wtorek i czwartek 10–18, poniedziałek 12–17. NIE MOGĘ: rano przed 10 w żaden dzień — absolutnie; piątek po 14. MOGĘ W RAZIE POTRZEBY: środa 10–14 (wolę unikać, bo długo dojeżdżam). Laboratorium blokowe (2×90 min) we wtorek lub czwartek po 12 to moje idealne środowisko pracy.",
+      "name": "dr Cezary Wroniecki",
+      "preferences_text": "MOGĘ: wtorek i czwartek 10–18, poniedziałek 12–17. NIE MOGĘ: przed godz. 10 w żaden dzień; piątek po 14. DOSTĘPNOŚĆ AWARYJNA: środa 10–14 (dostępność wyjątkowa, niski priorytet). Preferowany układ zajęć to laboratorium blokowe (2×90 min) we wtorek lub czwartek po godz. 12.",
       "subjects": [
         "INZ-OPR",
         "SIECI",
@@ -54,47 +137,169 @@
       ],
       "hours_per_semester": 188,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Tue",
+            "from": 10,
+            "to": 18
+          },
+          {
+            "day": "Wed",
+            "from": 10,
+            "to": 17
+          },
+          {
+            "day": "Thu",
+            "from": 10,
+            "to": 18
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 10,
+            "to": 14
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 10
+          },
+          {
+            "day": "Fri",
+            "from": 14,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "blokowe po godz. 12"
       }
     },
     {
       "id": "I04",
-      "name": "dr inż. Dorota Szymańska",
-      "preferences_text": "MOGĘ: poniedziałek–środa godz. 8–14. NIE MOGĘ: czwartek i piątek (zarezerwowane na konsultacje doktorantów i badania). MOGĘ W RAZIE POTRZEBY: czwartek 8–11, środa do 16. Preferuję nie mieć zajęć po 15, bo odbieram dzieci ze szkoły.",
+      "name": "dr inż. Dorota Szymelicka",
+      "preferences_text": "MOGĘ: poniedziałek–środa godz. 8–14. NIE MOGĘ: czwartek i piątek (zarezerwowane na konsultacje doktorantów i badania). DOSTĘPNOŚĆ AWARYJNA: czwartek 8–11, środa do 16. Preferuję brak zajęć po godz. 15 z powodów prywatnych.",
       "subjects": [
         "UCZ-MASZ"
       ],
       "hours_per_semester": 182,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 14
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 11
+          },
+          {
+            "day": "Wed",
+            "from": 14,
+            "to": 16
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
       }
     },
     {
       "id": "I05",
-      "name": "dr inż. Emil Kowalczyk",
-      "preferences_text": "MOGĘ: wtorek i czwartek cały dzień (8–18), poniedziałek 10–16. NIE MOGĘ: środa rano 8–11 (administracja i zebrania); piątek po 13. MOGĘ W RAZIE POTRZEBY: środa 11–16, piątek 8–13. Dobrze znoszę intensywne dni — mogę mieć 3–4 bloki bez przerwy.",
+      "name": "dr inż. Emil Koralewski",
+      "preferences_text": "MOGĘ: wtorek i czwartek cały dzień (8–18), poniedziałek 10–16. NIE MOGĘ: środa rano 8–11 (administracja i zebrania); piątek po 13. DOSTĘPNOŚĆ AWARYJNA: środa 11–16, piątek 8–13. Akceptuję intensywne dni dydaktyczne, w tym 3–4 bloki zajęć pod rząd.",
       "subjects": [
         "SIECI",
         "STAT-RAC"
       ],
       "hours_per_semester": 147,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 10,
+            "to": 16
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 18
+          },
+          {
+            "day": "Wed",
+            "from": 11,
+            "to": 16
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 18
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 13
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 11,
+            "to": 16
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 13
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 11
+          },
+          {
+            "day": "Fri",
+            "from": 13,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
       }
     },
     {
       "id": "I06",
-      "name": "dr Fabianna Lis",
-      "preferences_text": "MOGĘ: wtorek 8–15, czwartek 13–18. NIE MOGĘ: poniedziałek (praca zdalna, niedostępna); piątek po 12. MOGĘ W RAZIE POTRZEBY: środa 10–14, piątek 8–12. Wykłady wyłącznie rano, laboratorium chętnie w blokach po południu.",
+      "name": "dr Fabianna Lirenka",
+      "preferences_text": "MOGĘ: wtorek 8–15, czwartek 13–18. NIE MOGĘ: poniedziałek; piątek po 12. DOSTĘPNOŚĆ AWARYJNA: środa 10–14, piątek 8–12. Wykłady wyłącznie rano, laboratorium preferowane w blokach po południu.",
       "subjects": [
         "BEZP-SYS",
         "PRZETW-SYG",
@@ -102,32 +307,105 @@
       ],
       "hours_per_semester": 147,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 15
+          },
+          {
+            "day": "Thu",
+            "from": 13,
+            "to": 18
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 10,
+            "to": 14
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 12
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 12,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": "rano",
+        "lab_preferences": "popołudniami, bloki"
       }
     },
     {
       "id": "I07",
-      "name": "dr inż. Grzegorz Pawlak",
-      "preferences_text": "MOGĘ: środa i poniedziałek 10–18. NIE MOGĘ: wtorek (seminarium wydziałowe przez cały dzień); przed godziną 10 — nie prowadzę. MOGĘ W RAZIE POTRZEBY: czwartek 10–15, piątek 10–14. Laboratorium obliczeniowe najlepiej w bloku 4-godzinnym popołudniami.",
+      "name": "dr inż. Grzegorz Pawelicki",
+      "preferences_text": "MOGĘ: środa i poniedziałek 10–18. NIE MOGĘ: wtorek (seminarium wydziałowe przez cały dzień); przed godziną 10 — nie prowadzę. DOSTĘPNOŚĆ AWARYJNA: czwartek 10–15, piątek 10–14. Laboratorium obliczeniowe najlepiej w bloku 4-godzinnym popołudniami.",
       "subjects": [
         "BEZP-SYS",
         "SYS-OP"
       ],
       "hours_per_semester": 142,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 10,
+            "to": 18
+          },
+          {
+            "day": "Wed",
+            "from": 10,
+            "to": 18
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Thu",
+            "from": 10,
+            "to": 15
+          },
+          {
+            "day": "Fri",
+            "from": 10,
+            "to": 14
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 10
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 10
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "popołudniami, bloki"
       }
     },
     {
       "id": "I08",
-      "name": "dr Hanna Wiśniewska",
-      "preferences_text": "MOGĘ: poniedziałek–środa 8–14. NIE MOGĘ: czwartek po 12 (badania własne); piątek po 13; po godz. 15 w żaden dzień. MOGĘ W RAZIE POTRZEBY: czwartek 8–12 (tylko w nagłej potrzebie). Zdecydowanie preferuję zajęcia rano; popołudnia są dla mnie mało produktywne.",
+      "name": "dr Hanna Wisłowiecka",
+      "preferences_text": "MOGĘ: poniedziałek–środa 8–14. NIE MOGĘ: czwartek po 12 (zobowiązania organizacyjne); piątek po 13; po godz. 15 w żaden dzień. DOSTĘPNOŚĆ AWARYJNA: czwartek 8–12 (tylko w nagłej potrzebie). Preferuję zajęcia rano, przed godz. 15.",
       "subjects": [
         "INZ-OPR",
         "PROG-POD",
@@ -135,16 +413,75 @@
       ],
       "hours_per_semester": 131,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 14
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 12
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Thu",
+            "from": 12,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 13,
+            "to": 20
+          },
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Thu",
+            "from": 15,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 15,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": "rano",
+        "lab_preferences": null
       }
     },
     {
       "id": "I09",
-      "name": "mgr inż. Ireneusz Dąbrowski",
-      "preferences_text": "MOGĘ: każdy dzień od 12 do 18 — jestem doktorantem, rano mam seminaria i pisanie. NIE MOGĘ: rano przed 12 w żaden dzień; środa 14–16 (seminarium doktoranckie). MOGĘ W RAZIE POTRZEBY: środa 12–14 lub po 16. Prowadzę wyłącznie laboratoria i ćwiczenia — nie wykłady.",
+      "name": "mgr inż. Ireneusz Demborski",
+      "preferences_text": "MOGĘ: każdy dzień od 12 do 18. NIE MOGĘ: przed godz. 12 w żaden dzień; środa 14–16 (zobowiązania organizacyjne). DOSTĘPNOŚĆ AWARYJNA: środa 12–14 lub po 16. Prowadzę wyłącznie laboratoria i ćwiczenia — nie wykłady.",
       "subjects": [
         "ALGO",
         "BAZY-DAN",
@@ -153,16 +490,80 @@
       ],
       "hours_per_semester": 120,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Tue",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Wed",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Thu",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Fri",
+            "from": 12,
+            "to": 18
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 12,
+            "to": 14
+          },
+          {
+            "day": "Wed",
+            "from": 16,
+            "to": 20
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Wed",
+            "from": 14,
+            "to": 16
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 12
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
       }
     },
     {
       "id": "I10",
-      "name": "dr inż. Joanna Mazur",
-      "preferences_text": "MOGĘ: poniedziałek i czwartek 8–15, wtorek 8–13. NIE MOGĘ: środa po 13 (opieka nad dzieckiem); piątek po 14. MOGĘ W RAZIE POTRZEBY: środa 8–13, piątek 8–14. Wolę mieć zajęcia skupione w 2–3 dniach, nie rozrzucone po całym tygodniu.",
+      "name": "dr inż. Joanna Mazelicka",
+      "preferences_text": "MOGĘ: poniedziałek i czwartek 8–15, wtorek 8–13. NIE MOGĘ: środa po 13 (powody prywatne); piątek po 14. DOSTĘPNOŚĆ AWARYJNA: środa 8–13, piątek 8–14. Wolę mieć zajęcia skupione w 2–3 dniach, nie rozrzucone po całym tygodniu.",
       "subjects": [
         "BAZY-DAN",
         "INZ-OPR",
@@ -171,32 +572,110 @@
       ],
       "hours_per_semester": 179,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 15
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 13
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 15
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 13
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 14
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Wed",
+            "from": 13,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 14,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
       }
     },
     {
       "id": "I11",
-      "name": "mgr inż. Kamil Lewandowski",
-      "preferences_text": "MOGĘ: wtorek i czwartek 10–18, poniedziałek 12–18. NIE MOGĘ: piątek i środa przed 12 (praca badawcza w laboratorium sprzętowym). MOGĘ W RAZIE POTRZEBY: środa 12–16, piątek 10–14. Asystent, dostępny głównie popołudniami; chętnie przejmę zastępstwo w pilnych przypadkach.",
+      "name": "mgr inż. Kamil Lenartowski",
+      "preferences_text": "MOGĘ: wtorek i czwartek 10–18, poniedziałek 12–18. NIE MOGĘ: piątek i środa przed 12 (praca badawcza w laboratorium sprzętowym). DOSTĘPNOŚĆ AWARYJNA: środa 12–16, piątek 10–14. Asystent, dostępny głównie popołudniami; mogę przejąć zastępstwo w pilnych przypadkach.",
       "subjects": [
         "SYS-OP",
         "UCZ-MASZ"
       ],
       "hours_per_semester": 126,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Tue",
+            "from": 10,
+            "to": 18
+          },
+          {
+            "day": "Thu",
+            "from": 10,
+            "to": 18
+          },
+          {
+            "day": "Mon",
+            "from": 12,
+            "to": 18
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 12,
+            "to": 16
+          },
+          {
+            "day": "Fri",
+            "from": 10,
+            "to": 14
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 12
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "popołudniami"
       }
     },
     {
       "id": "I12",
-      "name": "dr inż. Laura Zając",
-      "preferences_text": "MOGĘ: poniedziałek i środa 8–14. NIE MOGĘ: czwartek i piątek po 14; wtorek (dzień projektowy — praca własna). MOGĘ W RAZIE POTRZEBY: czwartek 8–14, piątek 8–12. Wykłady rano (8–12), laboratorium projektowe chętnie do 14.",
+      "name": "dr inż. Laura Zarembicka",
+      "preferences_text": "MOGĘ: poniedziałek i środa 8–14. NIE MOGĘ: czwartek i piątek po 14; wtorek (zobowiązania organizacyjne). DOSTĘPNOŚĆ AWARYJNA: czwartek 8–14, piątek 8–12. Wykłady rano (8–12), laboratorium projektowe preferowane do godz. 14.",
       "subjects": [
         "ARCH-KOMP",
         "PROG-OB",
@@ -204,16 +683,55 @@
       ],
       "hours_per_semester": 140,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 14
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 12
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Thu",
+            "from": 14,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 14,
+            "to": 20
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": "rano",
+        "lab_preferences": "do godz. 14"
       }
     },
     {
       "id": "I13",
-      "name": "dr Marek Olszewski",
-      "preferences_text": "MOGĘ: poniedziałek–czwartek 8–16. NIE MOGĘ: piątek po 14 (wyjazdy służbowe do Krakowa). MOGĘ W RAZIE POTRZEBY: piątek 8–14, środa po 15. Elastyczny nauczyciel, ale wolę mieć plan ustalony z wyprzedzeniem — nie lubię nagłych zmian.",
+      "name": "dr Marek Olszanicki",
+      "preferences_text": "MOGĘ: poniedziałek–czwartek 8–16. NIE MOGĘ: piątek po 14 (wyjazdy służbowe). DOSTĘPNOŚĆ AWARYJNA: piątek 8–14, środa po 15. Preferuję plan ustalony z wyprzedzeniem i brak nagłych zmian.",
       "subjects": [
         "ARCH-KOMP",
         "BEZP-SYS",
@@ -222,123 +740,445 @@
       ],
       "hours_per_semester": 142,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 16
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Wed",
+            "from": 15,
+            "to": 20
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Fri",
+            "from": 14,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
       }
     },
     {
       "id": "I14",
-      "name": "dr inż. Natalia Piotrowska",
-      "preferences_text": "MOGĘ: środa i piątek 11–18, wtorek 13–18. NIE MOGĘ: przed 11 w żaden dzień (dojeżdżam z Krakowa, pociąg przyjeżdża o 10:45); poniedziałek (praca w firmie). MOGĘ W RAZIE POTRZEBY: wtorek 11–13, czwartek 13–17. Preferuję bloki zajęć w jednym dniu (min. 4h ciągłe).",
+      "name": "dr inż. Natalia Piotrowicka",
+      "preferences_text": "MOGĘ: środa i piątek 11–18, wtorek 13–18. NIE MOGĘ: przed 11 w żaden dzień (brak dostępności przed godz. 11); poniedziałek (niedostępność z powodów organizacyjnych). DOSTĘPNOŚĆ AWARYJNA: wtorek 11–13, czwartek 13–17. Preferuję bloki zajęć w jednym dniu (min. 4h ciągłe).",
       "subjects": [
         "PROG-POD"
       ],
       "hours_per_semester": 122,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Wed",
+            "from": 11,
+            "to": 18
+          },
+          {
+            "day": "Fri",
+            "from": 11,
+            "to": 18
+          },
+          {
+            "day": "Tue",
+            "from": 13,
+            "to": 18
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Tue",
+            "from": 11,
+            "to": 13
+          },
+          {
+            "day": "Thu",
+            "from": 13,
+            "to": 17
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Sun",
+            "from": 8,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "bloki zajęć"
       }
     },
     {
       "id": "I15",
-      "name": "dr Oskar Kwiatkowski",
-      "preferences_text": "MOGĘ: poniedziałek–czwartek 8–14. NIE MOGĘ: piątek (dzień badawczy — nienaruszalny); środa po 14. MOGĘ W RAZIE POTRZEBY: środa 8–14, czwartek 14–16. Wtorek to mój najlepszy dzień — mogę mieć zajęcia od 8 do 16 bez zmęczenia.",
+      "name": "dr Oskar Kwiatolicki",
+      "preferences_text": "MOGĘ: poniedziałek–czwartek 8–14. NIE MOGĘ: piątek (dzień badawczy — ograniczenie twarde); środa po 14. DOSTĘPNOŚĆ AWARYJNA: środa 8–14, czwartek 14–16. Wtorek jest preferowanym dniem; akceptuję zajęcia w godz. 8–16.",
       "subjects": [
         "BEZP-SYS",
         "SYS-OP"
       ],
       "hours_per_semester": 173,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 14
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Thu",
+            "from": 14,
+            "to": 16
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Wed",
+            "from": 14,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "wtorek"
       }
     },
     {
       "id": "I16",
-      "name": "mgr inż. Paula Adamska",
-      "preferences_text": "MOGĘ: poniedziałek–środa 10–18 — jestem doktorantką i dydaktyka to mój priorytet w te dni. NIE MOGĘ: czwartek i piątek (zarezerwowane na pisanie rozprawy); przed 10. MOGĘ W RAZIE POTRZEBY: czwartek 10–13 (absolutnie wyjątkowo). Nie prowadzę wykładów — wyłącznie laboratoria i ćwiczenia komputerowe.",
+      "name": "mgr inż. Paula Adamelicka",
+      "preferences_text": "MOGĘ: poniedziałek–środa 10–18 — dydaktyka jest możliwa w te dni. NIE MOGĘ: czwartek i piątek (zobowiązania organizacyjne); przed 10. DOSTĘPNOŚĆ AWARYJNA: czwartek 10–13 (dostępność wyjątkowa, niski priorytet). Nie prowadzę wykładów — wyłącznie laboratoria i ćwiczenia komputerowe.",
       "subjects": [
         "AN-NUM"
       ],
       "hours_per_semester": 174,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 10,
+            "to": 18
+          },
+          {
+            "day": "Tue",
+            "from": 10,
+            "to": 18
+          },
+          {
+            "day": "Wed",
+            "from": 10,
+            "to": 18
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Thu",
+            "from": 10,
+            "to": 13
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 10
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "popołudniami"
       }
     },
     {
       "id": "I17",
-      "name": "dr inż. Rafał Nowak",
-      "preferences_text": "MOGĘ: wtorek i czwartek 8–18 (idealne dni na cały blok dydaktyki), środa 8–14. NIE MOGĘ: piątek (wolny dzień — nienaruszalny); środa po 14 (zebranie rady wydziału). MOGĘ W RAZIE POTRZEBY: poniedziałek 10–16, piątek 8–12 (tylko w semestrze zimowym). Mogę prowadzić zajęcia w godzinach 8–18 bez problemu — jestem osobą energiczną.",
+      "name": "dr inż. Rafał Nowelicki",
+      "preferences_text": "MOGĘ: wtorek i czwartek 8–18 (preferowane dni na pełny blok dydaktyczny), środa 8–14. NIE MOGĘ: piątek (brak dostępności); środa po 14 (zebranie rady wydziału). DOSTĘPNOŚĆ AWARYJNA: poniedziałek 10–16, piątek 8–12 (tylko w semestrze zimowym). Akceptuję prowadzenie zajęć w godzinach 8–18.",
       "subjects": [
         "ARCH-KOMP"
       ],
       "hours_per_semester": 159,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 18
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 18
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Mon",
+            "from": 10,
+            "to": 16
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 12
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Wed",
+            "from": 14,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "cały dzień"
       }
     },
     {
       "id": "I18",
-      "name": "dr Sylwia Michalak",
-      "preferences_text": "MOGĘ: poniedziałek i wtorek 9–15. NIE MOGĘ: piątek po 13 (konsultacje ze studentami studiów niestacjonarnych); środa po 14; po 16 w żaden dzień. MOGĘ W RAZIE POTRZEBY: środa 9–14, czwartek 9–13. Preferuję równomierne obciążenie przez tydzień — nie lubię gromadzenia zajęć w jednym dniu.",
+      "name": "dr Sylwia Michalicka",
+      "preferences_text": "MOGĘ: poniedziałek i wtorek 9–15. NIE MOGĘ: piątek po 13 (konsultacje ze studentami studiów niestacjonarnych); środa po 14; po 16 w żaden dzień. DOSTĘPNOŚĆ AWARYJNA: środa 9–14, czwartek 9–13. Preferuję równomierne obciążenie przez tydzień — nie lubię gromadzenia zajęć w jednym dniu.",
       "subjects": [
         "SIECI"
       ],
       "hours_per_semester": 162,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 9,
+            "to": 15
+          },
+          {
+            "day": "Tue",
+            "from": 9,
+            "to": 15
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 9,
+            "to": 14
+          },
+          {
+            "day": "Thu",
+            "from": 9,
+            "to": 13
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Fri",
+            "from": 13,
+            "to": 20
+          },
+          {
+            "day": "Wed",
+            "from": 14,
+            "to": 20
+          },
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 9
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
       }
     },
     {
       "id": "I19",
-      "name": "dr inż. Tomasz Karpowicz",
-      "preferences_text": "MOGĘ: środa i czwartek 9–17, piątek 9–15. NIE MOGĘ: poniedziałek (praca w instytucie badawczym poza uczelnią); przed 9. MOGĘ W RAZIE POTRZEBY: wtorek 10–16, poniedziałek 14–17. Nie lubię pojedynczych jednostek — jeśli mam przyjechać, to na minimum 4h zajęć.",
+      "name": "dr inż. Tomasz Karpelicki",
+      "preferences_text": "MOGĘ: środa i czwartek 9–17, piątek 9–15. NIE MOGĘ: poniedziałek (zobowiązania organizacyjne); przed 9. DOSTĘPNOŚĆ AWARYJNA: wtorek 10–16, poniedziałek 14–17. Preferuję bloki zajęć trwające minimum 4 godziny.",
       "subjects": [
         "INZ-OPR",
         "SIECI"
       ],
       "hours_per_semester": 145,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Wed",
+            "from": 9,
+            "to": 17
+          },
+          {
+            "day": "Thu",
+            "from": 9,
+            "to": 17
+          },
+          {
+            "day": "Fri",
+            "from": 9,
+            "to": 15
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Tue",
+            "from": 10,
+            "to": 16
+          },
+          {
+            "day": "Mon",
+            "from": 14,
+            "to": 17
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 9
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "bloki minimum 4-godzinne"
       }
     },
     {
       "id": "I20",
-      "name": "dr Urszula Grabowska",
-      "preferences_text": "MOGĘ: poniedziałek–środa 8–13. NIE MOGĘ: piątek po 12 (opieka nad rodzicami); po 14 w żaden dzień. MOGĘ W RAZIE POTRZEBY: czwartek 8–12, środa 13–15 (rzadko). Jestem zdecydowanie poranną osobą — moje najlepsze godziny to 8–11.",
+      "name": "dr Urszula Grabowicka",
+      "preferences_text": "MOGĘ: poniedziałek–środa 8–13. NIE MOGĘ: piątek po 12 (powody prywatne); po 14 w żaden dzień. DOSTĘPNOŚĆ AWARYJNA: czwartek 8–12, środa 13–15 (rzadko). Preferowana dostępność: godz. 8–11.",
       "subjects": [
         "BEZP-SYS"
       ],
       "hours_per_semester": 147,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 13
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 13
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 13
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Wed",
+            "from": 13,
+            "to": 15
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Fri",
+            "from": 12,
+            "to": 20
+          },
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 9
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 9
+          },
+          {
+            "day": "Wed",
+            "from": 14,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "godz. 8–11"
       }
     },
     {
       "id": "I21",
-      "name": "dr inż. Waldemar Jankowski",
-      "preferences_text": "MOGĘ: wtorek i czwartek 10–18, piątek 10–16. NIE MOGĘ: poniedziałek rano przed 11 (dojazd 90 min); środa (dzień pracy zdalnej). MOGĘ W RAZIE POTRZEBY: poniedziałek 11–16, środa 12–16. Laboratoria chętnie w blokach popołudniowych (12–18); rano wolę ćwiczenia.",
+      "name": "dr inż. Waldemar Jankielicki",
+      "preferences_text": "MOGĘ: wtorek i czwartek 10–18, piątek 10–16. NIE MOGĘ: poniedziałek rano przed 11 (dojazd 90 min); środa (dzień pracy zdalnej). DOSTĘPNOŚĆ AWARYJNA: poniedziałek 11–16, środa 12–16. Laboratoria preferowane w blokach popołudniowych (12–18); rano wolę ćwiczenia.",
       "subjects": [
         "ALGO",
         "ARCH-KOMP",
@@ -347,16 +1187,55 @@
       ],
       "hours_per_semester": 165,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Tue",
+            "from": 10,
+            "to": 18
+          },
+          {
+            "day": "Thu",
+            "from": 10,
+            "to": 18
+          },
+          {
+            "day": "Fri",
+            "from": 10,
+            "to": 16
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Mon",
+            "from": 11,
+            "to": 16
+          },
+          {
+            "day": "Wed",
+            "from": 12,
+            "to": 16
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 11
+          },
+          {
+            "day": "Wed",
+            "from": 0,
+            "to": 24
+          }
+        ],
+        "lecture_preferences": "rano",
+        "lab_preferences": "popołudniami"
       }
     },
     {
       "id": "I22",
-      "name": "mgr Katarzyna Woźniak",
-      "preferences_text": "MOGĘ: poniedziałek–piątek 12–18 — doktorantka, rano uczę się i piszę. NIE MOGĘ: przed 12; środa 14–16 (seminarium katedry). MOGĘ W RAZIE POTRZEBY: środa 12–14 lub 16–18. Dyspozycyjność popołudniowa jest moim atutem — mogę przejąć grupy po 15.",
+      "name": "mgr Katarzyna Wozielicka",
+      "preferences_text": "MOGĘ: poniedziałek–piątek 12–18 — doktorantka, brak dostępności przed godz. 12. NIE MOGĘ: przed 12; środa 14–16 (seminarium katedry). DOSTĘPNOŚĆ AWARYJNA: środa 12–14 lub 16–18. Dostępność popołudniowa umożliwia prowadzenie grup po godz. 15.",
       "subjects": [
         "AN-NUM",
         "ARCH-KOMP",
@@ -365,16 +1244,80 @@
       ],
       "hours_per_semester": 139,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Tue",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Wed",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Thu",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Fri",
+            "from": 12,
+            "to": 18
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 12,
+            "to": 14
+          },
+          {
+            "day": "Wed",
+            "from": 16,
+            "to": 18
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 0,
+            "to": 12
+          },
+          {
+            "day": "Tue",
+            "from": 0,
+            "to": 12
+          },
+          {
+            "day": "Wed",
+            "from": 14,
+            "to": 16
+          },
+          {
+            "day": "Thu",
+            "from": 0,
+            "to": 12
+          },
+          {
+            "day": "Fri",
+            "from": 0,
+            "to": 12
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "popołudniami"
       }
     },
     {
       "id": "I23",
-      "name": "dr inż. Zbigniew Malinowski",
-      "preferences_text": "MOGĘ: poniedziałek i środa 8–14. NIE MOGĘ: czwartek po 14 (projekt europejski, spotkania online); piątek (całkowicie wolny). MOGĘ W RAZIE POTRZEBY: wtorek 8–13, czwartek 8–14. Wolę prowadzić zajęcia w blokach — minimum 2h pod rząd, bez okienek.",
+      "name": "dr inż. Zbigniew Malewicki",
+      "preferences_text": "MOGĘ: poniedziałek i środa 8–14. NIE MOGĘ: czwartek po 14 (projekt europejski, spotkania online); piątek (całkowicie wolny). DOSTĘPNOŚĆ AWARYJNA: wtorek 8–13, czwartek 8–14. Wolę prowadzić zajęcia w blokach — minimum 2h pod rząd, bez okienek.",
       "subjects": [
         "AN-NUM",
         "ARCH-KOMP",
@@ -383,48 +1326,170 @@
       ],
       "hours_per_semester": 157,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 14
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 13
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 14
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Thu",
+            "from": 14,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 0,
+            "to": 24
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "bloki"
       }
     },
     {
       "id": "I24",
-      "name": "dr Anna Trzeciak",
-      "preferences_text": "MOGĘ: wtorek i piątek 12–18. NIE MOGĘ: poniedziałek (opieka nad dzieckiem); rano przed 12 w żaden dzień. MOGĘ W RAZIE POTRZEBY: środa 12–16, czwartek 12–17. Dostępna wyłącznie od południa; nie negocjuję zajęć przed 12.",
+      "name": "dr Anna Trzelicka",
+      "preferences_text": "MOGĘ: wtorek i piątek 12–18. NIE MOGĘ: poniedziałek (powody prywatne); rano przed 12 w żaden dzień. DOSTĘPNOŚĆ AWARYJNA: środa 12–16, czwartek 12–17. Dostępność wyłącznie od godz. 12; brak dostępności przed godz. 12.",
       "subjects": [
         "ARCH-KOMP",
         "SIECI"
       ],
       "hours_per_semester": 138,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Tue",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Fri",
+            "from": 12,
+            "to": 18
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 12,
+            "to": 16
+          },
+          {
+            "day": "Thu",
+            "from": 12,
+            "to": 17
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 0,
+            "to": 12
+          },
+          {
+            "day": "Wed",
+            "from": 0,
+            "to": 12
+          },
+          {
+            "day": "Thu",
+            "from": 0,
+            "to": 12
+          },
+          {
+            "day": "Fri",
+            "from": 0,
+            "to": 12
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "popołudniami"
       }
     },
     {
       "id": "I25",
-      "name": "dr inż. Bartłomiej Filipiak",
-      "preferences_text": "MOGĘ: poniedziałek–czwartek 8–16. NIE MOGĘ: piątek (badania w laboratoriom sprzętowym — nienaruszalny dzień); środa po 14 (zebranie katedry). MOGĘ W RAZIE POTRZEBY: środa 8–14, piątek 8–11 (absolutna ostateczność). Wykłady wolę rano (8–12), laboratorium sprzętowe najchętniej popołudniami.",
+      "name": "dr inż. Bartłomiej Filipowicki",
+      "preferences_text": "MOGĘ: poniedziałek–czwartek 8–16. NIE MOGĘ: piątek (badania w laboratorium sprzętowym — ograniczenie twarde); środa po 14 (zebranie katedry). DOSTĘPNOŚĆ AWARYJNA: środa 8–14, piątek 8–11 (dostępność wyjątkowa, niski priorytet). Wykłady wolę rano (8–12), laboratorium sprzętowe najchętniej popołudniami.",
       "subjects": [
         "AN-NUM",
         "INZ-OPR"
       ],
       "hours_per_semester": 160,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 16
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 11
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Fri",
+            "from": 0,
+            "to": 24
+          },
+          {
+            "day": "Wed",
+            "from": 14,
+            "to": 24
+          }
+        ],
+        "lecture_preferences": "rano",
+        "lab_preferences": "popołudniami"
       }
     },
     {
       "id": "I26",
-      "name": "dr Monika Krawczyk",
-      "preferences_text": "MOGĘ: wtorek i środa 8–13. NIE MOGĘ: czwartek po 14 (badania); piątek po 14; po 15 w żaden dzień. MOGĘ W RAZIE POTRZEBY: poniedziałek 8–13, czwartek 8–14. Rano jestem najskuteczniejsza — zależy mi na blokach 8–13, bez zajęć po 14.",
+      "name": "dr Monika Krawelicka",
+      "preferences_text": "MOGĘ: wtorek i środa 8–13. NIE MOGĘ: czwartek po 14 (badania); piątek po 14; po 15 w żaden dzień. DOSTĘPNOŚĆ AWARYJNA: poniedziałek 8–13, czwartek 8–14. Preferuję bloki zajęć w godz. 8–13, bez zajęć po godz. 14.",
       "subjects": [
         "ALGO",
         "GRAF-KOMP",
@@ -433,32 +1498,150 @@
       ],
       "hours_per_semester": 166,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 13
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 13
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 13
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 14
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Thu",
+            "from": 14,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 14,
+            "to": 20
+          },
+          {
+            "day": "Mon",
+            "from": 15,
+            "to": 20
+          },
+          {
+            "day": "Tue",
+            "from": 15,
+            "to": 20
+          },
+          {
+            "day": "Wed",
+            "from": 15,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 15,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": "rano",
+        "lab_preferences": "bloki"
       }
     },
     {
       "id": "I27",
-      "name": "mgr inż. Piotr Zawadzki",
-      "preferences_text": "MOGĘ: poniedziałek–piątek 12–18. NIE MOGĘ: przed 12; środa 16–18 (seminarium doktoranckie). MOGĘ W RAZIE POTRZEBY: środa 12–16, piątek 14–18. Jestem doktorantem i bardzo elastycznym — popołudnia to mój czas na dydaktykę.",
+      "name": "mgr inż. Piotr Zawelicki",
+      "preferences_text": "MOGĘ: poniedziałek–piątek 12–18. NIE MOGĘ: przed 12; środa 16–18 (seminarium doktoranckie). DOSTĘPNOŚĆ AWARYJNA: środa 12–16, piątek 14–18. Dostępność popołudniowa jest elastyczna i przeznaczona na dydaktykę.",
       "subjects": [
         "BEZP-SYS",
         "PROG-POD"
       ],
       "hours_per_semester": 184,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Tue",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Wed",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Thu",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Fri",
+            "from": 12,
+            "to": 18
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 12,
+            "to": 16
+          },
+          {
+            "day": "Fri",
+            "from": 14,
+            "to": 18
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Wed",
+            "from": 16,
+            "to": 18
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 12
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "popołudniami"
       }
     },
     {
       "id": "I28",
-      "name": "dr inż. Elżbieta Jabłońska",
-      "preferences_text": "MOGĘ: poniedziałek–czwartek 8–16. NIE MOGĘ: piątek (praca badawcza poza uczelnią); po 16. MOGĘ W RAZIE POTRZEBY: piątek 8–12 (wyjątkowo), czwartek 14–16. Preferuję zajęcia rano, najchętniej 8–13; po 14 jestem mniej efektywna.",
+      "name": "dr inż. Elżbieta Jabelicka",
+      "preferences_text": "MOGĘ: poniedziałek–czwartek 8–16. NIE MOGĘ: piątek (zobowiązania badawcze); po 16. DOSTĘPNOŚĆ AWARYJNA: piątek 8–12 (wyjątkowo), czwartek 14–16. Preferuję zajęcia rano, najchętniej 8–13; preferuję zajęcia do godz. 14.",
       "subjects": [
         "AN-NUM",
         "MAT-DYSK",
@@ -466,32 +1649,145 @@
       ],
       "hours_per_semester": 163,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 16
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Thu",
+            "from": 14,
+            "to": 16
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Mon",
+            "from": 16,
+            "to": 20
+          },
+          {
+            "day": "Tue",
+            "from": 16,
+            "to": 20
+          },
+          {
+            "day": "Wed",
+            "from": 16,
+            "to": 20
+          },
+          {
+            "day": "Thu",
+            "from": 16,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": "rano",
+        "lab_preferences": "do godz. 14"
       }
     },
     {
       "id": "I29",
-      "name": "dr Franciszek Adamski",
-      "preferences_text": "MOGĘ: wtorek i czwartek 9–17. NIE MOGĘ: środa (zły dzień — zebrania + seminaria trwają prawie cały dzień); przed 9. MOGĘ W RAZIE POTRZEBY: poniedziałek 10–15, piątek 9–14. Idealny scenariusz: 2 pełne dni dydaktyczne (wtorek + czwartek), reszta tygodnia wolna.",
+      "name": "dr Florian Adamelicki",
+      "preferences_text": "MOGĘ: wtorek i czwartek 9–17. NIE MOGĘ: środa (dzień niedostępny z powodu zebrań i seminariów); przed 9. DOSTĘPNOŚĆ AWARYJNA: poniedziałek 10–15, piątek 9–14. Preferowany scenariusz: 2 pełne dni dydaktyczne (wtorek + czwartek), bez zajęć w pozostałe dni tygodnia.",
       "subjects": [
         "AN-NUM",
         "SIECI"
       ],
       "hours_per_semester": 163,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Tue",
+            "from": 9,
+            "to": 17
+          },
+          {
+            "day": "Thu",
+            "from": 9,
+            "to": 17
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Mon",
+            "from": 10,
+            "to": 15
+          },
+          {
+            "day": "Fri",
+            "from": 9,
+            "to": 14
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Mon",
+            "from": 9,
+            "to": 10
+          },
+          {
+            "day": "Tue",
+            "from": 17,
+            "to": 20
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Thu",
+            "from": 17,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 14,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "pełne dni"
       }
     },
     {
       "id": "I30",
-      "name": "dr inż. Izabela Rutkowska",
-      "preferences_text": "MOGĘ: poniedziałek, wtorek i czwartek 8–12. NIE MOGĘ: środa i piątek (opieka, nienaruszalne); po 14 — zdecydowanie nie. MOGĘ W RAZIE POTRZEBY: czwartek 12–14, poniedziałek 12–14. Moja dyspozycja jest ograniczona — proszę zaplanować mi zajęcia wyłącznie rano, max do 13.",
+      "name": "dr inż. Izabela Rutelicka",
+      "preferences_text": "MOGĘ: poniedziałek, wtorek i czwartek 8–12. NIE MOGĘ: środa i piątek (ograniczenie twarde); brak dostępności po godz. 14. DOSTĘPNOŚĆ AWARYJNA: czwartek 12–14, poniedziałek 12–14. Dostępność jest ograniczona; preferowane zajęcia wyłącznie rano, maksymalnie do godz. 13.",
       "subjects": [
         "AN-NUM",
         "BAZY-DAN",
@@ -500,10 +1796,1972 @@
       ],
       "hours_per_semester": 131,
       "parsed_preferences": {
-        "preferred_days": [],
-        "preferred_hours_start": 8,
-        "preferred_hours_end": 20,
-        "forbidden_slots": []
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 12
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Thu",
+            "from": 12,
+            "to": 14
+          },
+          {
+            "day": "Mon",
+            "from": 12,
+            "to": 14
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Mon",
+            "from": 13,
+            "to": 20
+          },
+          {
+            "day": "Tue",
+            "from": 13,
+            "to": 20
+          },
+          {
+            "day": "Thu",
+            "from": 13,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": "rano",
+        "lab_preferences": "do godz. 13"
+      }
+    },
+    {
+      "id": "I31",
+      "name": "prof. dr hab. Sebastian Wasylwicki",
+      "preferences_text": "MOGĘ: poniedziałek i środa 8–15, wtorek 8–12. NIE MOGĘ: czwartek (rada instytutu i badania — cały dzień); piątek. DOSTĘPNOŚĆ AWARYJNA: czwartek 8–11, wtorek 12–14. Wykłady wyłącznie rano; ćwiczenia mogę prowadzić do 15.",
+      "subjects": [
+        "MAT-DYSK",
+        "STAT-RAC",
+        "AN-NUM"
+      ],
+      "hours_per_semester": 152,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 15
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 15
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 11
+          },
+          {
+            "day": "Tue",
+            "from": 12,
+            "to": 14
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": "rano",
+        "lab_preferences": "do 15"
+      }
+    },
+    {
+      "id": "I32",
+      "name": "dr inż. Aleksandra Kowalicka",
+      "preferences_text": "MOGĘ: każdy dzień 12–18 — brak dostępności przed godz. 12. NIE MOGĘ: przed 12 w żaden dzień; piątek po 17. DOSTĘPNOŚĆ AWARYJNA: środa 10–12 (dostępność wyjątkowa, niski priorytet). Preferuję bloki zajęć w godz. 12–18.",
+      "subjects": [
+        "PROG-POD",
+        "PROG-OB",
+        "BAZY-DAN"
+      ],
+      "hours_per_semester": 145,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Tue",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Wed",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Thu",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Fri",
+            "from": 12,
+            "to": 18
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 10,
+            "to": 12
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Fri",
+            "from": 17,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "bloki"
+      }
+    },
+    {
+      "id": "I33",
+      "name": "dr Michał Boranicki",
+      "preferences_text": "MOGĘ: wtorek, czwartek i piątek 9–17. NIE MOGĘ: poniedziałek (niedostępność z powodów organizacyjnych); środa (spotkania projektowe). DOSTĘPNOŚĆ AWARYJNA: środa 14–17, poniedziałek 15–18. Praktyk z branży — preferuję zajęcia w blokach, bez pojedynczych godzin.",
+      "subjects": [
+        "SIECI",
+        "BEZP-SYS"
+      ],
+      "hours_per_semester": 138,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Tue",
+            "from": 9,
+            "to": 17
+          },
+          {
+            "day": "Thu",
+            "from": 9,
+            "to": 17
+          },
+          {
+            "day": "Fri",
+            "from": 9,
+            "to": 17
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 14,
+            "to": 17
+          },
+          {
+            "day": "Mon",
+            "from": 15,
+            "to": 18
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "bloki"
+      }
+    },
+    {
+      "id": "I34",
+      "name": "dr inż. Marta Stepelicka",
+      "preferences_text": "MOGĘ: poniedziałek–środa 8–14. NIE MOGĘ: czwartek i piątek (ograniczenie twarde z powodów prywatnych). DOSTĘPNOŚĆ AWARYJNA: czwartek 8–12, środa do 16. Preferuję bloki poranne i zajęcia do godz. 14.",
+      "subjects": [
+        "UCZ-MASZ",
+        "STAT-RAC"
+      ],
+      "hours_per_semester": 141,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 14
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 16
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "bloki poranne"
+      }
+    },
+    {
+      "id": "I35",
+      "name": "mgr inż. Paweł Szewelicki",
+      "preferences_text": "MOGĘ: każdy dzień od 13 do 19 — jestem doktorantem, brak dostępności przed godz. 13. NIE MOGĘ: przed 13 w żaden dzień; piątek 17–19 (seminarium doktorantów). DOSTĘPNOŚĆ AWARYJNA: piątek 13–17, środa 11–13 (wyjątkowo). Prowadzę wyłącznie ćwiczenia i laboratoria — nie wykłady.",
+      "subjects": [
+        "ALGO",
+        "MAT-DYSK"
+      ],
+      "hours_per_semester": 124,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 13,
+            "to": 19
+          },
+          {
+            "day": "Tue",
+            "from": 13,
+            "to": 19
+          },
+          {
+            "day": "Wed",
+            "from": 13,
+            "to": 19
+          },
+          {
+            "day": "Thu",
+            "from": 13,
+            "to": 19
+          },
+          {
+            "day": "Fri",
+            "from": 13,
+            "to": 19
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Fri",
+            "from": 13,
+            "to": 17
+          },
+          {
+            "day": "Wed",
+            "from": 11,
+            "to": 13
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 13
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 13
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 13
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 13
+          },
+          {
+            "day": "Fri",
+            "from": 17,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "ćwiczenia i laboratoria"
+      }
+    },
+    {
+      "id": "I36",
+      "name": "dr Olga Sokolicka",
+      "preferences_text": "MOGĘ: wtorek, środa i czwartek 9–16. NIE MOGĘ: poniedziałek rano przed 11; piątek (zobowiązania organizacyjne). DOSTĘPNOŚĆ AWARYJNA: poniedziałek 11–15, piątek 9–13. Preferuję równomierne rozłożenie zajęć w środku tygodnia.",
+      "subjects": [
+        "INZ-OPR",
+        "BAZY-DAN",
+        "PROG-OB"
+      ],
+      "hours_per_semester": 157,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Tue",
+            "from": 9,
+            "to": 16
+          },
+          {
+            "day": "Wed",
+            "from": 9,
+            "to": 16
+          },
+          {
+            "day": "Thu",
+            "from": 9,
+            "to": 16
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Mon",
+            "from": 11,
+            "to": 15
+          },
+          {
+            "day": "Fri",
+            "from": 9,
+            "to": 13
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 11
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
+      }
+    },
+    {
+      "id": "I37",
+      "name": "dr inż. Jakub Krajelicki",
+      "preferences_text": "MOGĘ: poniedziałek, wtorek i środa 8–16. NIE MOGĘ: piątek (badania w laboratorium sprzętowym); czwartek po 15. DOSTĘPNOŚĆ AWARYJNA: czwartek 8–15, piątek 8–11. Laboratoria sprzętowe wolę rano; wykłady i ćwiczenia — dowolnie przed 15.",
+      "subjects": [
+        "ARCH-KOMP",
+        "SYS-OP",
+        "SIECI"
+      ],
+      "hours_per_semester": 168,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 16
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 15
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 11
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Thu",
+            "from": 15,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "rano"
+      }
+    },
+    {
+      "id": "I38",
+      "name": "dr Magdalena Debelicka",
+      "preferences_text": "MOGĘ: każdy dzień 10–16. NIE MOGĘ: poniedziałek 8–10 (zebranie katedry); po 17 w żaden dzień. DOSTĘPNOŚĆ AWARYJNA: poniedziałek 10–16 (rzadko, ale możliwe). Preferowana przerwa organizacyjna w godz. 13:00–14:00.",
+      "subjects": [
+        "PRZETW-SYG",
+        "AN-NUM"
+      ],
+      "hours_per_semester": 153,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 10,
+            "to": 16
+          },
+          {
+            "day": "Tue",
+            "from": 10,
+            "to": 16
+          },
+          {
+            "day": "Wed",
+            "from": 10,
+            "to": 16
+          },
+          {
+            "day": "Thu",
+            "from": 10,
+            "to": 16
+          },
+          {
+            "day": "Fri",
+            "from": 10,
+            "to": 16
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Mon",
+            "from": 10,
+            "to": 16
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 10
+          },
+          {
+            "day": "Fri",
+            "from": 17,
+            "to": 24
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
+      }
+    },
+    {
+      "id": "I39",
+      "name": "mgr inż. Adam Sikorwicki",
+      "preferences_text": "MOGĘ: wtorek i czwartek 14–20, środa 12–18. NIE MOGĘ: przed 12; poniedziałek i piątek (niedostępność z powodów organizacyjnych). DOSTĘPNOŚĆ AWARYJNA: środa 10–12 (dostępność wyjątkowa, niski priorytet). Doktorant z doświadczeniem branżowym — prowadzę tylko laboratoria, żadnych wykładów.",
+      "subjects": [
+        "PROG-POD",
+        "ALGO"
+      ],
+      "hours_per_semester": 120,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Tue",
+            "from": 14,
+            "to": 20
+          },
+          {
+            "day": "Wed",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Thu",
+            "from": 14,
+            "to": 20
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 10,
+            "to": 12
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 24
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 24
+          },
+          {
+            "day": "before",
+            "from": 12,
+            "to": 24
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
+      }
+    },
+    {
+      "id": "I40",
+      "name": "dr inż. Justyna Ostrelicka",
+      "preferences_text": "MOGĘ: poniedziałek, środa i piątek 9–15. NIE MOGĘ: wtorek (seminarium naukowe cały dzień); czwartek po 14. DOSTĘPNOŚĆ AWARYJNA: czwartek 9–14, wtorek 15–18. Preferuję maksymalnie trzy dni dydaktyczne w tygodniu.",
+      "subjects": [
+        "BEZP-SYS",
+        "SYS-OP",
+        "UCZ-MASZ"
+      ],
+      "hours_per_semester": 160,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 9,
+            "to": 15
+          },
+          {
+            "day": "Wed",
+            "from": 9,
+            "to": 15
+          },
+          {
+            "day": "Fri",
+            "from": 9,
+            "to": 15
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Thu",
+            "from": 9,
+            "to": 14
+          },
+          {
+            "day": "Tue",
+            "from": 15,
+            "to": 18
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 24
+          },
+          {
+            "day": "Thu",
+            "from": 15,
+            "to": 24
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
+      }
+    },
+    {
+      "id": "I41",
+      "name": "dr Robert Kalinicki",
+      "preferences_text": "MOGĘ: wtorek–czwartek 8–14. NIE MOGĘ: poniedziałek (konsultacje indywidualne cały dzień); piątek; po 15. DOSTĘPNOŚĆ AWARYJNA: piątek 8–12, poniedziałek 14–17. Preferowana dostępność w środku tygodnia.",
+      "subjects": [
+        "MAT-DYSK",
+        "ALGO",
+        "BAZY-DAN"
+      ],
+      "hours_per_semester": 148,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "wtorek",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "środa",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "czwartek",
+            "from": 8,
+            "to": 14
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "piątek",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "poniedziałek",
+            "from": 14,
+            "to": 17
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "poniedziałek",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "piątek",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "wtorek",
+            "from": 15,
+            "to": 20
+          },
+          {
+            "day": "środa",
+            "from": 15,
+            "to": 20
+          },
+          {
+            "day": "czwartek",
+            "from": 15,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": "środek tygodnia",
+        "lab_preferences": null
+      }
+    },
+    {
+      "id": "I42",
+      "name": "dr inż. Ewa Jawelicka",
+      "preferences_text": "MOGĘ: poniedziałek, wtorek i środa 9–15. NIE MOGĘ: czwartek po 12 (powody prywatne); piątek; po 16. DOSTĘPNOŚĆ AWARYJNA: czwartek 9–12, środa do 16. Preferowana dostępność: godz. 9–13.",
+      "subjects": [
+        "PRZETW-SYG",
+        "STAT-RAC",
+        "AN-NUM"
+      ],
+      "hours_per_semester": 136,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "poniedziałek",
+            "from": 9,
+            "to": 15
+          },
+          {
+            "day": "wtorek",
+            "from": 9,
+            "to": 15
+          },
+          {
+            "day": "środa",
+            "from": 9,
+            "to": 15
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "czwartek",
+            "from": 9,
+            "to": 12
+          },
+          {
+            "day": "środa",
+            "from": 8,
+            "to": 16
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "czwartek",
+            "from": 12,
+            "to": 20
+          },
+          {
+            "day": "piątek",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "poniedziałek",
+            "from": 16,
+            "to": 20
+          },
+          {
+            "day": "wtorek",
+            "from": 16,
+            "to": 20
+          },
+          {
+            "day": "środa",
+            "from": 16,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": "9–13",
+        "lab_preferences": null
+      }
+    },
+    {
+      "id": "I43",
+      "name": "mgr inż. Marcin Mazelicki",
+      "preferences_text": "MOGĘ: poniedziałek–piątek 13–19. NIE MOGĘ: przed 13; środa 17–19 (zebranie doktorantów). DOSTĘPNOŚĆ AWARYJNA: środa 13–17, piątek 15–19. Dostępny wyłącznie popołudniami; preferuję laboratorium w bloku 3-godzinnym.",
+      "subjects": [
+        "SIECI",
+        "INZ-OPR"
+      ],
+      "hours_per_semester": 122,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "poniedziałek",
+            "from": 13,
+            "to": 19
+          },
+          {
+            "day": "wtorek",
+            "from": 13,
+            "to": 19
+          },
+          {
+            "day": "środa",
+            "from": 13,
+            "to": 19
+          },
+          {
+            "day": "czwartek",
+            "from": 13,
+            "to": 19
+          },
+          {
+            "day": "piątek",
+            "from": 13,
+            "to": 19
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "środa",
+            "from": 13,
+            "to": 17
+          },
+          {
+            "day": "piątek",
+            "from": 15,
+            "to": 19
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "poniedziałek",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "wtorek",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "środa",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "czwartek",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "piątek",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "środa",
+            "from": 17,
+            "to": 19
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "3-godzinny blok"
+      }
+    },
+    {
+      "id": "I44",
+      "name": "dr Karolina Blaszewicka",
+      "preferences_text": "MOGĘ: poniedziałek–czwartek 8–14. NIE MOGĘ: piątek (zobowiązania organizacyjne); po 15 w żaden dzień. DOSTĘPNOŚĆ AWARYJNA: piątek 8–12, środa do 16. Wolę laboratoria projektowe rano — preferuję zajęcia przed południem.",
+      "subjects": [
+        "PROG-OB",
+        "GRAF-KOMP"
+      ],
+      "hours_per_semester": 155,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "poniedziałek",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "wtorek",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "środa",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "czwartek",
+            "from": 8,
+            "to": 14
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "piątek",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "środa",
+            "from": 8,
+            "to": 16
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "piątek",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "poniedziałek",
+            "from": 15,
+            "to": 20
+          },
+          {
+            "day": "wtorek",
+            "from": 15,
+            "to": 20
+          },
+          {
+            "day": "środa",
+            "from": 15,
+            "to": 20
+          },
+          {
+            "day": "czwartek",
+            "from": 15,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": "przed południem",
+        "lab_preferences": "projektowe rano"
+      }
+    },
+    {
+      "id": "I45",
+      "name": "dr inż. Tadeusz Domelicki",
+      "preferences_text": "MOGĘ: wtorek i czwartek 8–18 — preferowane dni dydaktyczne. NIE MOGĘ: poniedziałek i środa (zobowiązania organizacyjne); piątek (ograniczenie twarde). DOSTĘPNOŚĆ AWARYJNA: środa 10–14, poniedziałek 14–17. Preferowany model pracy: intensywne 2-dniowe bloki we wtorek i czwartek.",
+      "subjects": [
+        "ARCH-KOMP",
+        "INZ-OPR",
+        "SYS-OP"
+      ],
+      "hours_per_semester": 170,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "wtorek",
+            "from": 8,
+            "to": 18
+          },
+          {
+            "day": "czwartek",
+            "from": 8,
+            "to": 18
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "środa",
+            "from": 10,
+            "to": 14
+          },
+          {
+            "day": "poniedziałek",
+            "from": 14,
+            "to": 17
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "poniedziałek",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "środa",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "piątek",
+            "from": 8,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
+      }
+    },
+    {
+      "id": "I46",
+      "name": "mgr Wioletta Zielwicka",
+      "preferences_text": "MOGĘ: poniedziałek–czwartek 12–18. NIE MOGĘ: piątek (zobowiązania organizacyjne); przed 12. DOSTĘPNOŚĆ AWARYJNA: piątek 12–15 (dostępność wyjątkowa, niski priorytet). Brak dostępności przed godz. 12.",
+      "subjects": [
+        "AN-NUM",
+        "PRZETW-SYG"
+      ],
+      "hours_per_semester": 128,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Tue",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Wed",
+            "from": 12,
+            "to": 18
+          },
+          {
+            "day": "Thu",
+            "from": 12,
+            "to": 18
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Fri",
+            "from": 12,
+            "to": 15
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 12
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
+      }
+    },
+    {
+      "id": "I47",
+      "name": "dr Wojciech Barczycki",
+      "preferences_text": "MOGĘ: każdy dzień tygodnia 8–14. NIE MOGĘ: po 15 w żaden dzień (powody prywatne po 15); środa 11–13 (rada wydziału). DOSTĘPNOŚĆ AWARYJNA: środa 8–11 lub 13–15. Preferowane zaplanowanie wszystkich zajęć przed godz. 14.",
+      "subjects": [
+        "BEZP-SYS",
+        "SIECI",
+        "ARCH-KOMP"
+      ],
+      "hours_per_semester": 158,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 14
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 11
+          },
+          {
+            "day": "Wed",
+            "from": 13,
+            "to": 15
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 14,
+            "to": 20
+          },
+          {
+            "day": "Tue",
+            "from": 14,
+            "to": 20
+          },
+          {
+            "day": "Wed",
+            "from": 11,
+            "to": 13
+          },
+          {
+            "day": "Thu",
+            "from": 14,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 14,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
+      }
+    },
+    {
+      "id": "I48",
+      "name": "dr inż. Barbara Sobrzycka",
+      "preferences_text": "MOGĘ: poniedziałek i środa 8–16. NIE MOGĘ: wtorek (niedostępność z powodów organizacyjnych); czwartek po 14; piątek. DOSTĘPNOŚĆ AWARYJNA: czwartek 8–14, wtorek 15–18. Dwa dni dydaktyczne w tygodniu są dla mnie wystarczające.",
+      "subjects": [
+        "UCZ-MASZ",
+        "MAT-DYSK"
+      ],
+      "hours_per_semester": 143,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 16
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Tue",
+            "from": 15,
+            "to": 18
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Thu",
+            "from": 14,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
+      }
+    },
+    {
+      "id": "I49",
+      "name": "dr Przemysław Gorelicki",
+      "preferences_text": "MOGĘ: wtorek, czwartek i piątek 10–18. NIE MOGĘ: poniedziałek i środa (seminaria i administracja wydziałowa). DOSTĘPNOŚĆ AWARYJNA: środa 13–17, poniedziałek 14–18. Preferuję zajęcia od południa; rano jest czas przeznaczony na przygotowanie.",
+      "subjects": [
+        "INZ-OPR",
+        "ALGO"
+      ],
+      "hours_per_semester": 149,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Tue",
+            "from": 10,
+            "to": 18
+          },
+          {
+            "day": "Thu",
+            "from": 10,
+            "to": 18
+          },
+          {
+            "day": "Fri",
+            "from": 10,
+            "to": 18
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 13,
+            "to": 17
+          },
+          {
+            "day": "Mon",
+            "from": 14,
+            "to": 18
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 10
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 13
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 10
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
+      }
+    },
+    {
+      "id": "I50",
+      "name": "dr inż. Halina Wierzbelicka",
+      "preferences_text": "MOGĘ: poniedziałek–środa 8–13. NIE MOGĘ: czwartek po 12; piątek po 11; po 14 w żaden dzień. DOSTĘPNOŚĆ AWARYJNA: czwartek 8–12, piątek 8–11 (tylko raz w tygodniu). Dostępność jest ograniczona; preferowane zajęcia wyłącznie przed południem.",
+      "subjects": [
+        "STAT-RAC",
+        "BAZY-DAN"
+      ],
+      "hours_per_semester": 132,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 13
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 13
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 13
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 11
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Thu",
+            "from": 12,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 11,
+            "to": 20
+          },
+          {
+            "day": "Mon",
+            "from": 13,
+            "to": 20
+          },
+          {
+            "day": "Tue",
+            "from": 13,
+            "to": 20
+          },
+          {
+            "day": "Wed",
+            "from": 13,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
+      }
+    },
+    {
+      "id": "I51",
+      "name": "mgr inż. Wiktor Witelicki",
+      "preferences_text": "MOGĘ: wtorek i środa 14–20, piątek 12–18. NIE MOGĘ: poniedziałek i czwartek (zobowiązania organizacyjne na studiach doktoranckich); przed 12. DOSTĘPNOŚĆ AWARYJNA: czwartek 16–19. Doktorant na pierwszym roku — dyspozycyjność ograniczona, ale elastyczna popołudniami.",
+      "subjects": [
+        "PROG-POD",
+        "SYS-OP"
+      ],
+      "hours_per_semester": 120,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Tue",
+            "from": 14,
+            "to": 20
+          },
+          {
+            "day": "Wed",
+            "from": 14,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 12,
+            "to": 18
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Thu",
+            "from": 16,
+            "to": 19
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 12
+          }
+        ],
+        "lecture_preferences": "popołudniami",
+        "lab_preferences": null
+      }
+    },
+    {
+      "id": "I52",
+      "name": "dr Anna Liselicka",
+      "preferences_text": "MOGĘ: poniedziałek i wtorek 8–15. NIE MOGĘ: środa–piątek (zobowiązania badawcze). DOSTĘPNOŚĆ AWARYJNA: środa 8–12, piątek 8–10 (dostępność wyjątkowa, niski priorytet). Dwa dni dydaktyczne w tygodniu są preferowane, z naciskiem na jakość zajęć.",
+      "subjects": [
+        "GRAF-KOMP",
+        "PRZETW-SYG",
+        "AN-NUM"
+      ],
+      "hours_per_semester": 138,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 15
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 15
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 12
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 10
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
+      }
+    },
+    {
+      "id": "I53",
+      "name": "dr inż. Tomasz Kowalewicki",
+      "preferences_text": "MOGĘ: środa, czwartek i piątek 8–16. NIE MOGĘ: poniedziałek (zobowiązania organizacyjne); wtorek. DOSTĘPNOŚĆ AWARYJNA: wtorek 10–14, poniedziałek 15–18. Posiadam doświadczenie praktyczne w obszarze bezpieczeństwa.",
+      "subjects": [
+        "SIECI",
+        "BEZP-SYS",
+        "INZ-OPR"
+      ],
+      "hours_per_semester": 144,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 16
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Tue",
+            "from": 10,
+            "to": 14
+          },
+          {
+            "day": "Mon",
+            "from": 15,
+            "to": 18
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
+      }
+    },
+    {
+      "id": "I54",
+      "name": "dr Natalia Wojciechowicka",
+      "preferences_text": "MOGĘ: wtorek, środa i czwartek 10–18. NIE MOGĘ: poniedziałek rano (zobowiązania organizacyjne); piątek (wolny); przed 10. DOSTĘPNOŚĆ AWARYJNA: poniedziałek 13–17, piątek 10–13. Preferuję bloki zajęć trwające minimum 4 godziny.",
+      "subjects": [
+        "UCZ-MASZ",
+        "GRAF-KOMP"
+      ],
+      "hours_per_semester": 153,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Tue",
+            "from": 10,
+            "to": 18
+          },
+          {
+            "day": "Wed",
+            "from": 10,
+            "to": 18
+          },
+          {
+            "day": "Thu",
+            "from": 10,
+            "to": 18
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Mon",
+            "from": 13,
+            "to": 17
+          },
+          {
+            "day": "Fri",
+            "from": 10,
+            "to": 13
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 10
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": "bloki"
+      }
+    },
+    {
+      "id": "I55",
+      "name": "mgr inż. Marcin Pietrelicki",
+      "preferences_text": "MOGĘ: poniedziałek–czwartek 9–15. NIE MOGĘ: piątek (zobowiązania badawcze). DOSTĘPNOŚĆ AWARYJNA: piątek 9–12, środa do 17. Preferuję umiarkowane obciążenie dydaktyczne.",
+      "subjects": [
+        "PROG-OB",
+        "ALGO",
+        "MAT-DYSK"
+      ],
+      "hours_per_semester": 127,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 9,
+            "to": 15
+          },
+          {
+            "day": "Tue",
+            "from": 9,
+            "to": 15
+          },
+          {
+            "day": "Wed",
+            "from": 9,
+            "to": 15
+          },
+          {
+            "day": "Thu",
+            "from": 9,
+            "to": 15
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Fri",
+            "from": 9,
+            "to": 12
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 17
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
+      }
+    },
+    {
+      "id": "I56",
+      "name": "dr inż. Elżbieta Pawelicka",
+      "preferences_text": "MOGĘ: wtorek i czwartek 8–16. NIE MOGĘ: poniedziałek i piątek (zobowiązania organizacyjne); środa po 13. DOSTĘPNOŚĆ AWARYJNA: środa 8–13, piątek 9–12. Preferowany układ to dwa intensywne dni dydaktyczne tygodniowo: wtorek i czwartek.",
+      "subjects": [
+        "BAZY-DAN",
+        "INZ-OPR"
+      ],
+      "hours_per_semester": 161,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 16
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 13
+          },
+          {
+            "day": "Fri",
+            "from": 9,
+            "to": 12
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Wed",
+            "from": 13,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
+      }
+    },
+    {
+      "id": "I57",
+      "name": "dr Łukasz Marcinelicki",
+      "preferences_text": "MOGĘ: każdy dzień 10–18. NIE MOGĘ: poniedziałek 8–10 (zebranie zakładu); piątek po 16. DOSTĘPNOŚĆ AWARYJNA: poniedziałek 8–10 (tylko raz w miesiącu). Dopuszczalna zmiana sali lub terminu przy zachowaniu wskazanej dostępności.",
+      "subjects": [
+        "ARCH-KOMP",
+        "SIECI"
+      ],
+      "hours_per_semester": 167,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 10,
+            "to": 18
+          },
+          {
+            "day": "Tue",
+            "from": 10,
+            "to": 18
+          },
+          {
+            "day": "Wed",
+            "from": 10,
+            "to": 18
+          },
+          {
+            "day": "Thu",
+            "from": 10,
+            "to": 18
+          },
+          {
+            "day": "Fri",
+            "from": 10,
+            "to": 18
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 10
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 10
+          },
+          {
+            "day": "Fri",
+            "from": 16,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
+      }
+    },
+    {
+      "id": "I58",
+      "name": "dr inż. Alicja Grabelicka",
+      "preferences_text": "MOGĘ: poniedziałek, wtorek i środa 9–14. NIE MOGĘ: czwartek i piątek (ograniczona dostępność); po 15. DOSTĘPNOŚĆ AWARYJNA: czwartek 9–12 (dostępność wyjątkowa, niski priorytet). Dostępność ograniczona do maksymalnie 3 dni w tygodniu.",
+      "subjects": [
+        "AN-NUM",
+        "STAT-RAC"
+      ],
+      "hours_per_semester": 131,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 9,
+            "to": 14
+          },
+          {
+            "day": "Tue",
+            "from": 9,
+            "to": 14
+          },
+          {
+            "day": "Wed",
+            "from": 9,
+            "to": 14
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Thu",
+            "from": 9,
+            "to": 12
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Mon",
+            "from": 14,
+            "to": 20
+          },
+          {
+            "day": "Tue",
+            "from": 14,
+            "to": 20
+          },
+          {
+            "day": "Wed",
+            "from": 15,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
+      }
+    },
+    {
+      "id": "I59",
+      "name": "mgr Henryk Czarnelicki",
+      "preferences_text": "MOGĘ: każdy dzień od 14 do 20. NIE MOGĘ: przed 14 w żaden dzień; środa 18–20 (kurs językowy). DOSTĘPNOŚĆ AWARYJNA: środa 14–18, piątek 16–20. Doktorant wieczorowy — dostępność rozpoczyna się od godz. 14.",
+      "subjects": [
+        "PROG-POD",
+        "BAZY-DAN"
+      ],
+      "hours_per_semester": 120,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 14,
+            "to": 20
+          },
+          {
+            "day": "Tue",
+            "from": 14,
+            "to": 20
+          },
+          {
+            "day": "Wed",
+            "from": 14,
+            "to": 20
+          },
+          {
+            "day": "Thu",
+            "from": 14,
+            "to": 20
+          },
+          {
+            "day": "Fri",
+            "from": 14,
+            "to": 20
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Wed",
+            "from": 14,
+            "to": 18
+          },
+          {
+            "day": "Fri",
+            "from": 16,
+            "to": 20
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 14
+          },
+          {
+            "day": "Wed",
+            "from": 18,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": null,
+        "lab_preferences": null
+      }
+    },
+    {
+      "id": "I60",
+      "name": "dr inż. Bożena Wrobelicka",
+      "preferences_text": "MOGĘ: poniedziałek–czwartek 8–16. NIE MOGĘ: piątek (zobowiązania organizacyjne); po 16. DOSTĘPNOŚĆ AWARYJNA: piątek 8–11 (dostępność wyjątkowa, maksymalnie raz na 2 tygodnie). Rano wolę wykłady (8–12); laboratoria i projekty preferowane do 16.",
+      "subjects": [
+        "UCZ-MASZ",
+        "BEZP-SYS",
+        "SYS-OP"
+      ],
+      "hours_per_semester": 156,
+      "parsed_preferences": {
+        "preferred_slots": [
+          {
+            "day": "Mon",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Tue",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Wed",
+            "from": 8,
+            "to": 16
+          },
+          {
+            "day": "Thu",
+            "from": 8,
+            "to": 16
+          }
+        ],
+        "emergency_slots": [
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 11
+          }
+        ],
+        "forbidden_slots": [
+          {
+            "day": "Fri",
+            "from": 8,
+            "to": 20
+          },
+          {
+            "day": "Mon",
+            "from": 16,
+            "to": 20
+          },
+          {
+            "day": "Tue",
+            "from": 16,
+            "to": 20
+          },
+          {
+            "day": "Wed",
+            "from": 16,
+            "to": 20
+          },
+          {
+            "day": "Thu",
+            "from": 16,
+            "to": 20
+          }
+        ],
+        "lecture_preferences": "rano (8–12)",
+        "lab_preferences": null
       }
     }
   ],
@@ -512,43 +3770,97 @@
       "id": "W01",
       "name": "Aula Główna",
       "type": "lecture_hall",
-      "capacity": 150
+      "capacity": 200
     },
     {
       "id": "W02",
       "name": "Sala Wykładowa im. T. Edisona",
       "type": "lecture_hall",
-      "capacity": 100
+      "capacity": 120
     },
     {
       "id": "W03",
       "name": "Sala Wykładowa A3",
       "type": "lecture_hall",
-      "capacity": 80
+      "capacity": 100
     },
     {
       "id": "W04",
       "name": "Sala Wykładowa A4",
       "type": "lecture_hall",
-      "capacity": 80
+      "capacity": 100
     },
     {
       "id": "W05",
       "name": "Sala Wykładowa B1",
       "type": "lecture_hall",
-      "capacity": 60
+      "capacity": 80
     },
     {
       "id": "W06",
-      "name": "Sala Multimedialna",
+      "name": "Sala Wykładowa B2",
+      "type": "lecture_hall",
+      "capacity": 80
+    },
+    {
+      "id": "W07",
+      "name": "Sala Wykładowa C1",
+      "type": "lecture_hall",
+      "capacity": 60
+    },
+    {
+      "id": "W08",
+      "name": "Sala Wykładowa C2",
+      "type": "lecture_hall",
+      "capacity": 60
+    },
+    {
+      "id": "W09",
+      "name": "Sala Multimedialna A",
       "type": "lecture_hall",
       "capacity": 50
     },
     {
-      "id": "W07",
-      "name": "Aula Sportowa (tryb konferencyjny)",
+      "id": "W10",
+      "name": "Sala Multimedialna B",
       "type": "lecture_hall",
-      "capacity": 200
+      "capacity": 50
+    },
+    {
+      "id": "W11",
+      "name": "Sala Wykładowa D1",
+      "type": "lecture_hall",
+      "capacity": 45
+    },
+    {
+      "id": "W12",
+      "name": "Sala Wykładowa D2",
+      "type": "lecture_hall",
+      "capacity": 45
+    },
+    {
+      "id": "W13",
+      "name": "Aula Konferencyjna",
+      "type": "lecture_hall",
+      "capacity": 250
+    },
+    {
+      "id": "W14",
+      "name": "Sala Konferencyjna 1",
+      "type": "lecture_hall",
+      "capacity": 40
+    },
+    {
+      "id": "W15",
+      "name": "Sala Wykładowa KW-001",
+      "type": "lecture_hall",
+      "capacity": 45
+    },
+    {
+      "id": "W16",
+      "name": "Sala Wykładowa KW-002",
+      "type": "lecture_hall",
+      "capacity": 40
     },
     {
       "id": "K01",
@@ -606,33 +3918,129 @@
     },
     {
       "id": "K10",
-      "name": "Laboratorium Sieci Komputerowych",
+      "name": "Laboratorium Sieci Komputerowych A",
       "type": "computer_lab",
       "capacity": 18
     },
     {
       "id": "K11",
-      "name": "Laboratorium Bezpieczeństwa IT",
-      "type": "computer_lab",
-      "capacity": 16
-    },
-    {
-      "id": "K12",
-      "name": "Laboratorium Wizualizacji i GK",
-      "type": "computer_lab",
-      "capacity": 20
-    },
-    {
-      "id": "K13",
-      "name": "Laboratorium AI/ML",
+      "name": "Laboratorium Sieci Komputerowych B",
       "type": "computer_lab",
       "capacity": 18
     },
     {
+      "id": "K12",
+      "name": "Laboratorium Bezpieczeństwa IT A",
+      "type": "computer_lab",
+      "capacity": 16
+    },
+    {
+      "id": "K13",
+      "name": "Laboratorium Bezpieczeństwa IT B",
+      "type": "computer_lab",
+      "capacity": 16
+    },
+    {
       "id": "K14",
-      "name": "Laboratorium Komputerowe DS (kampus)",
+      "name": "Laboratorium Wizualizacji i Grafiki Komputerowej A",
+      "type": "computer_lab",
+      "capacity": 20
+    },
+    {
+      "id": "K15",
+      "name": "Laboratorium Wizualizacji i Grafiki Komputerowej B",
+      "type": "computer_lab",
+      "capacity": 20
+    },
+    {
+      "id": "K16",
+      "name": "Laboratorium AI/ML A",
+      "type": "computer_lab",
+      "capacity": 18
+    },
+    {
+      "id": "K17",
+      "name": "Laboratorium AI/ML B",
+      "type": "computer_lab",
+      "capacity": 18
+    },
+    {
+      "id": "K18",
+      "name": "Laboratorium Komputerowe — Kampus DS",
       "type": "computer_lab",
       "capacity": 30
+    },
+    {
+      "id": "K19",
+      "name": "Laboratorium Komputerowe 301",
+      "type": "computer_lab",
+      "capacity": 25
+    },
+    {
+      "id": "K20",
+      "name": "Laboratorium Komputerowe 302",
+      "type": "computer_lab",
+      "capacity": 25
+    },
+    {
+      "id": "K21",
+      "name": "Laboratorium Komputerowe 303",
+      "type": "computer_lab",
+      "capacity": 24
+    },
+    {
+      "id": "K22",
+      "name": "Laboratorium Komputerowe 401",
+      "type": "computer_lab",
+      "capacity": 22
+    },
+    {
+      "id": "K23",
+      "name": "Laboratorium Komputerowe 402",
+      "type": "computer_lab",
+      "capacity": 22
+    },
+    {
+      "id": "K24",
+      "name": "Laboratorium Programowania A",
+      "type": "computer_lab",
+      "capacity": 20
+    },
+    {
+      "id": "K25",
+      "name": "Laboratorium Programowania B",
+      "type": "computer_lab",
+      "capacity": 20
+    },
+    {
+      "id": "K26",
+      "name": "Laboratorium Big Data",
+      "type": "computer_lab",
+      "capacity": 20
+    },
+    {
+      "id": "K27",
+      "name": "Laboratorium Chmury Obliczeniowej",
+      "type": "computer_lab",
+      "capacity": 18
+    },
+    {
+      "id": "K28",
+      "name": "Laboratorium Komputerowe KW-201",
+      "type": "computer_lab",
+      "capacity": 22
+    },
+    {
+      "id": "K29",
+      "name": "Laboratorium Komputerowe KW-202",
+      "type": "computer_lab",
+      "capacity": 20
+    },
+    {
+      "id": "K30",
+      "name": "Laboratorium Multimediów",
+      "type": "computer_lab",
+      "capacity": 18
     },
     {
       "id": "C01",
@@ -713,6 +4121,120 @@
       "capacity": 20
     },
     {
+      "id": "C14",
+      "name": "Sala Ćwiczeń 401",
+      "type": "exercise_room",
+      "capacity": 28
+    },
+    {
+      "id": "C15",
+      "name": "Sala Ćwiczeń 402",
+      "type": "exercise_room",
+      "capacity": 26
+    },
+    {
+      "id": "C16",
+      "name": "Sala Ćwiczeń 403",
+      "type": "exercise_room",
+      "capacity": 25
+    },
+    {
+      "id": "C17",
+      "name": "Sala Ćwiczeń 404",
+      "type": "exercise_room",
+      "capacity": 24
+    },
+    {
+      "id": "C18",
+      "name": "Sala Ćwiczeń 501",
+      "type": "exercise_room",
+      "capacity": 22
+    },
+    {
+      "id": "C19",
+      "name": "Sala Ćwiczeń 502",
+      "type": "exercise_room",
+      "capacity": 22
+    },
+    {
+      "id": "C20",
+      "name": "Sala Seminaryjna 501",
+      "type": "exercise_room",
+      "capacity": 20
+    },
+    {
+      "id": "C21",
+      "name": "Sala Seminaryjna 502",
+      "type": "exercise_room",
+      "capacity": 18
+    },
+    {
+      "id": "C22",
+      "name": "Sala Projektowa P4",
+      "type": "exercise_room",
+      "capacity": 22
+    },
+    {
+      "id": "C23",
+      "name": "Sala Projektowa P5",
+      "type": "exercise_room",
+      "capacity": 20
+    },
+    {
+      "id": "C24",
+      "name": "Sala Projektowa P6",
+      "type": "exercise_room",
+      "capacity": 18
+    },
+    {
+      "id": "C25",
+      "name": "Sala Ćwiczeń KW-101",
+      "type": "exercise_room",
+      "capacity": 26
+    },
+    {
+      "id": "C26",
+      "name": "Sala Ćwiczeń KW-102",
+      "type": "exercise_room",
+      "capacity": 24
+    },
+    {
+      "id": "C27",
+      "name": "Sala Projektowa KW-301",
+      "type": "exercise_room",
+      "capacity": 20
+    },
+    {
+      "id": "C28",
+      "name": "Sala Projektowa KW-302",
+      "type": "exercise_room",
+      "capacity": 18
+    },
+    {
+      "id": "C29",
+      "name": "Sala Ćwiczeń B1",
+      "type": "exercise_room",
+      "capacity": 30
+    },
+    {
+      "id": "C30",
+      "name": "Sala Ćwiczeń B2",
+      "type": "exercise_room",
+      "capacity": 28
+    },
+    {
+      "id": "C31",
+      "name": "Sala Ćwiczeń B3",
+      "type": "exercise_room",
+      "capacity": 26
+    },
+    {
+      "id": "C32",
+      "name": "Sala Projektowo-Konferencyjna",
+      "type": "exercise_room",
+      "capacity": 16
+    },
+    {
       "id": "S01",
       "name": "Laboratorium Sprzętowe 501",
       "type": "hardware_lab",
@@ -738,75 +4260,111 @@
     },
     {
       "id": "S05",
-      "name": "Laboratorium Sieci i Telekomunikacji",
+      "name": "Laboratorium Sieci i Telekomunikacji A",
       "type": "hardware_lab",
       "capacity": 16
     },
     {
       "id": "S06",
-      "name": "Laboratorium Systemów Wbudowanych",
+      "name": "Laboratorium Sieci i Telekomunikacji B",
       "type": "hardware_lab",
       "capacity": 16
     },
     {
       "id": "S07",
-      "name": "Laboratorium Elektroniki 601",
+      "name": "Laboratorium Systemów Wbudowanych A",
       "type": "hardware_lab",
       "capacity": 16
     },
     {
       "id": "S08",
+      "name": "Laboratorium Systemów Wbudowanych B",
+      "type": "hardware_lab",
+      "capacity": 16
+    },
+    {
+      "id": "S09",
+      "name": "Laboratorium Elektroniki 601",
+      "type": "hardware_lab",
+      "capacity": 16
+    },
+    {
+      "id": "S10",
       "name": "Laboratorium Elektroniki 602",
       "type": "hardware_lab",
       "capacity": 14
     },
     {
-      "id": "S09",
-      "name": "Laboratorium Mechatroniki",
+      "id": "S11",
+      "name": "Laboratorium Elektroniki 603",
       "type": "hardware_lab",
       "capacity": 14
     },
     {
-      "id": "S10",
-      "name": "Laboratorium Embedded (Kampus Wsch.)",
+      "id": "S12",
+      "name": "Laboratorium Mechatroniki A",
+      "type": "hardware_lab",
+      "capacity": 14
+    },
+    {
+      "id": "S13",
+      "name": "Laboratorium Mechatroniki B",
+      "type": "hardware_lab",
+      "capacity": 14
+    },
+    {
+      "id": "S14",
+      "name": "Laboratorium Systemów Wbudowanych — Kampus Wschodni",
       "type": "hardware_lab",
       "capacity": 12
     },
     {
-      "id": "E01",
-      "name": "Sala Ćwiczeń KW-101",
-      "type": "exercise_room",
-      "capacity": 26
-    },
-    {
-      "id": "E02",
-      "name": "Sala Ćwiczeń KW-102",
-      "type": "exercise_room",
-      "capacity": 24
-    },
-    {
-      "id": "E03",
-      "name": "Laboratorium Komputerowe KW-201",
-      "type": "computer_lab",
-      "capacity": 22
-    },
-    {
-      "id": "E04",
-      "name": "Sala Projektowa KW-301",
-      "type": "exercise_room",
+      "id": "S15",
+      "name": "Laboratorium Sprzętowe 601",
+      "type": "hardware_lab",
       "capacity": 20
     },
     {
-      "id": "E05",
-      "name": "Sala Wykładowa KW-001",
-      "type": "lecture_hall",
-      "capacity": 45
+      "id": "S16",
+      "name": "Laboratorium Sprzętowe 602",
+      "type": "hardware_lab",
+      "capacity": 18
     },
     {
-      "id": "E06",
+      "id": "S17",
+      "name": "Laboratorium Architektury Procesorów",
+      "type": "hardware_lab",
+      "capacity": 16
+    },
+    {
+      "id": "S18",
+      "name": "Laboratorium FPGA i Systemów Cyfrowych",
+      "type": "hardware_lab",
+      "capacity": 14
+    },
+    {
+      "id": "S19",
+      "name": "Laboratorium Robotyki",
+      "type": "hardware_lab",
+      "capacity": 16
+    },
+    {
+      "id": "S20",
+      "name": "Laboratorium IoT",
+      "type": "hardware_lab",
+      "capacity": 14
+    },
+    {
+      "id": "S21",
       "name": "Laboratorium Sprzętowe KW-401",
       "type": "hardware_lab",
       "capacity": 15
+    },
+    {
+      "id": "S22",
+      "name": "Laboratorium Sieci Przemysłowych",
+      "type": "hardware_lab",
+      "capacity": 12
     }
   ],
   "student_groups": [
@@ -814,652 +4372,2642 @@
       "id": "IS1A",
       "name": "Informatyka Stosowana, rok 1, gr. A",
       "year": 1,
-      "students": 24
+      "students": 22
     },
     {
       "id": "IS1B",
       "name": "Informatyka Stosowana, rok 1, gr. B",
       "year": 1,
-      "students": 23
+      "students": 21
+    },
+    {
+      "id": "IS1C",
+      "name": "Informatyka Stosowana, rok 1, gr. C",
+      "year": 1,
+      "students": 21
+    },
+    {
+      "id": "IS1D",
+      "name": "Informatyka Stosowana, rok 1, gr. D",
+      "year": 1,
+      "students": 20
+    },
+    {
+      "id": "IS1E",
+      "name": "Informatyka Stosowana, rok 1, gr. E",
+      "year": 1,
+      "students": 20
+    },
+    {
+      "id": "IS1F",
+      "name": "Informatyka Stosowana, rok 1, gr. F",
+      "year": 1,
+      "students": 19
+    },
+    {
+      "id": "IS1G",
+      "name": "Informatyka Stosowana, rok 1, gr. G",
+      "year": 1,
+      "students": 18
+    },
+    {
+      "id": "IS1H",
+      "name": "Informatyka Stosowana, rok 1, gr. H",
+      "year": 1,
+      "students": 17
     },
     {
       "id": "IS2A",
       "name": "Informatyka Stosowana, rok 2, gr. A",
       "year": 2,
-      "students": 22
+      "students": 20
     },
     {
       "id": "IS2B",
       "name": "Informatyka Stosowana, rok 2, gr. B",
       "year": 2,
-      "students": 21
+      "students": 19
+    },
+    {
+      "id": "IS2C",
+      "name": "Informatyka Stosowana, rok 2, gr. C",
+      "year": 2,
+      "students": 19
+    },
+    {
+      "id": "IS2D",
+      "name": "Informatyka Stosowana, rok 2, gr. D",
+      "year": 2,
+      "students": 18
+    },
+    {
+      "id": "IS2E",
+      "name": "Informatyka Stosowana, rok 2, gr. E",
+      "year": 2,
+      "students": 18
+    },
+    {
+      "id": "IS2F",
+      "name": "Informatyka Stosowana, rok 2, gr. F",
+      "year": 2,
+      "students": 17
+    },
+    {
+      "id": "IS2G",
+      "name": "Informatyka Stosowana, rok 2, gr. G",
+      "year": 2,
+      "students": 17
+    },
+    {
+      "id": "IS2H",
+      "name": "Informatyka Stosowana, rok 2, gr. H",
+      "year": 2,
+      "students": 16
     },
     {
       "id": "IS3A",
       "name": "Informatyka Stosowana, rok 3, gr. A",
       "year": 3,
-      "students": 20
+      "students": 17
     },
     {
       "id": "IS3B",
       "name": "Informatyka Stosowana, rok 3, gr. B",
       "year": 3,
-      "students": 19
+      "students": 16
+    },
+    {
+      "id": "IS3C",
+      "name": "Informatyka Stosowana, rok 3, gr. C",
+      "year": 3,
+      "students": 16
+    },
+    {
+      "id": "IS3D",
+      "name": "Informatyka Stosowana, rok 3, gr. D",
+      "year": 3,
+      "students": 15
+    },
+    {
+      "id": "IS3E",
+      "name": "Informatyka Stosowana, rok 3, gr. E",
+      "year": 3,
+      "students": 15
+    },
+    {
+      "id": "IS3F",
+      "name": "Informatyka Stosowana, rok 3, gr. F",
+      "year": 3,
+      "students": 14
+    },
+    {
+      "id": "IS3G",
+      "name": "Informatyka Stosowana, rok 3, gr. G",
+      "year": 3,
+      "students": 13
+    },
+    {
+      "id": "IS3H",
+      "name": "Informatyka Stosowana, rok 3, gr. H",
+      "year": 3,
+      "students": 12
     },
     {
       "id": "IS4A",
       "name": "Informatyka Stosowana, rok 4, gr. A",
       "year": 4,
-      "students": 18
+      "students": 15
     },
     {
       "id": "IS4B",
       "name": "Informatyka Stosowana, rok 4, gr. B",
       "year": 4,
-      "students": 17
+      "students": 14
+    },
+    {
+      "id": "IS4C",
+      "name": "Informatyka Stosowana, rok 4, gr. C",
+      "year": 4,
+      "students": 14
+    },
+    {
+      "id": "IS4D",
+      "name": "Informatyka Stosowana, rok 4, gr. D",
+      "year": 4,
+      "students": 13
+    },
+    {
+      "id": "IS4E",
+      "name": "Informatyka Stosowana, rok 4, gr. E",
+      "year": 4,
+      "students": 13
+    },
+    {
+      "id": "IS4F",
+      "name": "Informatyka Stosowana, rok 4, gr. F",
+      "year": 4,
+      "students": 12
+    },
+    {
+      "id": "IS4G",
+      "name": "Informatyka Stosowana, rok 4, gr. G",
+      "year": 4,
+      "students": 12
+    },
+    {
+      "id": "IS4H",
+      "name": "Informatyka Stosowana, rok 4, gr. H",
+      "year": 4,
+      "students": 11
     },
     {
       "id": "IS5A",
       "name": "Informatyka Stosowana, rok 5, gr. A",
       "year": 5,
-      "students": 16
+      "students": 13
     },
     {
       "id": "IS5B",
       "name": "Informatyka Stosowana, rok 5, gr. B",
       "year": 5,
-      "students": 15
+      "students": 12
+    },
+    {
+      "id": "IS5C",
+      "name": "Informatyka Stosowana, rok 5, gr. C",
+      "year": 5,
+      "students": 12
+    },
+    {
+      "id": "IS5D",
+      "name": "Informatyka Stosowana, rok 5, gr. D",
+      "year": 5,
+      "students": 11
+    },
+    {
+      "id": "IS5E",
+      "name": "Informatyka Stosowana, rok 5, gr. E",
+      "year": 5,
+      "students": 11
+    },
+    {
+      "id": "IS5F",
+      "name": "Informatyka Stosowana, rok 5, gr. F",
+      "year": 5,
+      "students": 10
+    },
+    {
+      "id": "IS5G",
+      "name": "Informatyka Stosowana, rok 5, gr. G",
+      "year": 5,
+      "students": 10
+    },
+    {
+      "id": "IS5H",
+      "name": "Informatyka Stosowana, rok 5, gr. H",
+      "year": 5,
+      "students": 9
     }
   ],
   "courses": [
     {
-      "id": "C01",
+      "id": "C001",
       "subject_id": "MAT-DYSK",
       "name": "Matematyka Dyskretna",
       "type": "lecture",
       "group_id": "IS1A",
-      "students": 24,
-      "hours_per_semester": 28,
+      "students": 22,
+      "hours_per_semester": 42,
       "required_room_type": "lecture_hall"
     },
     {
-      "id": "C02",
+      "id": "C002",
       "subject_id": "MAT-DYSK",
       "name": "Matematyka Dyskretna",
       "type": "exercise",
       "group_id": "IS1A",
-      "students": 24,
-      "hours_per_semester": 42,
+      "students": 22,
+      "hours_per_semester": 28,
       "required_room_type": "exercise_room"
     },
     {
-      "id": "C03",
+      "id": "C003",
       "subject_id": "MAT-DYSK",
       "name": "Matematyka Dyskretna",
       "type": "lecture",
       "group_id": "IS1B",
-      "students": 23,
+      "students": 21,
       "hours_per_semester": 28,
       "required_room_type": "lecture_hall"
     },
     {
-      "id": "C04",
+      "id": "C004",
       "subject_id": "MAT-DYSK",
       "name": "Matematyka Dyskretna",
       "type": "exercise",
       "group_id": "IS1B",
-      "students": 23,
+      "students": 21,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C005",
+      "subject_id": "MAT-DYSK",
+      "name": "Matematyka Dyskretna",
+      "type": "lecture",
+      "group_id": "IS1C",
+      "students": 21,
+      "hours_per_semester": 28,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C006",
+      "subject_id": "MAT-DYSK",
+      "name": "Matematyka Dyskretna",
+      "type": "exercise",
+      "group_id": "IS1C",
+      "students": 21,
       "hours_per_semester": 28,
       "required_room_type": "exercise_room"
     },
     {
-      "id": "C05",
+      "id": "C007",
+      "subject_id": "MAT-DYSK",
+      "name": "Matematyka Dyskretna",
+      "type": "lecture",
+      "group_id": "IS1D",
+      "students": 20,
+      "hours_per_semester": 28,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C008",
+      "subject_id": "MAT-DYSK",
+      "name": "Matematyka Dyskretna",
+      "type": "exercise",
+      "group_id": "IS1D",
+      "students": 20,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C009",
+      "subject_id": "MAT-DYSK",
+      "name": "Matematyka Dyskretna",
+      "type": "lecture",
+      "group_id": "IS1E",
+      "students": 20,
+      "hours_per_semester": 42,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C010",
+      "subject_id": "MAT-DYSK",
+      "name": "Matematyka Dyskretna",
+      "type": "exercise",
+      "group_id": "IS1E",
+      "students": 20,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C011",
+      "subject_id": "MAT-DYSK",
+      "name": "Matematyka Dyskretna",
+      "type": "lecture",
+      "group_id": "IS1F",
+      "students": 19,
+      "hours_per_semester": 42,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C012",
+      "subject_id": "MAT-DYSK",
+      "name": "Matematyka Dyskretna",
+      "type": "exercise",
+      "group_id": "IS1F",
+      "students": 19,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C013",
+      "subject_id": "MAT-DYSK",
+      "name": "Matematyka Dyskretna",
+      "type": "lecture",
+      "group_id": "IS1G",
+      "students": 18,
+      "hours_per_semester": 42,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C014",
+      "subject_id": "MAT-DYSK",
+      "name": "Matematyka Dyskretna",
+      "type": "exercise",
+      "group_id": "IS1G",
+      "students": 18,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C015",
+      "subject_id": "MAT-DYSK",
+      "name": "Matematyka Dyskretna",
+      "type": "lecture",
+      "group_id": "IS1H",
+      "students": 17,
+      "hours_per_semester": 42,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C016",
+      "subject_id": "MAT-DYSK",
+      "name": "Matematyka Dyskretna",
+      "type": "exercise",
+      "group_id": "IS1H",
+      "students": 17,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C017",
       "subject_id": "PROG-POD",
       "name": "Podstawy Programowania",
       "type": "project",
       "group_id": "IS1A",
-      "students": 24,
+      "students": 22,
       "hours_per_semester": 28,
       "required_room_type": "exercise_room"
     },
     {
-      "id": "C06",
+      "id": "C018",
       "subject_id": "PROG-POD",
       "name": "Podstawy Programowania",
       "type": "lab",
       "group_id": "IS1A",
-      "students": 24,
-      "hours_per_semester": 42,
+      "students": 22,
+      "hours_per_semester": 28,
       "required_room_type": "computer_lab"
     },
     {
-      "id": "C07",
+      "id": "C019",
       "subject_id": "PROG-POD",
       "name": "Podstawy Programowania",
       "type": "project",
       "group_id": "IS1B",
-      "students": 23,
+      "students": 21,
       "hours_per_semester": 28,
       "required_room_type": "exercise_room"
     },
     {
-      "id": "C08",
+      "id": "C020",
       "subject_id": "PROG-POD",
       "name": "Podstawy Programowania",
       "type": "lab",
       "group_id": "IS1B",
-      "students": 23,
+      "students": 21,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C021",
+      "subject_id": "PROG-POD",
+      "name": "Podstawy Programowania",
+      "type": "project",
+      "group_id": "IS1C",
+      "students": 21,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C022",
+      "subject_id": "PROG-POD",
+      "name": "Podstawy Programowania",
+      "type": "lab",
+      "group_id": "IS1C",
+      "students": 21,
       "hours_per_semester": 42,
       "required_room_type": "computer_lab"
     },
     {
-      "id": "C09",
+      "id": "C023",
+      "subject_id": "PROG-POD",
+      "name": "Podstawy Programowania",
+      "type": "project",
+      "group_id": "IS1D",
+      "students": 20,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C024",
+      "subject_id": "PROG-POD",
+      "name": "Podstawy Programowania",
+      "type": "lab",
+      "group_id": "IS1D",
+      "students": 20,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C025",
+      "subject_id": "PROG-POD",
+      "name": "Podstawy Programowania",
+      "type": "project",
+      "group_id": "IS1E",
+      "students": 20,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C026",
+      "subject_id": "PROG-POD",
+      "name": "Podstawy Programowania",
+      "type": "lab",
+      "group_id": "IS1E",
+      "students": 20,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C027",
+      "subject_id": "PROG-POD",
+      "name": "Podstawy Programowania",
+      "type": "project",
+      "group_id": "IS1F",
+      "students": 19,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C028",
+      "subject_id": "PROG-POD",
+      "name": "Podstawy Programowania",
+      "type": "lab",
+      "group_id": "IS1F",
+      "students": 19,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C029",
+      "subject_id": "PROG-POD",
+      "name": "Podstawy Programowania",
+      "type": "project",
+      "group_id": "IS1G",
+      "students": 18,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C030",
+      "subject_id": "PROG-POD",
+      "name": "Podstawy Programowania",
+      "type": "lab",
+      "group_id": "IS1G",
+      "students": 18,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C031",
+      "subject_id": "PROG-POD",
+      "name": "Podstawy Programowania",
+      "type": "project",
+      "group_id": "IS1H",
+      "students": 17,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C032",
+      "subject_id": "PROG-POD",
+      "name": "Podstawy Programowania",
+      "type": "lab",
+      "group_id": "IS1H",
+      "students": 17,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C033",
       "subject_id": "ARCH-KOMP",
       "name": "Architektura Komputerów",
       "type": "project",
       "group_id": "IS1A",
-      "students": 24,
+      "students": 22,
       "hours_per_semester": 28,
       "required_room_type": "exercise_room"
     },
     {
-      "id": "C11",
+      "id": "C034",
+      "subject_id": "ARCH-KOMP",
+      "name": "Architektura Komputerów",
+      "type": "lab",
+      "group_id": "IS1A",
+      "students": 22,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C035",
       "subject_id": "ARCH-KOMP",
       "name": "Architektura Komputerów",
       "type": "project",
       "group_id": "IS1B",
-      "students": 23,
+      "students": 21,
       "hours_per_semester": 28,
       "required_room_type": "exercise_room"
     },
     {
-      "id": "C12",
+      "id": "C036",
       "subject_id": "ARCH-KOMP",
       "name": "Architektura Komputerów",
       "type": "lab",
       "group_id": "IS1B",
-      "students": 1,
+      "students": 21,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C037",
+      "subject_id": "ARCH-KOMP",
+      "name": "Architektura Komputerów",
+      "type": "project",
+      "group_id": "IS1C",
+      "students": 21,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C038",
+      "subject_id": "ARCH-KOMP",
+      "name": "Architektura Komputerów",
+      "type": "lab",
+      "group_id": "IS1C",
+      "students": 21,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C039",
+      "subject_id": "ARCH-KOMP",
+      "name": "Architektura Komputerów",
+      "type": "project",
+      "group_id": "IS1D",
+      "students": 20,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C040",
+      "subject_id": "ARCH-KOMP",
+      "name": "Architektura Komputerów",
+      "type": "lab",
+      "group_id": "IS1D",
+      "students": 20,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C041",
+      "subject_id": "ARCH-KOMP",
+      "name": "Architektura Komputerów",
+      "type": "project",
+      "group_id": "IS1E",
+      "students": 20,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C042",
+      "subject_id": "ARCH-KOMP",
+      "name": "Architektura Komputerów",
+      "type": "lab",
+      "group_id": "IS1E",
+      "students": 20,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C043",
+      "subject_id": "ARCH-KOMP",
+      "name": "Architektura Komputerów",
+      "type": "project",
+      "group_id": "IS1F",
+      "students": 19,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C044",
+      "subject_id": "ARCH-KOMP",
+      "name": "Architektura Komputerów",
+      "type": "lab",
+      "group_id": "IS1F",
+      "students": 19,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C045",
+      "subject_id": "ARCH-KOMP",
+      "name": "Architektura Komputerów",
+      "type": "project",
+      "group_id": "IS1G",
+      "students": 18,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C046",
+      "subject_id": "ARCH-KOMP",
+      "name": "Architektura Komputerów",
+      "type": "lab",
+      "group_id": "IS1G",
+      "students": 18,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C047",
+      "subject_id": "ARCH-KOMP",
+      "name": "Architektura Komputerów",
+      "type": "project",
+      "group_id": "IS1H",
+      "students": 17,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C048",
+      "subject_id": "ARCH-KOMP",
+      "name": "Architektura Komputerów",
+      "type": "lab",
+      "group_id": "IS1H",
+      "students": 17,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C049",
+      "subject_id": "PROG-OB",
+      "name": "Programowanie Obiektowe",
+      "type": "lecture",
+      "group_id": "IS2A",
+      "students": 20,
+      "hours_per_semester": 28,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C050",
+      "subject_id": "PROG-OB",
+      "name": "Programowanie Obiektowe",
+      "type": "lab",
+      "group_id": "IS2A",
+      "students": 20,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C051",
+      "subject_id": "PROG-OB",
+      "name": "Programowanie Obiektowe",
+      "type": "lecture",
+      "group_id": "IS2B",
+      "students": 19,
+      "hours_per_semester": 42,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C052",
+      "subject_id": "PROG-OB",
+      "name": "Programowanie Obiektowe",
+      "type": "lab",
+      "group_id": "IS2B",
+      "students": 19,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C053",
+      "subject_id": "PROG-OB",
+      "name": "Programowanie Obiektowe",
+      "type": "lecture",
+      "group_id": "IS2C",
+      "students": 19,
+      "hours_per_semester": 28,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C054",
+      "subject_id": "PROG-OB",
+      "name": "Programowanie Obiektowe",
+      "type": "lab",
+      "group_id": "IS2C",
+      "students": 19,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C055",
+      "subject_id": "PROG-OB",
+      "name": "Programowanie Obiektowe",
+      "type": "lecture",
+      "group_id": "IS2D",
+      "students": 18,
+      "hours_per_semester": 28,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C056",
+      "subject_id": "PROG-OB",
+      "name": "Programowanie Obiektowe",
+      "type": "lab",
+      "group_id": "IS2D",
+      "students": 18,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C057",
+      "subject_id": "PROG-OB",
+      "name": "Programowanie Obiektowe",
+      "type": "lecture",
+      "group_id": "IS2E",
+      "students": 18,
+      "hours_per_semester": 28,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C058",
+      "subject_id": "PROG-OB",
+      "name": "Programowanie Obiektowe",
+      "type": "lab",
+      "group_id": "IS2E",
+      "students": 18,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C059",
+      "subject_id": "PROG-OB",
+      "name": "Programowanie Obiektowe",
+      "type": "lecture",
+      "group_id": "IS2F",
+      "students": 17,
+      "hours_per_semester": 28,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C060",
+      "subject_id": "PROG-OB",
+      "name": "Programowanie Obiektowe",
+      "type": "lab",
+      "group_id": "IS2F",
+      "students": 17,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C061",
+      "subject_id": "PROG-OB",
+      "name": "Programowanie Obiektowe",
+      "type": "lecture",
+      "group_id": "IS2G",
+      "students": 17,
+      "hours_per_semester": 28,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C062",
+      "subject_id": "PROG-OB",
+      "name": "Programowanie Obiektowe",
+      "type": "lab",
+      "group_id": "IS2G",
+      "students": 17,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C063",
+      "subject_id": "PROG-OB",
+      "name": "Programowanie Obiektowe",
+      "type": "lecture",
+      "group_id": "IS2H",
+      "students": 16,
+      "hours_per_semester": 42,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C064",
+      "subject_id": "PROG-OB",
+      "name": "Programowanie Obiektowe",
+      "type": "lab",
+      "group_id": "IS2H",
+      "students": 16,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C065",
+      "subject_id": "ALGO",
+      "name": "Algorytmika",
+      "type": "project",
+      "group_id": "IS2A",
+      "students": 20,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C066",
+      "subject_id": "ALGO",
+      "name": "Algorytmika",
+      "type": "exercise",
+      "group_id": "IS2A",
+      "students": 20,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C067",
+      "subject_id": "ALGO",
+      "name": "Algorytmika",
+      "type": "project",
+      "group_id": "IS2B",
+      "students": 19,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C068",
+      "subject_id": "ALGO",
+      "name": "Algorytmika",
+      "type": "exercise",
+      "group_id": "IS2B",
+      "students": 19,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C069",
+      "subject_id": "ALGO",
+      "name": "Algorytmika",
+      "type": "project",
+      "group_id": "IS2C",
+      "students": 19,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C070",
+      "subject_id": "ALGO",
+      "name": "Algorytmika",
+      "type": "exercise",
+      "group_id": "IS2C",
+      "students": 19,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C071",
+      "subject_id": "ALGO",
+      "name": "Algorytmika",
+      "type": "project",
+      "group_id": "IS2D",
+      "students": 18,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C072",
+      "subject_id": "ALGO",
+      "name": "Algorytmika",
+      "type": "exercise",
+      "group_id": "IS2D",
+      "students": 18,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C073",
+      "subject_id": "ALGO",
+      "name": "Algorytmika",
+      "type": "project",
+      "group_id": "IS2E",
+      "students": 18,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C074",
+      "subject_id": "ALGO",
+      "name": "Algorytmika",
+      "type": "exercise",
+      "group_id": "IS2E",
+      "students": 18,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C075",
+      "subject_id": "ALGO",
+      "name": "Algorytmika",
+      "type": "project",
+      "group_id": "IS2F",
+      "students": 17,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C076",
+      "subject_id": "ALGO",
+      "name": "Algorytmika",
+      "type": "exercise",
+      "group_id": "IS2F",
+      "students": 17,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C077",
+      "subject_id": "ALGO",
+      "name": "Algorytmika",
+      "type": "project",
+      "group_id": "IS2G",
+      "students": 17,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C078",
+      "subject_id": "ALGO",
+      "name": "Algorytmika",
+      "type": "exercise",
+      "group_id": "IS2G",
+      "students": 17,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C079",
+      "subject_id": "ALGO",
+      "name": "Algorytmika",
+      "type": "project",
+      "group_id": "IS2H",
+      "students": 16,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C080",
+      "subject_id": "ALGO",
+      "name": "Algorytmika",
+      "type": "exercise",
+      "group_id": "IS2H",
+      "students": 16,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C081",
+      "subject_id": "BAZY-DAN",
+      "name": "Bazy Danych",
+      "type": "project",
+      "group_id": "IS2A",
+      "students": 20,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C082",
+      "subject_id": "BAZY-DAN",
+      "name": "Bazy Danych",
+      "type": "lab",
+      "group_id": "IS2A",
+      "students": 20,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C083",
+      "subject_id": "BAZY-DAN",
+      "name": "Bazy Danych",
+      "type": "project",
+      "group_id": "IS2B",
+      "students": 19,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C084",
+      "subject_id": "BAZY-DAN",
+      "name": "Bazy Danych",
+      "type": "lab",
+      "group_id": "IS2B",
+      "students": 19,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C085",
+      "subject_id": "BAZY-DAN",
+      "name": "Bazy Danych",
+      "type": "project",
+      "group_id": "IS2C",
+      "students": 19,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C086",
+      "subject_id": "BAZY-DAN",
+      "name": "Bazy Danych",
+      "type": "lab",
+      "group_id": "IS2C",
+      "students": 19,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C087",
+      "subject_id": "BAZY-DAN",
+      "name": "Bazy Danych",
+      "type": "project",
+      "group_id": "IS2D",
+      "students": 18,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C088",
+      "subject_id": "BAZY-DAN",
+      "name": "Bazy Danych",
+      "type": "lab",
+      "group_id": "IS2D",
+      "students": 18,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C089",
+      "subject_id": "BAZY-DAN",
+      "name": "Bazy Danych",
+      "type": "project",
+      "group_id": "IS2E",
+      "students": 18,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C090",
+      "subject_id": "BAZY-DAN",
+      "name": "Bazy Danych",
+      "type": "lab",
+      "group_id": "IS2E",
+      "students": 18,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C091",
+      "subject_id": "BAZY-DAN",
+      "name": "Bazy Danych",
+      "type": "project",
+      "group_id": "IS2F",
+      "students": 17,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C092",
+      "subject_id": "BAZY-DAN",
+      "name": "Bazy Danych",
+      "type": "lab",
+      "group_id": "IS2F",
+      "students": 17,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C093",
+      "subject_id": "BAZY-DAN",
+      "name": "Bazy Danych",
+      "type": "project",
+      "group_id": "IS2G",
+      "students": 17,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C094",
+      "subject_id": "BAZY-DAN",
+      "name": "Bazy Danych",
+      "type": "lab",
+      "group_id": "IS2G",
+      "students": 17,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C095",
+      "subject_id": "BAZY-DAN",
+      "name": "Bazy Danych",
+      "type": "project",
+      "group_id": "IS2H",
+      "students": 16,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C096",
+      "subject_id": "BAZY-DAN",
+      "name": "Bazy Danych",
+      "type": "lab",
+      "group_id": "IS2H",
+      "students": 16,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C097",
+      "subject_id": "SIECI",
+      "name": "Sieci Komputerowe",
+      "type": "project",
+      "group_id": "IS3A",
+      "students": 17,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C098",
+      "subject_id": "SIECI",
+      "name": "Sieci Komputerowe",
+      "type": "lab",
+      "group_id": "IS3A",
+      "students": 17,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C099",
+      "subject_id": "SIECI",
+      "name": "Sieci Komputerowe",
+      "type": "project",
+      "group_id": "IS3B",
+      "students": 16,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C100",
+      "subject_id": "SIECI",
+      "name": "Sieci Komputerowe",
+      "type": "lab",
+      "group_id": "IS3B",
+      "students": 16,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C101",
+      "subject_id": "SIECI",
+      "name": "Sieci Komputerowe",
+      "type": "project",
+      "group_id": "IS3C",
+      "students": 16,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C102",
+      "subject_id": "SIECI",
+      "name": "Sieci Komputerowe",
+      "type": "lab",
+      "group_id": "IS3C",
+      "students": 16,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C103",
+      "subject_id": "SIECI",
+      "name": "Sieci Komputerowe",
+      "type": "project",
+      "group_id": "IS3D",
+      "students": 15,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C104",
+      "subject_id": "SIECI",
+      "name": "Sieci Komputerowe",
+      "type": "lab",
+      "group_id": "IS3D",
+      "students": 15,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C105",
+      "subject_id": "SIECI",
+      "name": "Sieci Komputerowe",
+      "type": "project",
+      "group_id": "IS3E",
+      "students": 15,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C106",
+      "subject_id": "SIECI",
+      "name": "Sieci Komputerowe",
+      "type": "lab",
+      "group_id": "IS3E",
+      "students": 15,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C107",
+      "subject_id": "SIECI",
+      "name": "Sieci Komputerowe",
+      "type": "project",
+      "group_id": "IS3F",
+      "students": 14,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C108",
+      "subject_id": "SIECI",
+      "name": "Sieci Komputerowe",
+      "type": "lab",
+      "group_id": "IS3F",
+      "students": 14,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C109",
+      "subject_id": "SIECI",
+      "name": "Sieci Komputerowe",
+      "type": "project",
+      "group_id": "IS3G",
+      "students": 13,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C110",
+      "subject_id": "SIECI",
+      "name": "Sieci Komputerowe",
+      "type": "lab",
+      "group_id": "IS3G",
+      "students": 13,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C111",
+      "subject_id": "SIECI",
+      "name": "Sieci Komputerowe",
+      "type": "project",
+      "group_id": "IS3H",
+      "students": 12,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C112",
+      "subject_id": "SIECI",
+      "name": "Sieci Komputerowe",
+      "type": "lab",
+      "group_id": "IS3H",
+      "students": 12,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C113",
+      "subject_id": "SYS-OP",
+      "name": "Systemy Operacyjne",
+      "type": "project",
+      "group_id": "IS3A",
+      "students": 17,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C114",
+      "subject_id": "SYS-OP",
+      "name": "Systemy Operacyjne",
+      "type": "lab",
+      "group_id": "IS3A",
+      "students": 17,
       "hours_per_semester": 28,
       "required_room_type": "hardware_lab"
     },
     {
-      "id": "C13",
-      "subject_id": "PROG-OB",
-      "name": "Programowanie Obiektowe",
-      "type": "lecture",
-      "group_id": "IS2A",
-      "students": 22,
-      "hours_per_semester": 28,
-      "required_room_type": "lecture_hall"
-    },
-    {
-      "id": "C14",
-      "subject_id": "PROG-OB",
-      "name": "Programowanie Obiektowe",
-      "type": "lab",
-      "group_id": "IS2A",
-      "students": 22,
-      "hours_per_semester": 42,
-      "required_room_type": "computer_lab"
-    },
-    {
-      "id": "C15",
-      "subject_id": "PROG-OB",
-      "name": "Programowanie Obiektowe",
-      "type": "lecture",
-      "group_id": "IS2B",
-      "students": 21,
-      "hours_per_semester": 42,
-      "required_room_type": "lecture_hall"
-    },
-    {
-      "id": "C16",
-      "subject_id": "PROG-OB",
-      "name": "Programowanie Obiektowe",
-      "type": "lab",
-      "group_id": "IS2B",
-      "students": 21,
-      "hours_per_semester": 28,
-      "required_room_type": "computer_lab"
-    },
-    {
-      "id": "C17",
-      "subject_id": "ALGO",
-      "name": "Algorytmika",
-      "type": "project",
-      "group_id": "IS2A",
-      "students": 22,
-      "hours_per_semester": 28,
-      "required_room_type": "exercise_room"
-    },
-    {
-      "id": "C18",
-      "subject_id": "ALGO",
-      "name": "Algorytmika",
-      "type": "exercise",
-      "group_id": "IS2A",
-      "students": 22,
-      "hours_per_semester": 28,
-      "required_room_type": "exercise_room"
-    },
-    {
-      "id": "C19",
-      "subject_id": "ALGO",
-      "name": "Algorytmika",
-      "type": "project",
-      "group_id": "IS2B",
-      "students": 21,
-      "hours_per_semester": 28,
-      "required_room_type": "exercise_room"
-    },
-    {
-      "id": "C20",
-      "subject_id": "ALGO",
-      "name": "Algorytmika",
-      "type": "exercise",
-      "group_id": "IS2B",
-      "students": 21,
-      "hours_per_semester": 42,
-      "required_room_type": "exercise_room"
-    },
-    {
-      "id": "C21",
-      "subject_id": "BAZY-DAN",
-      "name": "Bazy Danych",
-      "type": "project",
-      "group_id": "IS2A",
-      "students": 22,
-      "hours_per_semester": 28,
-      "required_room_type": "exercise_room"
-    },
-    {
-      "id": "C22",
-      "subject_id": "BAZY-DAN",
-      "name": "Bazy Danych",
-      "type": "lab",
-      "group_id": "IS2A",
-      "students": 22,
-      "hours_per_semester": 42,
-      "required_room_type": "computer_lab"
-    },
-    {
-      "id": "C23",
-      "subject_id": "BAZY-DAN",
-      "name": "Bazy Danych",
-      "type": "project",
-      "group_id": "IS2B",
-      "students": 21,
-      "hours_per_semester": 42,
-      "required_room_type": "exercise_room"
-    },
-    {
-      "id": "C24",
-      "subject_id": "BAZY-DAN",
-      "name": "Bazy Danych",
-      "type": "lab",
-      "group_id": "IS2B",
-      "students": 21,
-      "hours_per_semester": 42,
-      "required_room_type": "computer_lab"
-    },
-    {
-      "id": "C25",
-      "subject_id": "SIECI",
-      "name": "Sieci Komputerowe",
-      "type": "project",
-      "group_id": "IS3A",
-      "students": 20,
-      "hours_per_semester": 28,
-      "required_room_type": "exercise_room"
-    },
-    {
-      "id": "C26",
-      "subject_id": "SIECI",
-      "name": "Sieci Komputerowe",
-      "type": "lab",
-      "group_id": "IS3A",
-      "students": 20,
-      "hours_per_semester": 28,
-      "required_room_type": "computer_lab"
-    },
-    {
-      "id": "C27",
-      "subject_id": "SIECI",
-      "name": "Sieci Komputerowe",
-      "type": "project",
-      "group_id": "IS3B",
-      "students": 19,
-      "hours_per_semester": 28,
-      "required_room_type": "exercise_room"
-    },
-    {
-      "id": "C28",
-      "subject_id": "SIECI",
-      "name": "Sieci Komputerowe",
-      "type": "lab",
-      "group_id": "IS3B",
-      "students": 19,
-      "hours_per_semester": 42,
-      "required_room_type": "computer_lab"
-    },
-    {
-      "id": "C29",
-      "subject_id": "SYS-OP",
-      "name": "Systemy Operacyjne",
-      "type": "project",
-      "group_id": "IS3A",
-      "students": 20,
-      "hours_per_semester": 42,
-      "required_room_type": "exercise_room"
-    },
-    {
-      "id": "C30",
-      "subject_id": "SYS-OP",
-      "name": "Systemy Operacyjne",
-      "type": "lab",
-      "group_id": "IS3A",
-      "students": 20,
-      "hours_per_semester": 28,
-      "required_room_type": "hardware_lab"
-    },
-    {
-      "id": "C31",
+      "id": "C115",
       "subject_id": "SYS-OP",
       "name": "Systemy Operacyjne",
       "type": "project",
       "group_id": "IS3B",
-      "students": 19,
+      "students": 16,
       "hours_per_semester": 42,
       "required_room_type": "exercise_room"
     },
     {
-      "id": "C32",
+      "id": "C116",
       "subject_id": "SYS-OP",
       "name": "Systemy Operacyjne",
       "type": "lab",
       "group_id": "IS3B",
-      "students": 19,
+      "students": 16,
       "hours_per_semester": 42,
       "required_room_type": "hardware_lab"
     },
     {
-      "id": "C33",
+      "id": "C117",
+      "subject_id": "SYS-OP",
+      "name": "Systemy Operacyjne",
+      "type": "project",
+      "group_id": "IS3C",
+      "students": 16,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C118",
+      "subject_id": "SYS-OP",
+      "name": "Systemy Operacyjne",
+      "type": "lab",
+      "group_id": "IS3C",
+      "students": 16,
+      "hours_per_semester": 28,
+      "required_room_type": "hardware_lab"
+    },
+    {
+      "id": "C119",
+      "subject_id": "SYS-OP",
+      "name": "Systemy Operacyjne",
+      "type": "project",
+      "group_id": "IS3D",
+      "students": 15,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C120",
+      "subject_id": "SYS-OP",
+      "name": "Systemy Operacyjne",
+      "type": "lab",
+      "group_id": "IS3D",
+      "students": 15,
+      "hours_per_semester": 28,
+      "required_room_type": "hardware_lab"
+    },
+    {
+      "id": "C121",
+      "subject_id": "SYS-OP",
+      "name": "Systemy Operacyjne",
+      "type": "project",
+      "group_id": "IS3E",
+      "students": 15,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C122",
+      "subject_id": "SYS-OP",
+      "name": "Systemy Operacyjne",
+      "type": "lab",
+      "group_id": "IS3E",
+      "students": 15,
+      "hours_per_semester": 42,
+      "required_room_type": "hardware_lab"
+    },
+    {
+      "id": "C123",
+      "subject_id": "SYS-OP",
+      "name": "Systemy Operacyjne",
+      "type": "project",
+      "group_id": "IS3F",
+      "students": 14,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C124",
+      "subject_id": "SYS-OP",
+      "name": "Systemy Operacyjne",
+      "type": "lab",
+      "group_id": "IS3F",
+      "students": 14,
+      "hours_per_semester": 28,
+      "required_room_type": "hardware_lab"
+    },
+    {
+      "id": "C125",
+      "subject_id": "SYS-OP",
+      "name": "Systemy Operacyjne",
+      "type": "project",
+      "group_id": "IS3G",
+      "students": 13,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C126",
+      "subject_id": "SYS-OP",
+      "name": "Systemy Operacyjne",
+      "type": "lab",
+      "group_id": "IS3G",
+      "students": 13,
+      "hours_per_semester": 28,
+      "required_room_type": "hardware_lab"
+    },
+    {
+      "id": "C127",
+      "subject_id": "SYS-OP",
+      "name": "Systemy Operacyjne",
+      "type": "project",
+      "group_id": "IS3H",
+      "students": 12,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C128",
+      "subject_id": "SYS-OP",
+      "name": "Systemy Operacyjne",
+      "type": "lab",
+      "group_id": "IS3H",
+      "students": 12,
+      "hours_per_semester": 42,
+      "required_room_type": "hardware_lab"
+    },
+    {
+      "id": "C129",
       "subject_id": "INZ-OPR",
       "name": "Inżynieria Oprogramowania",
       "type": "lecture",
       "group_id": "IS3A",
-      "students": 20,
+      "students": 17,
       "hours_per_semester": 42,
       "required_room_type": "lecture_hall"
     },
     {
-      "id": "C34",
+      "id": "C130",
       "subject_id": "INZ-OPR",
       "name": "Inżynieria Oprogramowania",
       "type": "project",
       "group_id": "IS3A",
-      "students": 20,
+      "students": 17,
       "hours_per_semester": 42,
       "required_room_type": "exercise_room"
     },
     {
-      "id": "C35",
+      "id": "C131",
       "subject_id": "INZ-OPR",
       "name": "Inżynieria Oprogramowania",
       "type": "lecture",
       "group_id": "IS3B",
-      "students": 19,
+      "students": 16,
       "hours_per_semester": 28,
       "required_room_type": "lecture_hall"
     },
     {
-      "id": "C36",
+      "id": "C132",
       "subject_id": "INZ-OPR",
       "name": "Inżynieria Oprogramowania",
       "type": "project",
       "group_id": "IS3B",
-      "students": 19,
+      "students": 16,
       "hours_per_semester": 42,
       "required_room_type": "exercise_room"
     },
     {
-      "id": "C37",
-      "subject_id": "UCZ-MASZ",
-      "name": "Uczenie Maszynowe",
-      "type": "project",
-      "group_id": "IS4A",
-      "students": 18,
-      "hours_per_semester": 28,
-      "required_room_type": "exercise_room"
-    },
-    {
-      "id": "C38",
-      "subject_id": "UCZ-MASZ",
-      "name": "Uczenie Maszynowe",
-      "type": "lab",
-      "group_id": "IS4A",
-      "students": 18,
-      "hours_per_semester": 42,
-      "required_room_type": "computer_lab"
-    },
-    {
-      "id": "C39",
-      "subject_id": "UCZ-MASZ",
-      "name": "Uczenie Maszynowe",
-      "type": "project",
-      "group_id": "IS4B",
-      "students": 17,
-      "hours_per_semester": 28,
-      "required_room_type": "exercise_room"
-    },
-    {
-      "id": "C40",
-      "subject_id": "UCZ-MASZ",
-      "name": "Uczenie Maszynowe",
-      "type": "lab",
-      "group_id": "IS4B",
-      "students": 17,
-      "hours_per_semester": 42,
-      "required_room_type": "computer_lab"
-    },
-    {
-      "id": "C41",
-      "subject_id": "BEZP-SYS",
-      "name": "Bezpieczeństwo Systemów",
-      "type": "project",
-      "group_id": "IS4A",
-      "students": 18,
-      "hours_per_semester": 42,
-      "required_room_type": "exercise_room"
-    },
-    {
-      "id": "C42",
-      "subject_id": "BEZP-SYS",
-      "name": "Bezpieczeństwo Systemów",
-      "type": "lab",
-      "group_id": "IS4A",
-      "students": 18,
-      "hours_per_semester": 28,
-      "required_room_type": "computer_lab"
-    },
-    {
-      "id": "C43",
-      "subject_id": "BEZP-SYS",
-      "name": "Bezpieczeństwo Systemów",
-      "type": "project",
-      "group_id": "IS4B",
-      "students": 17,
-      "hours_per_semester": 28,
-      "required_room_type": "exercise_room"
-    },
-    {
-      "id": "C44",
-      "subject_id": "BEZP-SYS",
-      "name": "Bezpieczeństwo Systemów",
-      "type": "lab",
-      "group_id": "IS4B",
-      "students": 17,
-      "hours_per_semester": 28,
-      "required_room_type": "computer_lab"
-    },
-    {
-      "id": "C45",
-      "subject_id": "STAT-RAC",
-      "name": "Statystyka i Rachunek Prawdopodobieństwa",
+      "id": "C133",
+      "subject_id": "INZ-OPR",
+      "name": "Inżynieria Oprogramowania",
       "type": "lecture",
-      "group_id": "IS4A",
-      "students": 18,
-      "hours_per_semester": 28,
-      "required_room_type": "lecture_hall"
-    },
-    {
-      "id": "C46",
-      "subject_id": "STAT-RAC",
-      "name": "Statystyka i Rachunek Prawdopodobieństwa",
-      "type": "exercise",
-      "group_id": "IS4A",
-      "students": 18,
-      "hours_per_semester": 42,
-      "required_room_type": "exercise_room"
-    },
-    {
-      "id": "C47",
-      "subject_id": "STAT-RAC",
-      "name": "Statystyka i Rachunek Prawdopodobieństwa",
-      "type": "lecture",
-      "group_id": "IS4B",
-      "students": 17,
+      "group_id": "IS3C",
+      "students": 16,
       "hours_per_semester": 42,
       "required_room_type": "lecture_hall"
     },
     {
-      "id": "C48",
-      "subject_id": "STAT-RAC",
-      "name": "Statystyka i Rachunek Prawdopodobieństwa",
-      "type": "exercise",
-      "group_id": "IS4B",
-      "students": 17,
-      "hours_per_semester": 28,
-      "required_room_type": "exercise_room"
-    },
-    {
-      "id": "C49",
-      "subject_id": "GRAF-KOMP",
-      "name": "Grafika Komputerowa",
+      "id": "C134",
+      "subject_id": "INZ-OPR",
+      "name": "Inżynieria Oprogramowania",
       "type": "project",
-      "group_id": "IS5A",
-      "students": 16,
-      "hours_per_semester": 42,
-      "required_room_type": "exercise_room"
-    },
-    {
-      "id": "C50",
-      "subject_id": "GRAF-KOMP",
-      "name": "Grafika Komputerowa",
-      "type": "lab",
-      "group_id": "IS5A",
-      "students": 16,
-      "hours_per_semester": 28,
-      "required_room_type": "computer_lab"
-    },
-    {
-      "id": "C51",
-      "subject_id": "GRAF-KOMP",
-      "name": "Grafika Komputerowa",
-      "type": "project",
-      "group_id": "IS5B",
-      "students": 15,
-      "hours_per_semester": 28,
-      "required_room_type": "exercise_room"
-    },
-    {
-      "id": "C52",
-      "subject_id": "GRAF-KOMP",
-      "name": "Grafika Komputerowa",
-      "type": "lab",
-      "group_id": "IS5B",
-      "students": 15,
-      "hours_per_semester": 28,
-      "required_room_type": "computer_lab"
-    },
-    {
-      "id": "C53",
-      "subject_id": "PRZETW-SYG",
-      "name": "Przetwarzanie Sygnałów",
-      "type": "project",
-      "group_id": "IS5A",
+      "group_id": "IS3C",
       "students": 16,
       "hours_per_semester": 28,
       "required_room_type": "exercise_room"
     },
     {
-      "id": "C54",
-      "subject_id": "PRZETW-SYG",
-      "name": "Przetwarzanie Sygnałów",
-      "type": "lab",
-      "group_id": "IS5A",
-      "students": 16,
-      "hours_per_semester": 42,
-      "required_room_type": "computer_lab"
-    },
-    {
-      "id": "C55",
-      "subject_id": "PRZETW-SYG",
-      "name": "Przetwarzanie Sygnałów",
-      "type": "project",
-      "group_id": "IS5B",
-      "students": 15,
-      "hours_per_semester": 28,
-      "required_room_type": "exercise_room"
-    },
-    {
-      "id": "C56",
-      "subject_id": "PRZETW-SYG",
-      "name": "Przetwarzanie Sygnałów",
-      "type": "lab",
-      "group_id": "IS5B",
-      "students": 15,
-      "hours_per_semester": 28,
-      "required_room_type": "computer_lab"
-    },
-    {
-      "id": "C57",
-      "subject_id": "AN-NUM",
-      "name": "Analiza Numeryczna",
+      "id": "C135",
+      "subject_id": "INZ-OPR",
+      "name": "Inżynieria Oprogramowania",
       "type": "lecture",
-      "group_id": "IS5A",
-      "students": 16,
-      "hours_per_semester": 28,
+      "group_id": "IS3D",
+      "students": 15,
+      "hours_per_semester": 42,
       "required_room_type": "lecture_hall"
     },
     {
-      "id": "C58",
-      "subject_id": "AN-NUM",
-      "name": "Analiza Numeryczna",
-      "type": "exercise",
-      "group_id": "IS5A",
-      "students": 16,
+      "id": "C136",
+      "subject_id": "INZ-OPR",
+      "name": "Inżynieria Oprogramowania",
+      "type": "project",
+      "group_id": "IS3D",
+      "students": 15,
       "hours_per_semester": 28,
       "required_room_type": "exercise_room"
     },
     {
-      "id": "C59",
-      "subject_id": "AN-NUM",
-      "name": "Analiza Numeryczna",
+      "id": "C137",
+      "subject_id": "INZ-OPR",
+      "name": "Inżynieria Oprogramowania",
       "type": "lecture",
-      "group_id": "IS5B",
+      "group_id": "IS3E",
       "students": 15,
       "hours_per_semester": 28,
       "required_room_type": "lecture_hall"
     },
     {
-      "id": "C60",
+      "id": "C138",
+      "subject_id": "INZ-OPR",
+      "name": "Inżynieria Oprogramowania",
+      "type": "project",
+      "group_id": "IS3E",
+      "students": 15,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C139",
+      "subject_id": "INZ-OPR",
+      "name": "Inżynieria Oprogramowania",
+      "type": "lecture",
+      "group_id": "IS3F",
+      "students": 14,
+      "hours_per_semester": 28,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C140",
+      "subject_id": "INZ-OPR",
+      "name": "Inżynieria Oprogramowania",
+      "type": "project",
+      "group_id": "IS3F",
+      "students": 14,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C141",
+      "subject_id": "INZ-OPR",
+      "name": "Inżynieria Oprogramowania",
+      "type": "lecture",
+      "group_id": "IS3G",
+      "students": 13,
+      "hours_per_semester": 28,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C142",
+      "subject_id": "INZ-OPR",
+      "name": "Inżynieria Oprogramowania",
+      "type": "project",
+      "group_id": "IS3G",
+      "students": 13,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C143",
+      "subject_id": "INZ-OPR",
+      "name": "Inżynieria Oprogramowania",
+      "type": "lecture",
+      "group_id": "IS3H",
+      "students": 12,
+      "hours_per_semester": 28,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C144",
+      "subject_id": "INZ-OPR",
+      "name": "Inżynieria Oprogramowania",
+      "type": "project",
+      "group_id": "IS3H",
+      "students": 12,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C145",
+      "subject_id": "UCZ-MASZ",
+      "name": "Uczenie Maszynowe",
+      "type": "project",
+      "group_id": "IS4A",
+      "students": 15,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C146",
+      "subject_id": "UCZ-MASZ",
+      "name": "Uczenie Maszynowe",
+      "type": "lab",
+      "group_id": "IS4A",
+      "students": 15,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C147",
+      "subject_id": "UCZ-MASZ",
+      "name": "Uczenie Maszynowe",
+      "type": "project",
+      "group_id": "IS4B",
+      "students": 14,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C148",
+      "subject_id": "UCZ-MASZ",
+      "name": "Uczenie Maszynowe",
+      "type": "lab",
+      "group_id": "IS4B",
+      "students": 14,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C149",
+      "subject_id": "UCZ-MASZ",
+      "name": "Uczenie Maszynowe",
+      "type": "project",
+      "group_id": "IS4C",
+      "students": 14,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C150",
+      "subject_id": "UCZ-MASZ",
+      "name": "Uczenie Maszynowe",
+      "type": "lab",
+      "group_id": "IS4C",
+      "students": 14,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C151",
+      "subject_id": "UCZ-MASZ",
+      "name": "Uczenie Maszynowe",
+      "type": "project",
+      "group_id": "IS4D",
+      "students": 13,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C152",
+      "subject_id": "UCZ-MASZ",
+      "name": "Uczenie Maszynowe",
+      "type": "lab",
+      "group_id": "IS4D",
+      "students": 13,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C153",
+      "subject_id": "UCZ-MASZ",
+      "name": "Uczenie Maszynowe",
+      "type": "project",
+      "group_id": "IS4E",
+      "students": 13,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C154",
+      "subject_id": "UCZ-MASZ",
+      "name": "Uczenie Maszynowe",
+      "type": "lab",
+      "group_id": "IS4E",
+      "students": 13,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C155",
+      "subject_id": "UCZ-MASZ",
+      "name": "Uczenie Maszynowe",
+      "type": "project",
+      "group_id": "IS4F",
+      "students": 12,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C156",
+      "subject_id": "UCZ-MASZ",
+      "name": "Uczenie Maszynowe",
+      "type": "lab",
+      "group_id": "IS4F",
+      "students": 12,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C157",
+      "subject_id": "UCZ-MASZ",
+      "name": "Uczenie Maszynowe",
+      "type": "project",
+      "group_id": "IS4G",
+      "students": 12,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C158",
+      "subject_id": "UCZ-MASZ",
+      "name": "Uczenie Maszynowe",
+      "type": "lab",
+      "group_id": "IS4G",
+      "students": 12,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C159",
+      "subject_id": "UCZ-MASZ",
+      "name": "Uczenie Maszynowe",
+      "type": "project",
+      "group_id": "IS4H",
+      "students": 11,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C160",
+      "subject_id": "UCZ-MASZ",
+      "name": "Uczenie Maszynowe",
+      "type": "lab",
+      "group_id": "IS4H",
+      "students": 11,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C161",
+      "subject_id": "BEZP-SYS",
+      "name": "Bezpieczeństwo Systemów",
+      "type": "project",
+      "group_id": "IS4A",
+      "students": 15,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C162",
+      "subject_id": "BEZP-SYS",
+      "name": "Bezpieczeństwo Systemów",
+      "type": "lab",
+      "group_id": "IS4A",
+      "students": 15,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C163",
+      "subject_id": "BEZP-SYS",
+      "name": "Bezpieczeństwo Systemów",
+      "type": "project",
+      "group_id": "IS4B",
+      "students": 14,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C164",
+      "subject_id": "BEZP-SYS",
+      "name": "Bezpieczeństwo Systemów",
+      "type": "lab",
+      "group_id": "IS4B",
+      "students": 14,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C165",
+      "subject_id": "BEZP-SYS",
+      "name": "Bezpieczeństwo Systemów",
+      "type": "project",
+      "group_id": "IS4C",
+      "students": 14,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C166",
+      "subject_id": "BEZP-SYS",
+      "name": "Bezpieczeństwo Systemów",
+      "type": "lab",
+      "group_id": "IS4C",
+      "students": 14,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C167",
+      "subject_id": "BEZP-SYS",
+      "name": "Bezpieczeństwo Systemów",
+      "type": "project",
+      "group_id": "IS4D",
+      "students": 13,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C168",
+      "subject_id": "BEZP-SYS",
+      "name": "Bezpieczeństwo Systemów",
+      "type": "lab",
+      "group_id": "IS4D",
+      "students": 13,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C169",
+      "subject_id": "BEZP-SYS",
+      "name": "Bezpieczeństwo Systemów",
+      "type": "project",
+      "group_id": "IS4E",
+      "students": 13,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C170",
+      "subject_id": "BEZP-SYS",
+      "name": "Bezpieczeństwo Systemów",
+      "type": "lab",
+      "group_id": "IS4E",
+      "students": 13,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C171",
+      "subject_id": "BEZP-SYS",
+      "name": "Bezpieczeństwo Systemów",
+      "type": "project",
+      "group_id": "IS4F",
+      "students": 12,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C172",
+      "subject_id": "BEZP-SYS",
+      "name": "Bezpieczeństwo Systemów",
+      "type": "lab",
+      "group_id": "IS4F",
+      "students": 12,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C173",
+      "subject_id": "BEZP-SYS",
+      "name": "Bezpieczeństwo Systemów",
+      "type": "project",
+      "group_id": "IS4G",
+      "students": 12,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C174",
+      "subject_id": "BEZP-SYS",
+      "name": "Bezpieczeństwo Systemów",
+      "type": "lab",
+      "group_id": "IS4G",
+      "students": 12,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C175",
+      "subject_id": "BEZP-SYS",
+      "name": "Bezpieczeństwo Systemów",
+      "type": "project",
+      "group_id": "IS4H",
+      "students": 11,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C176",
+      "subject_id": "BEZP-SYS",
+      "name": "Bezpieczeństwo Systemów",
+      "type": "lab",
+      "group_id": "IS4H",
+      "students": 11,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C177",
+      "subject_id": "STAT-RAC",
+      "name": "Statystyka i Rachunek Prawdopodobieństwa",
+      "type": "lecture",
+      "group_id": "IS4A",
+      "students": 15,
+      "hours_per_semester": 42,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C178",
+      "subject_id": "STAT-RAC",
+      "name": "Statystyka i Rachunek Prawdopodobieństwa",
+      "type": "exercise",
+      "group_id": "IS4A",
+      "students": 15,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C179",
+      "subject_id": "STAT-RAC",
+      "name": "Statystyka i Rachunek Prawdopodobieństwa",
+      "type": "lecture",
+      "group_id": "IS4B",
+      "students": 14,
+      "hours_per_semester": 42,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C180",
+      "subject_id": "STAT-RAC",
+      "name": "Statystyka i Rachunek Prawdopodobieństwa",
+      "type": "exercise",
+      "group_id": "IS4B",
+      "students": 14,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C181",
+      "subject_id": "STAT-RAC",
+      "name": "Statystyka i Rachunek Prawdopodobieństwa",
+      "type": "lecture",
+      "group_id": "IS4C",
+      "students": 14,
+      "hours_per_semester": 42,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C182",
+      "subject_id": "STAT-RAC",
+      "name": "Statystyka i Rachunek Prawdopodobieństwa",
+      "type": "exercise",
+      "group_id": "IS4C",
+      "students": 14,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C183",
+      "subject_id": "STAT-RAC",
+      "name": "Statystyka i Rachunek Prawdopodobieństwa",
+      "type": "lecture",
+      "group_id": "IS4D",
+      "students": 13,
+      "hours_per_semester": 42,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C184",
+      "subject_id": "STAT-RAC",
+      "name": "Statystyka i Rachunek Prawdopodobieństwa",
+      "type": "exercise",
+      "group_id": "IS4D",
+      "students": 13,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C185",
+      "subject_id": "STAT-RAC",
+      "name": "Statystyka i Rachunek Prawdopodobieństwa",
+      "type": "lecture",
+      "group_id": "IS4E",
+      "students": 13,
+      "hours_per_semester": 42,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C186",
+      "subject_id": "STAT-RAC",
+      "name": "Statystyka i Rachunek Prawdopodobieństwa",
+      "type": "exercise",
+      "group_id": "IS4E",
+      "students": 13,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C187",
+      "subject_id": "STAT-RAC",
+      "name": "Statystyka i Rachunek Prawdopodobieństwa",
+      "type": "lecture",
+      "group_id": "IS4F",
+      "students": 12,
+      "hours_per_semester": 28,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C188",
+      "subject_id": "STAT-RAC",
+      "name": "Statystyka i Rachunek Prawdopodobieństwa",
+      "type": "exercise",
+      "group_id": "IS4F",
+      "students": 12,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C189",
+      "subject_id": "STAT-RAC",
+      "name": "Statystyka i Rachunek Prawdopodobieństwa",
+      "type": "lecture",
+      "group_id": "IS4G",
+      "students": 12,
+      "hours_per_semester": 28,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C190",
+      "subject_id": "STAT-RAC",
+      "name": "Statystyka i Rachunek Prawdopodobieństwa",
+      "type": "exercise",
+      "group_id": "IS4G",
+      "students": 12,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C191",
+      "subject_id": "STAT-RAC",
+      "name": "Statystyka i Rachunek Prawdopodobieństwa",
+      "type": "lecture",
+      "group_id": "IS4H",
+      "students": 11,
+      "hours_per_semester": 42,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C192",
+      "subject_id": "STAT-RAC",
+      "name": "Statystyka i Rachunek Prawdopodobieństwa",
+      "type": "exercise",
+      "group_id": "IS4H",
+      "students": 11,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C193",
+      "subject_id": "GRAF-KOMP",
+      "name": "Grafika Komputerowa",
+      "type": "project",
+      "group_id": "IS5A",
+      "students": 13,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C194",
+      "subject_id": "GRAF-KOMP",
+      "name": "Grafika Komputerowa",
+      "type": "lab",
+      "group_id": "IS5A",
+      "students": 13,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C195",
+      "subject_id": "GRAF-KOMP",
+      "name": "Grafika Komputerowa",
+      "type": "project",
+      "group_id": "IS5B",
+      "students": 12,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C196",
+      "subject_id": "GRAF-KOMP",
+      "name": "Grafika Komputerowa",
+      "type": "lab",
+      "group_id": "IS5B",
+      "students": 12,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C197",
+      "subject_id": "GRAF-KOMP",
+      "name": "Grafika Komputerowa",
+      "type": "project",
+      "group_id": "IS5C",
+      "students": 12,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C198",
+      "subject_id": "GRAF-KOMP",
+      "name": "Grafika Komputerowa",
+      "type": "lab",
+      "group_id": "IS5C",
+      "students": 12,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C199",
+      "subject_id": "GRAF-KOMP",
+      "name": "Grafika Komputerowa",
+      "type": "project",
+      "group_id": "IS5D",
+      "students": 11,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C200",
+      "subject_id": "GRAF-KOMP",
+      "name": "Grafika Komputerowa",
+      "type": "lab",
+      "group_id": "IS5D",
+      "students": 11,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C201",
+      "subject_id": "GRAF-KOMP",
+      "name": "Grafika Komputerowa",
+      "type": "project",
+      "group_id": "IS5E",
+      "students": 11,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C202",
+      "subject_id": "GRAF-KOMP",
+      "name": "Grafika Komputerowa",
+      "type": "lab",
+      "group_id": "IS5E",
+      "students": 11,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C203",
+      "subject_id": "GRAF-KOMP",
+      "name": "Grafika Komputerowa",
+      "type": "project",
+      "group_id": "IS5F",
+      "students": 10,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C204",
+      "subject_id": "GRAF-KOMP",
+      "name": "Grafika Komputerowa",
+      "type": "lab",
+      "group_id": "IS5F",
+      "students": 10,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C205",
+      "subject_id": "GRAF-KOMP",
+      "name": "Grafika Komputerowa",
+      "type": "project",
+      "group_id": "IS5G",
+      "students": 10,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C206",
+      "subject_id": "GRAF-KOMP",
+      "name": "Grafika Komputerowa",
+      "type": "lab",
+      "group_id": "IS5G",
+      "students": 10,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C207",
+      "subject_id": "GRAF-KOMP",
+      "name": "Grafika Komputerowa",
+      "type": "project",
+      "group_id": "IS5H",
+      "students": 9,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C208",
+      "subject_id": "GRAF-KOMP",
+      "name": "Grafika Komputerowa",
+      "type": "lab",
+      "group_id": "IS5H",
+      "students": 9,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C209",
+      "subject_id": "PRZETW-SYG",
+      "name": "Przetwarzanie Sygnałów",
+      "type": "project",
+      "group_id": "IS5A",
+      "students": 13,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C210",
+      "subject_id": "PRZETW-SYG",
+      "name": "Przetwarzanie Sygnałów",
+      "type": "lab",
+      "group_id": "IS5A",
+      "students": 13,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C211",
+      "subject_id": "PRZETW-SYG",
+      "name": "Przetwarzanie Sygnałów",
+      "type": "project",
+      "group_id": "IS5B",
+      "students": 12,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C212",
+      "subject_id": "PRZETW-SYG",
+      "name": "Przetwarzanie Sygnałów",
+      "type": "lab",
+      "group_id": "IS5B",
+      "students": 12,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C213",
+      "subject_id": "PRZETW-SYG",
+      "name": "Przetwarzanie Sygnałów",
+      "type": "project",
+      "group_id": "IS5C",
+      "students": 12,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C214",
+      "subject_id": "PRZETW-SYG",
+      "name": "Przetwarzanie Sygnałów",
+      "type": "lab",
+      "group_id": "IS5C",
+      "students": 12,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C215",
+      "subject_id": "PRZETW-SYG",
+      "name": "Przetwarzanie Sygnałów",
+      "type": "project",
+      "group_id": "IS5D",
+      "students": 11,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C216",
+      "subject_id": "PRZETW-SYG",
+      "name": "Przetwarzanie Sygnałów",
+      "type": "lab",
+      "group_id": "IS5D",
+      "students": 11,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C217",
+      "subject_id": "PRZETW-SYG",
+      "name": "Przetwarzanie Sygnałów",
+      "type": "project",
+      "group_id": "IS5E",
+      "students": 11,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C218",
+      "subject_id": "PRZETW-SYG",
+      "name": "Przetwarzanie Sygnałów",
+      "type": "lab",
+      "group_id": "IS5E",
+      "students": 11,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C219",
+      "subject_id": "PRZETW-SYG",
+      "name": "Przetwarzanie Sygnałów",
+      "type": "project",
+      "group_id": "IS5F",
+      "students": 10,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C220",
+      "subject_id": "PRZETW-SYG",
+      "name": "Przetwarzanie Sygnałów",
+      "type": "lab",
+      "group_id": "IS5F",
+      "students": 10,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C221",
+      "subject_id": "PRZETW-SYG",
+      "name": "Przetwarzanie Sygnałów",
+      "type": "project",
+      "group_id": "IS5G",
+      "students": 10,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C222",
+      "subject_id": "PRZETW-SYG",
+      "name": "Przetwarzanie Sygnałów",
+      "type": "lab",
+      "group_id": "IS5G",
+      "students": 10,
+      "hours_per_semester": 42,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C223",
+      "subject_id": "PRZETW-SYG",
+      "name": "Przetwarzanie Sygnałów",
+      "type": "project",
+      "group_id": "IS5H",
+      "students": 9,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C224",
+      "subject_id": "PRZETW-SYG",
+      "name": "Przetwarzanie Sygnałów",
+      "type": "lab",
+      "group_id": "IS5H",
+      "students": 9,
+      "hours_per_semester": 28,
+      "required_room_type": "computer_lab"
+    },
+    {
+      "id": "C225",
+      "subject_id": "AN-NUM",
+      "name": "Analiza Numeryczna",
+      "type": "lecture",
+      "group_id": "IS5A",
+      "students": 13,
+      "hours_per_semester": 42,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C226",
+      "subject_id": "AN-NUM",
+      "name": "Analiza Numeryczna",
+      "type": "exercise",
+      "group_id": "IS5A",
+      "students": 13,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C227",
+      "subject_id": "AN-NUM",
+      "name": "Analiza Numeryczna",
+      "type": "lecture",
+      "group_id": "IS5B",
+      "students": 12,
+      "hours_per_semester": 28,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C228",
       "subject_id": "AN-NUM",
       "name": "Analiza Numeryczna",
       "type": "exercise",
       "group_id": "IS5B",
-      "students": 15,
+      "students": 12,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C229",
+      "subject_id": "AN-NUM",
+      "name": "Analiza Numeryczna",
+      "type": "lecture",
+      "group_id": "IS5C",
+      "students": 12,
+      "hours_per_semester": 42,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C230",
+      "subject_id": "AN-NUM",
+      "name": "Analiza Numeryczna",
+      "type": "exercise",
+      "group_id": "IS5C",
+      "students": 12,
       "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C231",
+      "subject_id": "AN-NUM",
+      "name": "Analiza Numeryczna",
+      "type": "lecture",
+      "group_id": "IS5D",
+      "students": 11,
+      "hours_per_semester": 28,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C232",
+      "subject_id": "AN-NUM",
+      "name": "Analiza Numeryczna",
+      "type": "exercise",
+      "group_id": "IS5D",
+      "students": 11,
+      "hours_per_semester": 42,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C233",
+      "subject_id": "AN-NUM",
+      "name": "Analiza Numeryczna",
+      "type": "lecture",
+      "group_id": "IS5E",
+      "students": 11,
+      "hours_per_semester": 28,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C234",
+      "subject_id": "AN-NUM",
+      "name": "Analiza Numeryczna",
+      "type": "exercise",
+      "group_id": "IS5E",
+      "students": 11,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C235",
+      "subject_id": "AN-NUM",
+      "name": "Analiza Numeryczna",
+      "type": "lecture",
+      "group_id": "IS5F",
+      "students": 10,
+      "hours_per_semester": 28,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C236",
+      "subject_id": "AN-NUM",
+      "name": "Analiza Numeryczna",
+      "type": "exercise",
+      "group_id": "IS5F",
+      "students": 10,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C237",
+      "subject_id": "AN-NUM",
+      "name": "Analiza Numeryczna",
+      "type": "lecture",
+      "group_id": "IS5G",
+      "students": 10,
+      "hours_per_semester": 28,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C238",
+      "subject_id": "AN-NUM",
+      "name": "Analiza Numeryczna",
+      "type": "exercise",
+      "group_id": "IS5G",
+      "students": 10,
+      "hours_per_semester": 28,
+      "required_room_type": "exercise_room"
+    },
+    {
+      "id": "C239",
+      "subject_id": "AN-NUM",
+      "name": "Analiza Numeryczna",
+      "type": "lecture",
+      "group_id": "IS5H",
+      "students": 9,
+      "hours_per_semester": 28,
+      "required_room_type": "lecture_hall"
+    },
+    {
+      "id": "C240",
+      "subject_id": "AN-NUM",
+      "name": "Analiza Numeryczna",
+      "type": "exercise",
+      "group_id": "IS5H",
+      "students": 9,
+      "hours_per_semester": 42,
       "required_room_type": "exercise_room"
     }
   ]
