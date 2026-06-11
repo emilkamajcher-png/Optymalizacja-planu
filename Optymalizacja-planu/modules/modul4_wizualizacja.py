@@ -1,4 +1,3 @@
-
 import sys
 import os
 
@@ -107,11 +106,6 @@ with st.sidebar:
         
     st.divider()
     
-    st.subheader("WYBÓR TYGODNIA")
-    widok_tygodnia = st.radio("Pokaż plan dla:", ["Semestr (Oba)", "Tydzień A (Nieparzysty)", "Tydzień B (Parzysty)"])
-    
-    st.divider()
-    
     st.subheader("DODATKOWE FILTRY")
     lista_prow_nazwiska = ["Wszyscy"] + [p.imie_nazwisko for p in PROWADZACY_DB.values()]
     lista_sal = ["Wszystkie"] + sorted(list(SALE_DB.keys()))
@@ -121,64 +115,6 @@ with st.sidebar:
     filtr_sala = st.selectbox("Sala", lista_sal, key="filter_sala")
     filtr_grupa = st.selectbox("Grupa", lista_grup, key="filter_grupa")
     filtr_typ = st.selectbox("Typ zajęć", ["Wszystkie", "Wykład", "Ćwiczenia", "Lab", "Projekt"], key="filter_typ")
-    # ... (tutaj jest st.button("Wyczyść filtry") z Twojego obecnego kodu) ...
-
-    st.divider()
-    st.subheader("EKSPORT WYNIKÓW (DO ODDANIA)")
-
-    
-    def wygeneruj_json_planu(lista_zajec):
-        plan_wyjsciowy = []
-        for z in lista_zajec:
-            plan_wyjsciowy.append({
-                "id_zajec": z.id,
-                "przedmiot_id": z.przedmiot_id,
-                "grupa_id": z.grupa_id,
-                "prowadzacy_id": z.prowadzacy_id,
-                "sala_id": z.przypisana_sala_id,
-                "tydzien": getattr(z, 'przypisany_tydzien', 'AB'),
-                "dzien": z.przypisany_dzien,
-                "start_slot": z.przypisany_start_slot,
-                "czas_trwania_godz": z.wymagane_godziny
-            })
-        
-        return json.dumps(plan_wyjsciowy, indent=4, ensure_ascii=False)
-
-   
-    def wygeneruj_log_kosztow(historia, czas_wykonania):
-        log_lines = [
-            "RAPORT OPTYMALIZACJI - OPTIPLAN",
-            f"Czas wykonywania silnika (LLM + HC + SC): {czas_wykonania:.2f} s",
-            "--------------------------------------------------"
-        ]
-        if historia:
-            for i, koszt in enumerate(historia):
-                log_lines.append(f"Iteracja chlodzenia {i}: Punkty karne = {koszt}")
-            log_lines.append("--------------------------------------------------")
-            log_lines.append(f"Ostateczny, zoptymalizowany koszt planu: {historia[-1]} pkt.")
-        else:
-            log_lines.append("Brak historii optymalizacji.")
-        return "\n".join(log_lines)
-
-    # 3. Wywołanie funkcji i stworzenie przycisków do pobierania w Streamlicie
-    json_dane = wygeneruj_json_planu(LISTA_ZAJEC)
-    log_dane = wygeneruj_log_kosztow(HISTORIA_KOSZTOW, CZAS_WYKONANIA)
-
-    st.download_button(
-        label="Pobierz wygenerowany plan (JSON)",
-        data=json_dane,
-        file_name="zoptymalizowany_plan.json",
-        mime="application/json",
-        use_container_width=True
-    )
-
-    st.download_button(
-        label="Pobierz log z funkcji celu (TXT)",
-        data=log_dane,
-        file_name="log_optymalizacji.txt",
-        mime="text/plain",
-        use_container_width=True
-    )
 
     st.divider()
     st.subheader("EKSPORT WYNIKÓW (DO ODDANIA)")
@@ -192,7 +128,6 @@ with st.sidebar:
                 "grupa_id": z.grupa_id,
                 "prowadzacy_id": z.prowadzacy_id,
                 "sala_id": z.przypisana_sala_id,
-                "tydzien": getattr(z, 'przypisany_tydzien', 'AB'),
                 "dzien": z.przypisany_dzien,
                 "start_slot": z.przypisany_start_slot,
                 "czas_trwania_godz": z.wymagane_godziny
@@ -219,7 +154,8 @@ with st.sidebar:
         data=wygeneruj_json_planu(LISTA_ZAJEC),
         file_name="zoptymalizowany_plan.json",
         mime="application/json",
-        use_container_width=True
+        use_container_width=True,
+        key="btn_download_json"
     )
 
     st.download_button(
@@ -227,22 +163,19 @@ with st.sidebar:
         data=wygeneruj_log_kosztow(HISTORIA_KOSZTOW, CZAS_WYKONANIA),
         file_name="log_optymalizacji.txt",
         mime="text/plain",
-        use_container_width=True
+        use_container_width=True,
+        key="btn_download_log"
     )
+
 
 def render_plan(typ_widoku, wybrany_identyfikator, tytul_naglowka):
     st.header(f"Plan zajęć - Widok: {tytul_naglowka}")
-    st.caption(f"Aktualny filtr okresu: {widok_tygodnia}")
     
     wybrane_zajecia = []
     for zajecia in LISTA_ZAJEC:
         if typ_widoku == "Grupa" and zajecia.grupa_id != wybrany_identyfikator: continue
         if typ_widoku == "Prowadzący" and zajecia.prowadzacy_id != wybrany_identyfikator: continue
         if typ_widoku == "Sala" and zajecia.przypisana_sala_id != wybrany_identyfikator: continue
-        
-        tydzien_zajec = getattr(zajecia, 'przypisany_tydzien', 'AB')
-        if widok_tygodnia == "Tydzień A (Nieparzysty)" and tydzien_zajec == 'B': continue
-        if widok_tygodnia == "Tydzień B (Parzysty)" and tydzien_zajec == 'A': continue
         
         prof_obj = PROWADZACY_DB.get(zajecia.prowadzacy_id)
         if filtr_prow != "Wszyscy" and (prof_obj and prof_obj.imie_nazwisko != filtr_prow): continue
@@ -279,19 +212,23 @@ def render_plan(typ_widoku, wybrany_identyfikator, tytul_naglowka):
                     skip_slots.add((h + offset, d_pl))
                 
                 typ_lower = getattr(zajecia, 'wymagany_typ_sali', '').lower()
-                # Żywsza i nowocześniejsza paleta kolorów
-                if "wykł" in typ_lower or "wyklad" in typ_lower or "zs" in typ_lower: kolor_boxa, skrot_typu = "#0284c7", "WYK" # Jasnoniebieski
-                elif "ćwi" in typ_lower or "cwi" in typ_lower or "cwl" in typ_lower: kolor_boxa, skrot_typu = "#8b5cf6", "ĆW" # Fioletowy
-                elif "lab" in typ_lower: kolor_boxa, skrot_typu = "#10b981", "LAB" # Szmaragdowy
-                elif "proj" in typ_lower: kolor_boxa, skrot_typu = "#f59e0b", "PRO" # Bursztynowy
-                else: kolor_boxa, skrot_typu = "#f43f5e", "ZAJ" # Różany/Czerwony
+                if "wykł" in typ_lower or "wyklad" in typ_lower or "zs" in typ_lower: kolor_boxa, skrot_typu = "#0284c7", "WYK"
+                elif "ćwi" in typ_lower or "cwi" in typ_lower or "cwl" in typ_lower: kolor_boxa, skrot_typu = "#8b5cf6", "ĆW"
+                elif "lab" in typ_lower: kolor_boxa, skrot_typu = "#10b981", "LAB"
+                elif "proj" in typ_lower: kolor_boxa, skrot_typu = "#f59e0b", "PRO"
+                else: kolor_boxa, skrot_typu = "#f43f5e", "ZAJ"
                 
                 h_start = zajecia.przypisany_start_slot
                 h_koniec = h_start + duration
                 czas_kafelka = f"{h_start}:00-{h_koniec}:00"
                 sala_info = zajecia.przypisana_sala_id
+                
+                # Zmiana: Wyciąganie prawidłowego nazwiska oraz NAZWY PRZEDMIOTU
                 prof_obj = PROWADZACY_DB.get(zajecia.prowadzacy_id)
                 prof_nazwisko = prof_obj.imie_nazwisko if prof_obj else zajecia.prowadzacy_id
+                
+                przedmiot_obj = PRZEDMIOTY_DB.get(zajecia.przedmiot_id)
+                nazwa_przedmiotu = przedmiot_obj.nazwa if przedmiot_obj else zajecia.przedmiot_id
                 
                 html += f'<td rowspan="{duration}" style="padding: 4px; vertical-align: top;">'
                 html += f'<div style="border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; box-shadow: 0 3px 6px rgba(0,0,0,0.1); height: 100%; display: flex; flex-direction: column;">'
@@ -300,8 +237,7 @@ def render_plan(typ_widoku, wybrany_identyfikator, tytul_naglowka):
                 html += f'<span>{czas_kafelka}</span><span>{skrot_typu}</span>'
                 html += f'</div></div>'
                 html += f'<div style="background-color: #f8fafc; color: #334155; padding: 8px 10px; flex-grow: 1; border-top: 1px solid #e2e8f0;">'
-                # Zwiększone czcionki i lepsze formatowanie wewnątrz bloku
-                html += f'<div style="font-weight: 700; color: #0f172a; font-size: 14px; margin-bottom: 4px;">{zajecia.przedmiot_id}</div>'
+                html += f'<div style="font-weight: 700; color: #0f172a; font-size: 14px; margin-bottom: 4px;">{nazwa_przedmiotu}</div>'
                 html += f'<div style="color: #1e293b; font-size: 13px; font-weight: 600;">{prof_nazwisko}</div>'
                 html += f'<div style="font-weight: 700; color: {kolor_boxa}; margin-top: 4px; font-size: 13px;">{sala_info}</div>'
                 html += f'</div></div></td>'
@@ -323,7 +259,6 @@ def render_optimization():
             iters = list(range(len(HISTORIA_KOSZTOW)))
             fig_opt = go.Figure()
             fig_opt.add_trace(go.Scatter(x=iters, y=HISTORIA_KOSZTOW, name="Punkty karne (SC)", line=dict(color='#0284c7', width=3)))
-            # Skala logarytmiczna i powiększona czcionka
             fig_opt.update_layout(height=300, margin=dict(l=20, r=20, t=20, b=20), xaxis_title="Iteracje chłodzenia", yaxis_title="Koszt (Logarytmiczny)", yaxis_type="log", font=dict(size=14))
             st.plotly_chart(fig_opt, use_container_width=True)
         else:
@@ -345,15 +280,13 @@ def render_optimization():
         st.subheader("Struktura i zajętość sal (Treemap)")
         dane_sal = []
         for s_id, s in SALE_DB.items():
-            godz_A = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.przypisana_sala_id == s_id and getattr(z, 'przypisany_tydzien', 'AB') in ['AB', 'A']])
-            godz_B = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.przypisana_sala_id == s_id and getattr(z, 'przypisany_tydzien', 'AB') in ['AB', 'B']])
-            srednie_zajecie = (godz_A + godz_B) / 2.0
-            dane_sal.append({"Sala": s_id, "Typ": s.typ, "Pojemność": s.pojemnosc, "Obciążenie (godz)": srednie_zajecie})
+            obciazenie_godz = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.przypisana_sala_id == s_id])
+            dane_sal.append({"Sala": s_id, "Typ": s.typ, "Pojemność": s.pojemnosc, "Obciążenie (godz)": obciazenie_godz})
             
         df_sale = pd.DataFrame(dane_sal)
         fig_tree = px.treemap(
             df_sale, path=[px.Constant("Wszystkie Sale"), 'Typ', 'Sala'], values='Pojemność',
-            color='Obciążenie (godz)', color_continuous_scale='Spectral', labels={'Obciążenie (godz)': 'Śr. godz/tydz'} # Zmieniona skala barw na bardziej żywą
+            color='Obciążenie (godz)', color_continuous_scale='Spectral', labels={'Obciążenie (godz)': 'Godz/tydz'}
         )
         fig_tree.update_traces(root_color="lightgrey")
         fig_tree.update_layout(height=450, margin=dict(t=20, l=10, r=10, b=10), font=dict(size=15))
@@ -367,8 +300,7 @@ def render_optimization():
             prof_obj = PROWADZACY_DB.get(zajecia.prowadzacy_id)
             if prof_obj:
                 idx = list(PROWADZACY_DB.keys()).index(zajecia.prowadzacy_id)
-                dodatek_godzin = zajecia.wymagane_godziny if getattr(zajecia, 'przypisany_tydzien', 'AB') == 'AB' else (zajecia.wymagane_godziny / 2.0)
-                godziny_przydzielone[idx] += dodatek_godzin
+                godziny_przydzielone[idx] += zajecia.wymagane_godziny
                 
         df_prof = pd.DataFrame({'Profesor': imiona_prof, 'Godziny': godziny_przydzielone})
         df_prof = df_prof.sort_values(by='Godziny', ascending=True)
@@ -377,7 +309,7 @@ def render_optimization():
             wewn_wysokosc = max(400, len(imiona_prof) * 35)
             fig_bar = px.bar(
                 df_prof, x='Godziny', y='Profesor', orientation='h', text='Godziny', color='Godziny',
-                color_continuous_scale='Portland', labels={'Godziny':'Średnio godzin', 'Profesor':''} # Zmieniona skala barw
+                color_continuous_scale='Portland', labels={'Godziny':'Średnio godzin', 'Profesor':''}
             )
             fig_bar.update_traces(texttemplate='%{text:.1f}h', textposition='outside')
             fig_bar.add_vline(x=12, line_dash="dash", line_color="red", annotation_text="Max 12h")
@@ -407,20 +339,16 @@ def render_statistics():
         st.subheader("Wykaz Prowadzących (Średnie obciążenie)")
         dane_prow = []
         for p_id, p in PROWADZACY_DB.items():
-            godz_A = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.prowadzacy_id == p_id and getattr(z, 'przypisany_tydzien', 'AB') in ['AB', 'A']])
-            godz_B = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.prowadzacy_id == p_id and getattr(z, 'przypisany_tydzien', 'AB') in ['AB', 'B']])
-            srednio_na_tydzien = (godz_A + godz_B) / 2.0
-            dane_prow.append({"Imię i nazwisko": p.imie_nazwisko, "Liczba godzin (śr/tyg)": f"{srednio_na_tydzien:.1f}", "Maks. limit (tyg)": 12, "Status": "Ok" if 8 <= srednio_na_tydzien <= 12 else "Poza normą"})
+            srednio_na_tydzien = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.prowadzacy_id == p_id])
+            dane_prow.append({"Imię i nazwisko": p.imie_nazwisko, "Liczba godzin (tyg)": f"{srednio_na_tydzien:.1f}", "Maks. limit (tyg)": 12, "Status": "Ok" if 8 <= srednio_na_tydzien <= 12 else "Poza normą"})
         st.dataframe(pd.DataFrame(dane_prow), use_container_width=True, hide_index=True)
         
     with col2:
         st.subheader("Wykaz Sal")
         dane_sal = []
         for s_id, s in SALE_DB.items():
-            godz_A = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.przypisana_sala_id == s_id and getattr(z, 'przypisany_tydzien', 'AB') in ['AB', 'A']])
-            godz_B = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.przypisana_sala_id == s_id and getattr(z, 'przypisany_tydzien', 'AB') in ['AB', 'B']])
-            srednie_zajecie_sali = (godz_A + godz_B) / 2.0
-            dane_sal.append({"Sala": s_id, "Typ": s.typ, "Pojemność": s.pojemnosc, "Zajętość (śr. godz)": f"{srednie_zajecie_sali:.1f}"})
+            srednie_zajecie_sali = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.przypisana_sala_id == s_id])
+            dane_sal.append({"Sala": s_id, "Typ": s.typ, "Pojemność": s.pojemnosc, "Zajętość (godz)": f"{srednie_zajecie_sali:.1f}"})
         st.dataframe(pd.DataFrame(dane_sal), use_container_width=True, hide_index=True)
 
 tab_plan, tab_opt, tab_stat = st.tabs(["Plan zajęć", "Optymalizacja", "Raport statystyczny"])
