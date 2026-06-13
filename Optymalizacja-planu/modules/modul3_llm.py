@@ -1,10 +1,9 @@
-# modules/modul3_llm.py
 import json
 import requests
 import time
 import copy
 import re
-# --- KONFIGURACJA API ---
+
 API_URL = "http://149.156.194.192:8088/v1/chat/completions" # IP z UPEL
 TOKEN = "bsk-00a229f80354793ad87e93fea4691b31521e4fb43a2cf8cd3d916fe02b64a010"
 
@@ -92,22 +91,18 @@ def _call_bielik_api_batch(lista_danych, max_retries=3):
             if response.status_code == 200:
                 content = response.json()["choices"][0]["message"]["content"]
                 
-                # Wstępne czyszczenie ze znaczników markdown
+               
                 content = content.replace("```json", "").replace("```", "").strip()
                 
-                # Szukamy klamer tablicy (Listy)
                 start_idx = content.find('[')
                 end_idx = content.rfind(']')
                 
-                # Fallback, gdyby model uparł się zwrócić słownik
                 if start_idx == -1 or end_idx == -1:
                     start_idx = content.find('{')
                     end_idx = content.rfind('}')
                 
                 if start_idx != -1 and end_idx != -1:
                     content = content[start_idx:end_idx+1]
-                    
-                    # MAGIA: Usuwamy błędne przecinki na końcu tablic i słowników np. ", ]" -> "]"
                     content = re.sub(r',\s*([\]}])', r'\1', content)
                     
                     try:
@@ -175,7 +170,7 @@ def przeanalizuj_preferencje(surowe_dane_json, tryb_offline=True):
         return wzbogacone_dane
         
     # --- 2. DZIELENIE NA PACZKI (CHUNKI) I WYSYŁKA DO AI ---
-    rozmiar_paczki = 5 # Wysyłamy po 10 wykładowców na raz
+    rozmiar_paczki = 14 # Wysyłamy po 10 wykładowców na raz
     wyniki_llm = {}
     
     print(f"   [INFO] Łącznie {len(paczka_do_analizy)} prowadzących do analizy. Dzielę na paczki po {rozmiar_paczki}...")
@@ -194,7 +189,7 @@ def przeanalizuj_preferencje(surowe_dane_json, tryb_offline=True):
             print(f"   [UWAGA] Paczka {numer_paczki} zakończyła się błędem. Wykładowcy z tej paczki dostaną puste preferencje.")
             
         import time
-        time.sleep(3) # Przerwa między paczkami
+        time.sleep(2) # Przerwa między paczkami
         
     # --- 3. PRZYPISYWANIE OSTATECZNYCH WYNIKÓW ---
     for inst in instructors:
@@ -231,32 +226,3 @@ def przeanalizuj_preferencje(surowe_dane_json, tryb_offline=True):
     print("\n-> MODUŁ 3 (LLM): Zakończono z sukcesem.")
     return wzbogacone_dane
 
-# --- SEKCJA TESTOWA Z PLIKIEM ---
-if __name__ == "__main__":
-    # Zmień ścieżkę, jeśli plik leży w innym folderze
-    sciezka_do_pliku = "dataset_11_06_2026.json" 
-    
-    print("--- ROZPOCZĘCIE TESTU Z PLIKIEM ---")
-    
-    try:
-        # 1. Wczytujemy dane z pliku JSON
-        import json
-        with open(sciezka_do_pliku, "r", encoding="utf-8") as f:
-            test_dane_json = json.load(f)
-        print(f"   [OK] Pomyślnie wczytano dane z pliku: {sciezka_do_pliku}")
-        
-        # 2. Wywołujemy funkcję (tryb_offline=False wymusza połączenie z API!)
-        wynik = przeanalizuj_preferencje(test_dane_json, tryb_offline=False)
-
-        # 3. Wyświetlamy wynik w konsoli
-        print("\n--- WYNIK KOŃCOWY ---")
-        # Wyświetlamy tylko pierwszego prowadzącego dla czytelności, żeby nie zalać konsoli
-        if "instructors" in wynik and len(wynik["instructors"]) > 0:
-            print(json.dumps(wynik["instructors"][0], indent=2, ensure_ascii=False))
-            print("...\n(wyświetlono tylko pierwszego prowadzącego. Pełne dane są w folderze data/)")
-        
-    except FileNotFoundError:
-        print(f"   [BŁĄD] Nie znaleziono pliku pod ścieżką: {sciezka_do_pliku}")
-        print("   Upewnij się, że plik istnieje w tym samym folderze co skrypt.")
-    except Exception as e:
-        print(f"   [BŁĄD KRYTYCZNY] Coś poszło nie tak: {e}")
