@@ -170,7 +170,7 @@ def przeanalizuj_preferencje(surowe_dane_json, tryb_offline=True):
         return wzbogacone_dane
         
     # --- 2. DZIELENIE NA PACZKI (CHUNKI) I WYSYŁKA DO AI ---
-    rozmiar_paczki = 14 # Wysyłamy po 10 wykładowców na raz
+    rozmiar_paczki = 13 # Wysyłamy po 10 wykładowców na raz
     wyniki_llm = {}
     
     print(f"   [INFO] Łącznie {len(paczka_do_analizy)} prowadzących do analizy. Dzielę na paczki po {rozmiar_paczki}...")
