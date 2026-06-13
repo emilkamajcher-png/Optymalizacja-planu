@@ -117,7 +117,7 @@ with st.sidebar:
     filtr_typ = st.selectbox("Typ zajęć", ["Wszystkie", "Wykład", "Ćwiczenia", "Lab", "Projekt"], key="filter_typ")
 
     st.divider()
-    st.subheader("EKSPORT WYNIKÓW (DO ODDANIA)")
+    st.subheader("EKSPORUJ WYNIKI")
 
     def wygeneruj_json_planu(lista_zajec):
         plan_wyjsciowy = []
@@ -169,7 +169,7 @@ with st.sidebar:
 
 
 def render_plan(typ_widoku, wybrany_identyfikator, tytul_naglowka):
-    st.header(f"Plan zajęć - Widok: {tytul_naglowka}")
+    st.header(f"Plan zajęć - {tytul_naglowka}")
     
     wybrane_zajecia = []
     for zajecia in LISTA_ZAJEC:
@@ -254,12 +254,12 @@ def render_optimization():
     col1, col2 = st.columns([2, 1])
     
     with col1:
-        st.subheader("Przebieg funkcji celu (Algorytm Wyżarzania)")
+        st.subheader("Przebieg funkcji celu")
         if HISTORIA_KOSZTOW:
             iters = list(range(len(HISTORIA_KOSZTOW)))
             fig_opt = go.Figure()
             fig_opt.add_trace(go.Scatter(x=iters, y=HISTORIA_KOSZTOW, name="Punkty karne (SC)", line=dict(color='#0284c7', width=3)))
-            fig_opt.update_layout(height=300, margin=dict(l=20, r=20, t=20, b=20), xaxis_title="Iteracje chłodzenia", yaxis_title="Koszt (Logarytmiczny)", yaxis_type="log", font=dict(size=14))
+            fig_opt.update_layout(height=300, margin=dict(l=20, r=20, t=20, b=20), xaxis_title="Iteracje funkcji", yaxis_title="Punkty karne(log)", yaxis_type="log", font=dict(size=16))
             st.plotly_chart(fig_opt, use_container_width=True)
         else:
             st.info("Brak historii optymalizacji.")
@@ -277,7 +277,7 @@ def render_optimization():
     col3, col4 = st.columns(2)
     
     with col3:
-        st.subheader("Struktura i zajętość sal (Treemap)")
+        st.subheader("Struktura i zajętość sal")
         dane_sal = []
         for s_id, s in SALE_DB.items():
             obciazenie_godz = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.przypisana_sala_id == s_id])
