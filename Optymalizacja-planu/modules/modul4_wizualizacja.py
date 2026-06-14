@@ -50,33 +50,43 @@ DAY_MAP_ENG_TO_PL = {"Mon": "Pon", "Tue": "Wt", "Wed": "Śr", "Thu": "Czw", "Fri
 DAYS_PL = ["Pon", "Wt", "Śr", "Czw", "Pt"]
 
 @st.cache_data
-def uruchom_silnik_i_pobierz_plan(sciezka_danych):
+def uruchom_silnik_i_pobierz_plan():  
     start = time.time()
     
-    with open(sciezka_danych, 'r', encoding='utf-8') as plik:
-        surowe_dane = json.load(plik)
-        
-    dane_po_llm = modul3_llm.przeanalizuj_preferencje(surowe_dane, tryb_offline=False)
-        
-    prowadzacy_db, sale_db, przedmioty_db = modul1_parser.zbuduj_baze_obiektow(dane_po_llm)
+    # 1. Ścieżki do naszych zapisanych plików cache i wyników
+    cache_path = os.path.join("data", "dane_z_preferencjami_cache.json")
+    plan_path = os.path.join("data", "wynik_planu.json")
     
+    # 2. Wczytujemy z pamięci gotowe bazy obiektów
+    with open(cache_path, 'r', encoding='utf-8') as plik:
+        dane_cache = json.load(plik)
+    prowadzacy_db, sale_db, przedmioty_db = modul1_parser.zbuduj_baze_obiektow(dane_cache)
+    
+    # 3. Tworzymy puste struktury zajęć
     stan = modul2_optymalizacja.StanPlanu()
     algorytm = modul2_optymalizacja.AlgorytmKonstruktywny(stan, prowadzacy_db, sale_db, przedmioty_db)
-    sukces = algorytm.rozwiaz()
     
-    historia = []
-    if sukces:
-        optymalizator = modul2_optymalizacja.AlgorytmWyzarzania(stan, algorytm.lista_zajec, prowadzacy_db, sale_db)
-        historia = optymalizator.optymalizuj(temp_pocz=1000.0, temp_konc=1.0, alfa=0.95, iter_na_temp=150)
+    # 4. Wczytujemy gotowy plan zapisany przez silnik
+    with open(plan_path, 'r', encoding='utf-8') as f:
+        gotowy_wynik = json.load(f)
         
+    # 5. Odtwarzamy przypisania z pliku JSON na obiekty Pythona
+    plan_dict = {z["id"]: z for z in gotowy_wynik["zajecia"]}
+    for z_obj in algorytm.lista_zajec:
+        if z_obj.id in plan_dict:
+            z_data = plan_dict[z_obj.id]
+            z_obj.przypisany_dzien = z_data["przypisany_dzien"]
+            z_obj.przypisany_start_slot = z_data["przypisany_start_slot"]
+            z_obj.przypisana_sala_id = z_data["przypisana_sala_id"]
+            z_obj.prowadzacy_id = z_data["prowadzacy_id"]
+    
     execution_time = time.time() - start
-    return sukces, algorytm.lista_zajec, prowadzacy_db, sale_db, przedmioty_db, execution_time, historia
+    return gotowy_wynik["sukces"], algorytm.lista_zajec, prowadzacy_db, sale_db, przedmioty_db, execution_time, gotowy_wynik["historia_kosztow"]
 
-sciezka_bazy = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sciezka_do_danych = os.path.join(sciezka_bazy, "data", "dataset_11_06_2026.json")
+# Jedyne, czyste wywołanie funkcji ładującej z dysku:
+with st.spinner("Wczytywanie gotowanego planu z dysku..."):
+    SUKCES, LISTA_ZAJEC, PROWADZACY_DB, SALE_DB, PRZEDMIOTY_DB, CZAS_WYKONANIA, HISTORIA_KOSZTOW = uruchom_silnik_i_pobierz_plan()
 
-with st.spinner("Sztuczna Inteligencja (Bielik) analizuje paczkę preferencji i układa plan..."):
-    SUKCES, LISTA_ZAJEC, PROWADZACY_DB, SALE_DB, PRZEDMIOTY_DB, CZAS_WYKONANIA, HISTORIA_KOSZTOW = uruchom_silnik_i_pobierz_plan(sciezka_do_danych)
 
 with st.sidebar:
     st.title("OptiPlan")
@@ -241,7 +251,6 @@ def render_plan(typ_widoku, wybrany_identyfikator, tytul_naglowka):
                 czas_kafelka = f"{h_start}:00-{h_koniec}:00"
                 sala_info = zajecia.przypisana_sala_id
                 
-                # Zmiana: Wyciąganie prawidłowego nazwiska oraz NAZWY PRZEDMIOTU
                 prof_obj = PROWADZACY_DB.get(zajecia.prowadzacy_id)
                 prof_nazwisko = prof_obj.imie_nazwisko if prof_obj else zajecia.prowadzacy_id
                 
