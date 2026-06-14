@@ -92,17 +92,35 @@ with st.sidebar:
     
     if perspektywa_typ == "Grupa":
         opcje_grup = sorted(list(set([z.grupa_id for z in LISTA_ZAJEC])))
-        context_name = st.selectbox("Wybierz grupę:", opcje_grup if opcje_grup else ["Brak danych"], key="sel_grup_main")
-        context_title = f"Grupy {context_name}"
-        wybrany_id = context_name
+        wybrany_id = st.selectbox(
+            "Wybierz grupę:", 
+            opcje_grup, 
+            key="sel_grup_main", 
+            index=None, 
+            placeholder="Wpisz nazwę grupy..."
+        )
+        context_title = f"Grupy {wybrany_id}" if wybrany_id else "Wybierz grupę"
     elif perspektywa_typ == "Prowadzący":
         opcje_prof = {p_id: p.imie_nazwisko for p_id, p in PROWADZACY_DB.items()}
-        wybrany_id = st.selectbox("Wybierz prowadzącego:", list(opcje_prof.keys()), format_func=lambda x: opcje_prof[x], key="sel_prof_main")
-        context_title = PROWADZACY_DB[wybrany_id].imie_nazwisko if wybrany_id else ""
-    else:
+        wybrany_id = st.selectbox(
+            "Wybierz prowadzącego:", 
+            list(opcje_prof.keys()), 
+            format_func=lambda x: opcje_prof[x], 
+            key="sel_prof_main",
+            index=None,                                   
+            placeholder= "Zacznij wpisywać nazwisko..."  
+        )
+        context_title = PROWADZACY_DB[wybrany_id].imie_nazwisko if wybrany_id else "Wybierz osobę z listy"
+    else: 
         opcje_sale = sorted(list(SALE_DB.keys()))
-        wybrany_id = st.selectbox("Wybierz salę:", opcje_sale if opcje_sale else ["Brak danych"], key="sel_sala_main")
-        context_title = f"Sali {wybrany_id}"
+        wybrany_id = st.selectbox(
+            "Wybierz salę:", 
+            opcje_sale, 
+            key="sel_sala_main",
+            index=None,
+            placeholder="Wpisz numer sali..."
+        )
+        context_title = f"Sali {wybrany_id}" if wybrany_id else "Wybierz salę"
         
     st.divider()
     
@@ -334,22 +352,35 @@ def render_statistics():
     
     st.divider()
     col1, col2 = st.columns(2)
-    
+    WYS_TABELI = 500
+
     with col1:
-        st.subheader("Wykaz Prowadzących (Średnie obciążenie)")
-        dane_prow = []
-        for p_id, p in PROWADZACY_DB.items():
-            srednio_na_tydzien = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.prowadzacy_id == p_id])
-            dane_prow.append({"Imię i nazwisko": p.imie_nazwisko, "Liczba godzin (tyg)": f"{srednio_na_tydzien:.1f}", "Maks. limit (tyg)": 12, "Status": "Ok" if 8 <= srednio_na_tydzien <= 12 else "Poza normą"})
-        st.dataframe(pd.DataFrame(dane_prow), use_container_width=True, hide_index=True)
-        
+        st.subheader("Wykaz Prowadzących")
+        with st.container(height=WYS_TABELI, border=True):
+            dane_prow = []
+            for p_id, p in PROWADZACY_DB.items():
+                srednio = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.prowadzacy_id == p_id])
+                dane_prow.append({
+                    "Imię i nazwisko": p.imie_nazwisko, 
+                    "Godz (tyg)": f"{srednio:.1f}", 
+                    "Limit": 12, 
+                    "Status": "Ok" if srednio <= 12 else "!"
+                })
+            st.dataframe(pd.DataFrame(dane_prow), use_container_width=True, hide_index=True)
+            
     with col2:
         st.subheader("Wykaz Sal")
-        dane_sal = []
-        for s_id, s in SALE_DB.items():
-            srednie_zajecie_sali = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.przypisana_sala_id == s_id])
-            dane_sal.append({"Sala": s_id, "Typ": s.typ, "Pojemność": s.pojemnosc, "Zajętość (godz)": f"{srednie_zajecie_sali:.1f}"})
-        st.dataframe(pd.DataFrame(dane_sal), use_container_width=True, hide_index=True)
+        with st.container(height=WYS_TABELI, border=True):
+            dane_sal = []
+            for s_id, s in SALE_DB.items():
+                zaj = sum([z.wymagane_godziny for z in LISTA_ZAJEC if z.przypisana_sala_id == s_id])
+                dane_sal.append({
+                    "Sala": s_id, 
+                    "Typ": s.typ, 
+                    "Poj": s.pojemnosc, 
+                    "Zajętość (godz)": f"{zaj:.1f}"
+                })
+            st.dataframe(pd.DataFrame(dane_sal), use_container_width=True, hide_index=True)
 
 tab_plan, tab_opt, tab_stat = st.tabs(["Plan zajęć", "Optymalizacja", "Raport statystyczny"])
 with tab_plan: render_plan(perspektywa_typ, wybrany_id, context_title)

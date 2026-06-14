@@ -15,7 +15,8 @@ class Prowadzacy:
         
         self.preferowane_dni = set(prefs.get('preferred_days', []))
         self.zakazane_sloty = set()
-        
+        self.availability_matrix = prefs.get('availability_matrix')
+
         # Zabezpieczone wyciąganie zakazów (Ochrona przed AI zwracającym liczby jako tekst)
         for zakaz in prefs.get('forbidden_slots', []):
             if zakaz is None: continue
@@ -33,8 +34,6 @@ class Prowadzacy:
                 except (ValueError, TypeError):
                     continue # Jeśli AI wpisało tekst np. "rano", ignorujemy ten wpis
                     
-        self.availability_matrix = None
-
 
 class Sala:
     __slots__ = ['id', 'typ', 'pojemnosc', 'dostepnosc']

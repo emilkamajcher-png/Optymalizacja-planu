@@ -1,5 +1,6 @@
 import math
 import random
+import streamlit as st
 from modules.modul1_parser import Zajecia
 
 class StanPlanu:
@@ -274,5 +275,20 @@ class AlgorytmWyzarzania:
             
             historia_kosztow.append(aktualny_koszt)
             temp *= alfa 
+
+    PLIK_CACHE_LLM = "data/dane_z_preferencjami_cache.json"   #to żeby się dwa razy pipeline nie robił
+    PLIK_PLAN = "data/wynik_planu.json"
+
+    @st.cache_data
+    def wczytaj_wyniki():
+        with open(PLIK_CACHE_LLM, encoding="utf-8") as f:
+            dane = json.load(f)
+
+        prowadzacy_db, sale_db, przedmioty_db = modul1_parser.zbuduj_baze_obiektow(dane)
+
+        with open(PLIK_PLAN, encoding="utf-8") as f:
+            wynik = json.load(f)
+
+        return wynik["sukces"], wynik["zajecia"], prowadzacy_db, sale_db, przedmioty_db, wynik["historia_kosztow"]
             
         return historia_kosztow
