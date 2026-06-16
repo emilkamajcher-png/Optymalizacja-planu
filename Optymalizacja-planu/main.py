@@ -13,12 +13,12 @@ PLIK_WEJSCIOWY = "data/dataset_11_06_2026.json"
 PLAN_WYNIK = "data/wynik_planu.json"
 
 # --- FUNKCJE POMOCNICZE ---
-
-def zapisz_plan(sciezka, sukces, lista_zajec, historia):
+def zapisz_plan(sciezka, sukces, lista_zajec, historia, czas):
     """Zapisuje wygenerowany plan do pliku JSON, aby Streamlit mógł go odczytać."""
     wynik = {
         "sukces": sukces,
         "historia_kosztow": historia,
+        "czas_optymalizacji": czas, # <--- DODANO ZAPIS CZASU
         "zajecia": [
             {
                 "id": z.id,
@@ -28,6 +28,9 @@ def zapisz_plan(sciezka, sukces, lista_zajec, historia):
                 "przypisana_sala_id": z.przypisana_sala_id,
                 "grupa_id": z.grupa_id,
                 "baza_przedmiotu": z.baza_przedmiotu,
+                "przedmiot_id": getattr(z, 'przedmiot_id', z.id),
+                "wymagane_godziny": getattr(z, 'wymagane_godziny', 1),
+                "wymagany_typ_sali": getattr(z, 'wymagany_typ_sali', 'inny')
             }
             for z in lista_zajec
         ],
@@ -95,12 +98,13 @@ def uruchom_system():
         
         # PAMIĘTAJ! Metoda 'optymalizuj' musi zwracać historię kosztów (return self.historia_kosztow)
         historia = optymalizator.optymalizuj() 
+        # Obliczamy czas PRZED zapisem do pliku
+        czas_dzialania = time.time() - start_time
         
-        # Zapisujemy gotowy plan na dysku
-        zapisz_plan(PLAN_WYNIK, czy_sukces, algorytm.lista_zajec, historia)
+        # Przekazujemy 'czas_dzialania' do funkcji zapisu!
+        zapisz_plan(PLAN_WYNIK, czy_sukces, algorytm.lista_zajec, historia, czas_dzialania)
         print(f"      💾 Plan został zapisany do: {PLAN_WYNIK}")
-        
-    czas_dzialania = time.time() - start_time
+       
    
     print("\n" + "="*60)
     if czy_sukces:
