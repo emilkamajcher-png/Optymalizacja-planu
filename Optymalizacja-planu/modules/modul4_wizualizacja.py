@@ -34,26 +34,22 @@ HOURS_RANGE = range(8, 20)
 DAYS_PL = ["Pon", "Wt", "Śr", "Czw", "Pt"]
 DAY_MAP_ENG_TO_PL = {"Mon": "Pon", "Tue": "Wt", "Wed": "Śr", "Thu": "Czw", "Fri": "Pt"}
 
-# UWAGA: Usunięto @st.cache_data, aby program zawsze czytał aktualny, najświeższy plik!
+
 def uruchom_silnik_i_pobierz_plan():  
     # 1. Ścieżki do plików, dokładnie tak jak chciałaś
     cache_path = os.path.join("data", "dane_z_preferencjami_cache.json")
     plan_path = os.path.join("data", "wynik_planu.json")
     
-    # 2. Wczytujemy z pamięci gotowe bazy obiektów (Twój preferowany sposób)
     with open(cache_path, 'r', encoding='utf-8') as plik:
         dane_cache = json.load(plik)
     prowadzacy_db, sale_db, przedmioty_db = modul1_parser.zbuduj_baze_obiektow(dane_cache)
-    
-    # 3. Tworzymy puste struktury zajęć
+  
     stan = modul2_optymalizacja.StanPlanu()
     algorytm = modul2_optymalizacja.AlgorytmKonstruktywny(stan, prowadzacy_db, sale_db, przedmioty_db)
     
-    # 4. Wczytujemy gotowy plan zapisany przez silnik
     with open(plan_path, 'r', encoding='utf-8') as f:
         gotowy_wynik = json.load(f)
-        
-    # 5. Odtwarzamy przypisania z pliku JSON na obiekty Pythona
+    
     plan_dict = {z["id"]: z for z in gotowy_wynik.get("zajecia", [])}
     for z_obj in algorytm.lista_zajec:
         if z_obj.id in plan_dict:
@@ -63,7 +59,6 @@ def uruchom_silnik_i_pobierz_plan():
             z_obj.przypisana_sala_id = z_data.get("przypisana_sala_id")
             z_obj.prowadzacy_id = z_data.get("prowadzacy_id")
     
-    # Pobieramy prawdziwy czas z pliku wynikowego, a nie czas czytania z dysku!
     rzeczywisty_czas = gotowy_wynik.get("czas_optymalizacji", 0.0)
     
     historia = gotowy_wynik.get("historia_kosztow") or []
